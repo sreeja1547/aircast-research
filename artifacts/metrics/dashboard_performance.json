@@ -1,0 +1,29 @@
+{
+  "experiment": "Phase 11 Stage 8: Dashboard Performance",
+  "timestamp": "2026-11-05T15:41:42Z",
+  "artifact_loading": {
+    "results": [
+      {
+        "artifact": "artifacts/metrics/efficiency_baseline.json",
+        "size_kb": 37.4,
+        "cold_disk_load_ms": 2.766,
+        "warm_cache_access_ms": 0.0014,
+        "speedup": 1975.7
+      },
+      {
+        "artifact": "artifacts/metrics/feature_efficiency_comparison.json",
+        "size_kb": 25.0,
+        "cold_disk_load_ms": 1.942,
+        "warm_cache_access_ms": 0.1072,
+        "speedup": 18.1
+      },
+      {
+        "artifact": "artifacts/metrics/model_complexity_optimization.json",
+        "size_kb": 11.1,
+        "cold_disk_load_ms": 1.521,
+        "warm_cache_access_ms": 0.0913,
+        "speedup": 16.7
+      }
+    ]
+  }
+}

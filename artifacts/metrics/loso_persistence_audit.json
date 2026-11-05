@@ -1,0 +1,69 @@
+{
+  "loso_persistence": {
+    "Aotizhongxin": {
+      "pers_mae": 60.44,
+      "pers_rmse": 90.68,
+      "pers_r2": -0.2176
+    },
+    "Changping": {
+      "pers_mae": 53.26,
+      "pers_rmse": 79.28,
+      "pers_r2": -0.2001
+    },
+    "Dingling": {
+      "pers_mae": 52.66,
+      "pers_rmse": 79.76,
+      "pers_r2": -0.2165
+    },
+    "Dongsi": {
+      "pers_mae": 63.39,
+      "pers_rmse": 94.71,
+      "pers_r2": -0.1955
+    },
+    "Guanyuan": {
+      "pers_mae": 59.15,
+      "pers_rmse": 88.16,
+      "pers_r2": -0.1854
+    },
+    "Gucheng": {
+      "pers_mae": 59.63,
+      "pers_rmse": 89.21,
+      "pers_r2": -0.1596
+    },
+    "Huairou": {
+      "pers_mae": 51.99,
+      "pers_rmse": 77.72,
+      "pers_r2": -0.1892
+    },
+    "Nongzhanguan": {
+      "pers_mae": 63.03,
+      "pers_rmse": 94.72,
+      "pers_r2": -0.2055
+    },
+    "Shunyi": {
+      "pers_mae": 59.86,
+      "pers_rmse": 90.22,
+      "pers_r2": -0.2321
+    },
+    "Tiantan": {
+      "pers_mae": 59.55,
+      "pers_rmse": 88.61,
+      "pers_r2": -0.1977
+    },
+    "Wanliu": {
+      "pers_mae": 59.75,
+      "pers_rmse": 88.87,
+      "pers_r2": -0.1761
+    },
+    "Wanshouxigong": {
+      "pers_mae": 62.66,
+      "pers_rmse": 93.87,
+      "pers_r2": -0.1908
+    }
+  },
+  "mean": {
+    "mae": 58.78083333333333,
+    "rmse": 87.98416666666667,
+    "r2": -0.197175
+  }
+}

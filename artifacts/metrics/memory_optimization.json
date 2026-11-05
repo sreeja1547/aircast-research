@@ -1,0 +1,143 @@
+{
+  "experiment": "Phase 11 Stage 6: Memory and Storage Optimization",
+  "timestamp": "2026-11-05T15:39:34Z",
+  "model_compression": {
+    "RandomForest": [
+      {
+        "compress_level": 0,
+        "size_mb": 24.587,
+        "save_time_sec": 0.0406,
+        "load_time_sec": 0.0989,
+        "compression_ratio": 1.0
+      },
+      {
+        "compress_level": 3,
+        "size_mb": 7.858,
+        "save_time_sec": 0.3866,
+        "load_time_sec": 0.1845,
+        "compression_ratio": 3.13
+      },
+      {
+        "compress_level": 6,
+        "size_mb": 7.576,
+        "save_time_sec": 0.866,
+        "load_time_sec": 0.1944,
+        "compression_ratio": 3.25
+      }
+    ],
+    "XGBoost": [
+      {
+        "compress_level": 0,
+        "size_mb": 1.158,
+        "save_time_sec": 0.0339,
+        "load_time_sec": 0.0738,
+        "compression_ratio": 1.0
+      },
+      {
+        "compress_level": 3,
+        "size_mb": 0.398,
+        "save_time_sec": 0.1088,
+        "load_time_sec": 0.0515,
+        "compression_ratio": 2.91
+      },
+      {
+        "compress_level": 6,
+        "size_mb": 0.365,
+        "save_time_sec": 0.1351,
+        "load_time_sec": 0.0477,
+        "compression_ratio": 3.17
+      }
+    ],
+    "HistGradientBoosting": [
+      {
+        "compress_level": 0,
+        "size_mb": 0.582,
+        "save_time_sec": 0.0303,
+        "load_time_sec": 0.0426,
+        "compression_ratio": 1.0
+      },
+      {
+        "compress_level": 3,
+        "size_mb": 0.241,
+        "save_time_sec": 0.0281,
+        "load_time_sec": 0.0384,
+        "compression_ratio": 2.41
+      },
+      {
+        "compress_level": 6,
+        "size_mb": 0.227,
+        "save_time_sec": 0.0359,
+        "load_time_sec": 0.0412,
+        "compression_ratio": 2.56
+      }
+    ],
+    "LSTM": [
+      {
+        "compress_level": 0,
+        "size_mb": 0.252,
+        "save_time_sec": 0.0028,
+        "load_time_sec": 0.0488,
+        "compression_ratio": 1.0
+      },
+      {
+        "compress_level": 3,
+        "size_mb": 0.229,
+        "save_time_sec": 0.02,
+        "load_time_sec": 0.0425,
+        "compression_ratio": 1.1
+      },
+      {
+        "compress_level": 6,
+        "size_mb": 0.228,
+        "save_time_sec": 0.0208,
+        "load_time_sec": 0.0385,
+        "compression_ratio": 1.11
+      }
+    ]
+  },
+  "dataset_downcasting": {
+    "n_rows": 420768,
+    "n_columns": 70,
+    "memory_float64_mb": 227.38,
+    "memory_float32_mb": 121.45,
+    "ram_savings_pct": 46.59
+  },
+  "parquet_codecs": {
+    "results": [
+      {
+        "codec": "none",
+        "file_size_mb": 24.81,
+        "write_time_sec": 0.9123,
+        "read_time_sec": 0.2865,
+        "compression_ratio": 1.0
+      },
+      {
+        "codec": "snappy",
+        "file_size_mb": 23.1,
+        "write_time_sec": 1.1736,
+        "read_time_sec": 0.2856,
+        "compression_ratio": 1.07
+      },
+      {
+        "codec": "gzip",
+        "file_size_mb": 19.73,
+        "write_time_sec": 2.444,
+        "read_time_sec": 0.3493,
+        "compression_ratio": 1.26
+      },
+      {
+        "codec": "zstd",
+        "file_size_mb": 20.46,
+        "write_time_sec": 0.8608,
+        "read_time_sec": 0.1887,
+        "compression_ratio": 1.21
+      }
+    ]
+  },
+  "memory_leak_verification": {
+    "start_ram_mb": 347.9,
+    "end_ram_mb": 350.14,
+    "net_growth_mb": 2.24,
+    "is_memory_stable": true
+  }
+}

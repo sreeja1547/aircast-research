@@ -1,0 +1,4643 @@
+{
+  "experiment": "Phase 11 Stage 10: Final Efficiency Synthesis",
+  "timestamp": "2026-11-05T15:48:41Z",
+  "before_vs_after_comparison": {
+    "model_artifact_storage_mb": {
+      "baseline": 112.6,
+      "optimized": 1.72,
+      "reduction_pct": 98.47,
+      "factor_reduction": 65.5
+    },
+    "random_forest_storage_mb": {
+      "baseline": 100.67,
+      "optimized": 1.87,
+      "reduction_pct": 98.14,
+      "factor_reduction": 53.8
+    },
+    "active_dataframe_memory_mb": {
+      "baseline": 227.4,
+      "optimized": 121.5,
+      "reduction_pct": 46.57,
+      "factor_reduction": 1.87
+    },
+    "single_sample_inference_latency_ms": {
+      "xgboost_baseline_pandas": 35.6,
+      "xgboost_optimized_buffer": 4.33,
+      "xgboost_speedup": 8.22,
+      "ridge_baseline_pandas": 9.93,
+      "ridge_optimized_buffer": 0.147,
+      "ridge_speedup": 67.52,
+      "lstm_baseline_pandas": 12.56,
+      "lstm_optimized_buffer": 1.49,
+      "lstm_speedup": 8.43
+    },
+    "batch_inference_throughput_samples_per_sec": {
+      "xgboost_baseline": 28468.4,
+      "xgboost_optimized_batch1024": 188688.3,
+      "throughput_gain_factor": 6.63,
+      "ridge_peak_throughput": 4335492.7
+    },
+    "training_duration_seconds": {
+      "random_forest_24h_baseline": 99.67,
+      "random_forest_24h_compact": 22.12,
+      "rf_speedup": 4.51,
+      "xgboost_24h_baseline": 6.87,
+      "xgboost_24h_fast": 3.97,
+      "xgb_speedup": 1.73,
+      "lstm_1h_baseline": 335.75,
+      "lstm_1h_compact": 162.03,
+      "lstm_speedup": 2.07
+    },
+    "predictive_accuracy_preservation": {
+      "h1_baseline_mae": 11.524,
+      "h1_optimized_mae": 11.572,
+      "h1_delta_mae": 0.048,
+      "h6_baseline_mae": 36.954,
+      "h6_optimized_mae": 37.042,
+      "h6_delta_mae": 0.088,
+      "h24_baseline_mae": 67.255,
+      "h24_optimized_mae": 66.074,
+      "h24_delta_mae": -1.181
+    },
+    "regression_and_safety": {
+      "total_unit_tests": 52,
+      "passed_unit_tests": 52,
+      "pass_rate_pct": 100.0,
+      "numerical_drift": 0.0,
+      "stations_evaluated": 12,
+      "mean_station_mae": 11.571
+    }
+  },
+  "component_stages": {
+    "stage1_baseline": {
+      "experiment": "Phase 11 Stage 1: Empirical Performance Baseline",
+      "timestamp": "2026-11-05T14:57:12Z",
+      "feature_group": "combined_all",
+      "n_features": 47,
+      "feature_slicing_per_sample_ms": 0.01075,
+      "peak_ram_mb": 759.32,
+      "gpu_memory_used_mb": 0.0,
+      "cuda_available": false,
+      "results": [
+        {
+          "horizon_hours": 1,
+          "model_name": "Persistence",
+          "model_id": "persistence",
+          "model_type": "baseline",
+          "artifact_path": "artifacts\\models\\persistence_h1.joblib",
+          "artifact_size_mb": 0.0012,
+          "model_load_time_sec": 0.0028,
+          "training_time_sec": 0.103,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 12.4185,
+            "rmse": 24.7316,
+            "r2": 0.9437,
+            "smape": 21.2431,
+            "extreme_mae": 21.6784
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 10.1583,
+              "median_ms": 9.7191,
+              "p95_ms": 14.3017,
+              "std_ms": 2.1702,
+              "min_ms": 7.1128,
+              "max_ms": 17.6038
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 9.1709,
+              "median_ms": 8.5273,
+              "p95_ms": 12.6363,
+              "std_ms": 1.9871,
+              "per_sample_ms": 0.28659,
+              "throughput_samples_per_sec": 3489.3
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 10.1569,
+              "median_ms": 9.9699,
+              "p95_ms": 12.4601,
+              "std_ms": 1.4156,
+              "per_sample_ms": 0.07935,
+              "throughput_samples_per_sec": 12602.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 9.9524,
+              "median_ms": 9.5702,
+              "p95_ms": 12.1622,
+              "std_ms": 1.4933,
+              "per_sample_ms": 0.01944,
+              "throughput_samples_per_sec": 51444.7
+            }
+          },
+          "throughput_samples_per_sec": 51444.7,
+          "full_test_duration_sec": 0.0743,
+          "test_samples": 42554,
+          "process_ram_mb": 733.46,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "Linear Regression",
+          "model_id": "linear_regression",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\linear_regression_h1.joblib",
+          "artifact_size_mb": 0.0034,
+          "model_load_time_sec": 0.005,
+          "training_time_sec": 1.874,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 11.9615,
+            "rmse": 23.1879,
+            "r2": 0.9505,
+            "smape": 25.8127,
+            "extreme_mae": 20.5262
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 11.9052,
+              "median_ms": 11.5487,
+              "p95_ms": 16.031,
+              "std_ms": 2.1078,
+              "min_ms": 9.1694,
+              "max_ms": 20.4607
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 12.2482,
+              "median_ms": 11.4565,
+              "p95_ms": 18.3794,
+              "std_ms": 2.5647,
+              "per_sample_ms": 0.38276,
+              "throughput_samples_per_sec": 2612.6
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 11.9589,
+              "median_ms": 11.1789,
+              "p95_ms": 17.9211,
+              "std_ms": 2.3813,
+              "per_sample_ms": 0.09343,
+              "throughput_samples_per_sec": 10703.3
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 13.5491,
+              "median_ms": 13.2194,
+              "p95_ms": 17.2798,
+              "std_ms": 1.9257,
+              "per_sample_ms": 0.02646,
+              "throughput_samples_per_sec": 37788.4
+            }
+          },
+          "throughput_samples_per_sec": 37788.4,
+          "full_test_duration_sec": 0.1475,
+          "test_samples": 42554,
+          "process_ram_mb": 733.5,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "Ridge",
+          "model_id": "ridge",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\ridge_h1.joblib",
+          "artifact_size_mb": 0.0031,
+          "model_load_time_sec": 0.0047,
+          "training_time_sec": 0.982,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 11.9633,
+            "rmse": 23.1907,
+            "r2": 0.9505,
+            "smape": 25.8161,
+            "extreme_mae": 20.5319
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 12.2981,
+              "median_ms": 11.7019,
+              "p95_ms": 15.8662,
+              "std_ms": 2.8108,
+              "min_ms": 9.3333,
+              "max_ms": 30.0366
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 11.5461,
+              "median_ms": 11.4269,
+              "p95_ms": 13.1707,
+              "std_ms": 1.3276,
+              "per_sample_ms": 0.36081,
+              "throughput_samples_per_sec": 2771.5
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 12.0707,
+              "median_ms": 11.8771,
+              "p95_ms": 14.7959,
+              "std_ms": 1.5013,
+              "per_sample_ms": 0.0943,
+              "throughput_samples_per_sec": 10604.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 13.2388,
+              "median_ms": 13.0355,
+              "p95_ms": 16.1685,
+              "std_ms": 1.7164,
+              "per_sample_ms": 0.02586,
+              "throughput_samples_per_sec": 38674.3
+            }
+          },
+          "throughput_samples_per_sec": 38674.3,
+          "full_test_duration_sec": 0.1553,
+          "test_samples": 42554,
+          "process_ram_mb": 733.5,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "HistGradientBoosting",
+          "model_id": "hist_gradient_boosting",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\hist_gradient_boosting_h1.joblib",
+          "artifact_size_mb": 0.5814,
+          "model_load_time_sec": 0.146,
+          "training_time_sec": 13.028,
+          "complexity": {
+            "max_depth": 8,
+            "n_iter": 150
+          },
+          "predictive_performance": {
+            "mae": 11.6768,
+            "rmse": 23.1215,
+            "r2": 0.9508,
+            "smape": 19.6166,
+            "extreme_mae": 21.8403
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 59.737,
+              "median_ms": 63.2888,
+              "p95_ms": 68.03,
+              "std_ms": 15.5667,
+              "min_ms": 17.7347,
+              "max_ms": 131.5359
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 34.5285,
+              "median_ms": 35.5466,
+              "p95_ms": 52.6565,
+              "std_ms": 12.4191,
+              "per_sample_ms": 1.07902,
+              "throughput_samples_per_sec": 926.8
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 42.5817,
+              "median_ms": 38.6833,
+              "p95_ms": 70.6634,
+              "std_ms": 15.3286,
+              "per_sample_ms": 0.33267,
+              "throughput_samples_per_sec": 3006.0
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 55.4603,
+              "median_ms": 52.7323,
+              "p95_ms": 81.0308,
+              "std_ms": 21.7788,
+              "per_sample_ms": 0.10832,
+              "throughput_samples_per_sec": 9231.8
+            }
+          },
+          "throughput_samples_per_sec": 9231.8,
+          "full_test_duration_sec": 2.9209,
+          "test_samples": 42554,
+          "process_ram_mb": 734.18,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "Random Forest",
+          "model_id": "random_forest",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\random_forest_h1.joblib",
+          "artifact_size_mb": 24.5871,
+          "model_load_time_sec": 0.2179,
+          "training_time_sec": 107.758,
+          "complexity": {
+            "n_estimators": 60,
+            "max_depth": 14
+          },
+          "predictive_performance": {
+            "mae": 11.5238,
+            "rmse": 23.0782,
+            "r2": 0.9509,
+            "smape": 19.5055,
+            "extreme_mae": 21.0821
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 99.3971,
+              "median_ms": 98.4727,
+              "p95_ms": 126.6096,
+              "std_ms": 16.5993,
+              "min_ms": 67.9483,
+              "max_ms": 133.2068
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 91.8078,
+              "median_ms": 88.7829,
+              "p95_ms": 115.0522,
+              "std_ms": 16.1004,
+              "per_sample_ms": 2.86899,
+              "throughput_samples_per_sec": 348.6
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 94.7437,
+              "median_ms": 91.0913,
+              "p95_ms": 121.3853,
+              "std_ms": 15.023,
+              "per_sample_ms": 0.74019,
+              "throughput_samples_per_sec": 1351.0
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 104.6004,
+              "median_ms": 102.4479,
+              "p95_ms": 139.1606,
+              "std_ms": 19.6748,
+              "per_sample_ms": 0.2043,
+              "throughput_samples_per_sec": 4894.8
+            }
+          },
+          "throughput_samples_per_sec": 4894.8,
+          "full_test_duration_sec": 0.3625,
+          "test_samples": 42554,
+          "process_ram_mb": 763.67,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "XGBoost",
+          "model_id": "xgboost",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\xgboost_h1.joblib",
+          "artifact_size_mb": 1.1577,
+          "model_load_time_sec": 0.0374,
+          "training_time_sec": 12.618,
+          "complexity": {
+            "n_estimators": 180,
+            "max_depth": 7
+          },
+          "predictive_performance": {
+            "mae": 11.5723,
+            "rmse": 23.3344,
+            "r2": 0.9499,
+            "smape": 19.2805,
+            "extreme_mae": 21.7483
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 17.1632,
+              "median_ms": 13.4374,
+              "p95_ms": 40.3061,
+              "std_ms": 8.9728,
+              "min_ms": 9.6209,
+              "max_ms": 48.8472
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 33.1833,
+              "median_ms": 27.7182,
+              "p95_ms": 55.8133,
+              "std_ms": 16.715,
+              "per_sample_ms": 1.03698,
+              "throughput_samples_per_sec": 964.3
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 17.1536,
+              "median_ms": 13.2247,
+              "p95_ms": 46.625,
+              "std_ms": 9.4484,
+              "per_sample_ms": 0.13401,
+              "throughput_samples_per_sec": 7462.0
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 17.9848,
+              "median_ms": 17.2232,
+              "p95_ms": 25.6448,
+              "std_ms": 4.2744,
+              "per_sample_ms": 0.03513,
+              "throughput_samples_per_sec": 28468.4
+            }
+          },
+          "throughput_samples_per_sec": 28468.4,
+          "full_test_duration_sec": 0.2015,
+          "test_samples": 42554,
+          "process_ram_mb": 736.33,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 1,
+          "model_name": "LSTM",
+          "model_id": "lstm",
+          "model_type": "deep_learning",
+          "artifact_path": "artifacts\\models\\lstm_h1.joblib",
+          "artifact_size_mb": 0.2516,
+          "model_load_time_sec": 0.0528,
+          "training_time_sec": 335.749,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 11.5715,
+            "rmse": 22.292,
+            "r2": 0.9542,
+            "smape": 19.7361,
+            "extreme_mae": 21.7387
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 11.0977,
+              "median_ms": 8.48,
+              "p95_ms": 19.8391,
+              "std_ms": 4.8264,
+              "min_ms": 5.5587,
+              "max_ms": 24.8019
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 10.9364,
+              "median_ms": 7.4707,
+              "p95_ms": 19.7697,
+              "std_ms": 5.485,
+              "per_sample_ms": 0.34176,
+              "throughput_samples_per_sec": 2926.0
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 15.6753,
+              "median_ms": 17.0189,
+              "p95_ms": 24.9539,
+              "std_ms": 6.5216,
+              "per_sample_ms": 0.12246,
+              "throughput_samples_per_sec": 8165.7
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 25.5815,
+              "median_ms": 28.3814,
+              "p95_ms": 36.5748,
+              "std_ms": 8.9312,
+              "per_sample_ms": 0.04996,
+              "throughput_samples_per_sec": 20014.4
+            }
+          },
+          "throughput_samples_per_sec": 20014.4,
+          "full_test_duration_sec": 0.8588,
+          "test_samples": 42554,
+          "process_ram_mb": 752.29,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "Persistence",
+          "model_id": "persistence",
+          "model_type": "baseline",
+          "artifact_path": "artifacts\\models\\persistence_h6.joblib",
+          "artifact_size_mb": 0.0012,
+          "model_load_time_sec": 0.0721,
+          "training_time_sec": 0.129,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 41.4997,
+            "rmse": 70.6975,
+            "r2": 0.5398,
+            "smape": 51.8432,
+            "extreme_mae": 69.7187
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 7.3614,
+              "median_ms": 6.314,
+              "p95_ms": 15.32,
+              "std_ms": 6.0548,
+              "min_ms": 1.7617,
+              "max_ms": 51.8183
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 6.3843,
+              "median_ms": 5.6579,
+              "p95_ms": 11.2884,
+              "std_ms": 2.8177,
+              "per_sample_ms": 0.19951,
+              "throughput_samples_per_sec": 5012.3
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 4.7287,
+              "median_ms": 5.0584,
+              "p95_ms": 8.6413,
+              "std_ms": 2.0807,
+              "per_sample_ms": 0.03694,
+              "throughput_samples_per_sec": 27068.6
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 5.2914,
+              "median_ms": 5.2773,
+              "p95_ms": 9.0461,
+              "std_ms": 1.989,
+              "per_sample_ms": 0.01033,
+              "throughput_samples_per_sec": 96760.9
+            }
+          },
+          "throughput_samples_per_sec": 96760.9,
+          "full_test_duration_sec": 0.0582,
+          "test_samples": 42494,
+          "process_ram_mb": 756.4,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "Linear Regression",
+          "model_id": "linear_regression",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\linear_regression_h6.joblib",
+          "artifact_size_mb": 0.0034,
+          "model_load_time_sec": 0.0744,
+          "training_time_sec": 2.016,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 39.2402,
+            "rmse": 63.3625,
+            "r2": 0.6303,
+            "smape": 55.1204,
+            "extreme_mae": 69.1818
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 4.7994,
+              "median_ms": 4.3371,
+              "p95_ms": 10.5855,
+              "std_ms": 2.6653,
+              "min_ms": 1.9473,
+              "max_ms": 15.0714
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 6.3516,
+              "median_ms": 5.367,
+              "p95_ms": 13.0474,
+              "std_ms": 3.5769,
+              "per_sample_ms": 0.19849,
+              "throughput_samples_per_sec": 5038.1
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 6.759,
+              "median_ms": 5.93,
+              "p95_ms": 12.3827,
+              "std_ms": 3.2128,
+              "per_sample_ms": 0.0528,
+              "throughput_samples_per_sec": 18937.6
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 8.8517,
+              "median_ms": 8.5657,
+              "p95_ms": 14.3474,
+              "std_ms": 3.1393,
+              "per_sample_ms": 0.01729,
+              "throughput_samples_per_sec": 57841.7
+            }
+          },
+          "throughput_samples_per_sec": 57841.7,
+          "full_test_duration_sec": 0.0905,
+          "test_samples": 42494,
+          "process_ram_mb": 756.47,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "Ridge",
+          "model_id": "ridge",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\ridge_h6.joblib",
+          "artifact_size_mb": 0.0031,
+          "model_load_time_sec": 0.0358,
+          "training_time_sec": 1.119,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 39.2399,
+            "rmse": 63.3665,
+            "r2": 0.6303,
+            "smape": 55.1133,
+            "extreme_mae": 69.1933
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 5.4833,
+              "median_ms": 4.631,
+              "p95_ms": 11.7718,
+              "std_ms": 3.0101,
+              "min_ms": 2.0059,
+              "max_ms": 14.4685
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 4.8499,
+              "median_ms": 4.5049,
+              "p95_ms": 7.7122,
+              "std_ms": 1.9246,
+              "per_sample_ms": 0.15156,
+              "throughput_samples_per_sec": 6598.1
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 6.8621,
+              "median_ms": 6.6852,
+              "p95_ms": 11.7642,
+              "std_ms": 2.893,
+              "per_sample_ms": 0.05361,
+              "throughput_samples_per_sec": 18653.1
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 6.968,
+              "median_ms": 6.4519,
+              "p95_ms": 13.1822,
+              "std_ms": 3.4445,
+              "per_sample_ms": 0.01361,
+              "throughput_samples_per_sec": 73478.9
+            }
+          },
+          "throughput_samples_per_sec": 73478.9,
+          "full_test_duration_sec": 0.0982,
+          "test_samples": 42494,
+          "process_ram_mb": 756.47,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "HistGradientBoosting",
+          "model_id": "hist_gradient_boosting",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\hist_gradient_boosting_h6.joblib",
+          "artifact_size_mb": 0.5814,
+          "model_load_time_sec": 0.0996,
+          "training_time_sec": 11.345,
+          "complexity": {
+            "max_depth": 8,
+            "n_iter": 150
+          },
+          "predictive_performance": {
+            "mae": 37.2632,
+            "rmse": 63.4699,
+            "r2": 0.6291,
+            "smape": 46.4813,
+            "extreme_mae": 69.2722
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 38.6983,
+              "median_ms": 41.1538,
+              "p95_ms": 57.7725,
+              "std_ms": 13.3295,
+              "min_ms": 9.0705,
+              "max_ms": 67.0248
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 36.3481,
+              "median_ms": 37.3682,
+              "p95_ms": 59.4501,
+              "std_ms": 15.7661,
+              "per_sample_ms": 1.13588,
+              "throughput_samples_per_sec": 880.4
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 45.1533,
+              "median_ms": 47.56,
+              "p95_ms": 54.5182,
+              "std_ms": 9.0974,
+              "per_sample_ms": 0.35276,
+              "throughput_samples_per_sec": 2834.8
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 60.2583,
+              "median_ms": 59.6034,
+              "p95_ms": 82.0677,
+              "std_ms": 14.6084,
+              "per_sample_ms": 0.11769,
+              "throughput_samples_per_sec": 8496.8
+            }
+          },
+          "throughput_samples_per_sec": 8496.8,
+          "full_test_duration_sec": 0.8998,
+          "test_samples": 42494,
+          "process_ram_mb": 756.44,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "Random Forest",
+          "model_id": "random_forest",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\random_forest_h6.joblib",
+          "artifact_size_mb": 34.22,
+          "model_load_time_sec": 0.2651,
+          "training_time_sec": 103.026,
+          "complexity": {
+            "n_estimators": 60,
+            "max_depth": 14
+          },
+          "predictive_performance": {
+            "mae": 37.6773,
+            "rmse": 63.526,
+            "r2": 0.6284,
+            "smape": 45.8713,
+            "extreme_mae": 68.6084
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 104.89,
+              "median_ms": 103.1849,
+              "p95_ms": 133.115,
+              "std_ms": 22.8771,
+              "min_ms": 61.5591,
+              "max_ms": 235.9522
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 85.2197,
+              "median_ms": 81.4316,
+              "p95_ms": 111.107,
+              "std_ms": 21.6799,
+              "per_sample_ms": 2.66311,
+              "throughput_samples_per_sec": 375.5
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 103.7137,
+              "median_ms": 101.6107,
+              "p95_ms": 136.4485,
+              "std_ms": 20.0705,
+              "per_sample_ms": 0.81026,
+              "throughput_samples_per_sec": 1234.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 118.4669,
+              "median_ms": 117.2245,
+              "p95_ms": 147.7111,
+              "std_ms": 14.9451,
+              "per_sample_ms": 0.23138,
+              "throughput_samples_per_sec": 4321.9
+            }
+          },
+          "throughput_samples_per_sec": 4321.9,
+          "full_test_duration_sec": 0.3356,
+          "test_samples": 42494,
+          "process_ram_mb": 796.38,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "XGBoost",
+          "model_id": "xgboost",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\xgboost_h6.joblib",
+          "artifact_size_mb": 1.0777,
+          "model_load_time_sec": 0.034,
+          "training_time_sec": 11.85,
+          "complexity": {
+            "n_estimators": 180,
+            "max_depth": 7
+          },
+          "predictive_performance": {
+            "mae": 36.9541,
+            "rmse": 62.5712,
+            "r2": 0.6395,
+            "smape": 45.6466,
+            "extreme_mae": 68.5754
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 22.7524,
+              "median_ms": 13.9417,
+              "p95_ms": 50.4561,
+              "std_ms": 15.0756,
+              "min_ms": 9.9128,
+              "max_ms": 52.9934
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 33.1029,
+              "median_ms": 22.668,
+              "p95_ms": 73.9911,
+              "std_ms": 21.9841,
+              "per_sample_ms": 1.03447,
+              "throughput_samples_per_sec": 966.7
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 25.2986,
+              "median_ms": 19.5946,
+              "p95_ms": 53.2024,
+              "std_ms": 12.8749,
+              "per_sample_ms": 0.19765,
+              "throughput_samples_per_sec": 5059.6
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 25.5441,
+              "median_ms": 17.962,
+              "p95_ms": 47.4358,
+              "std_ms": 13.1105,
+              "per_sample_ms": 0.04989,
+              "throughput_samples_per_sec": 20043.8
+            }
+          },
+          "throughput_samples_per_sec": 20043.8,
+          "full_test_duration_sec": 0.1727,
+          "test_samples": 42494,
+          "process_ram_mb": 756.12,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 6,
+          "model_name": "LSTM",
+          "model_id": "lstm",
+          "model_type": "deep_learning",
+          "artifact_path": "artifacts\\models\\lstm_h6.joblib",
+          "artifact_size_mb": 0.2513,
+          "model_load_time_sec": 0.0665,
+          "training_time_sec": 166.736,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 37.2191,
+            "rmse": 61.839,
+            "r2": 0.6479,
+            "smape": 47.9185,
+            "extreme_mae": 68.027
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 16.6681,
+              "median_ms": 17.0923,
+              "p95_ms": 20.1327,
+              "std_ms": 3.1609,
+              "min_ms": 4.8951,
+              "max_ms": 21.7134
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 24.0321,
+              "median_ms": 21.9731,
+              "p95_ms": 36.7192,
+              "std_ms": 5.8993,
+              "per_sample_ms": 0.751,
+              "throughput_samples_per_sec": 1331.6
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 12.7701,
+              "median_ms": 10.2125,
+              "p95_ms": 25.1546,
+              "std_ms": 5.8439,
+              "per_sample_ms": 0.09977,
+              "throughput_samples_per_sec": 10023.4
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 27.2164,
+              "median_ms": 20.3058,
+              "p95_ms": 55.9762,
+              "std_ms": 14.4822,
+              "per_sample_ms": 0.05316,
+              "throughput_samples_per_sec": 18812.2
+            }
+          },
+          "throughput_samples_per_sec": 18812.2,
+          "full_test_duration_sec": 1.6744,
+          "test_samples": 42494,
+          "process_ram_mb": 768.01,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "Persistence",
+          "model_id": "persistence",
+          "model_type": "baseline",
+          "artifact_path": "artifacts\\models\\persistence_h24.joblib",
+          "artifact_size_mb": 0.0012,
+          "model_load_time_sec": 0.0013,
+          "training_time_sec": 0.162,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 78.3239,
+            "rmse": 113.3217,
+            "r2": -0.1806,
+            "smape": 91.0021,
+            "extreme_mae": 114.4867
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 7.2913,
+              "median_ms": 7.9153,
+              "p95_ms": 11.1139,
+              "std_ms": 2.7268,
+              "min_ms": 2.0383,
+              "max_ms": 15.1482
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 5.5246,
+              "median_ms": 5.2336,
+              "p95_ms": 9.1916,
+              "std_ms": 2.2379,
+              "per_sample_ms": 0.17265,
+              "throughput_samples_per_sec": 5792.2
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 9.1775,
+              "median_ms": 9.1426,
+              "p95_ms": 13.6403,
+              "std_ms": 3.1548,
+              "per_sample_ms": 0.0717,
+              "throughput_samples_per_sec": 13947.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 6.597,
+              "median_ms": 6.0754,
+              "p95_ms": 12.5713,
+              "std_ms": 3.3308,
+              "per_sample_ms": 0.01288,
+              "throughput_samples_per_sec": 77610.7
+            }
+          },
+          "throughput_samples_per_sec": 77610.7,
+          "full_test_duration_sec": 0.0469,
+          "test_samples": 42278,
+          "process_ram_mb": 769.96,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "Linear Regression",
+          "model_id": "linear_regression",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\linear_regression_h24.joblib",
+          "artifact_size_mb": 0.0034,
+          "model_load_time_sec": 0.0814,
+          "training_time_sec": 1.89,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 66.7944,
+            "rmse": 91.4047,
+            "r2": 0.2319,
+            "smape": 78.2971,
+            "extreme_mae": 118.1232
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 5.3026,
+              "median_ms": 4.606,
+              "p95_ms": 11.8575,
+              "std_ms": 2.9096,
+              "min_ms": 2.0675,
+              "max_ms": 15.165
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 4.3343,
+              "median_ms": 4.049,
+              "p95_ms": 8.7066,
+              "std_ms": 2.0746,
+              "per_sample_ms": 0.13545,
+              "throughput_samples_per_sec": 7383.0
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 5.6499,
+              "median_ms": 5.469,
+              "p95_ms": 11.64,
+              "std_ms": 3.0491,
+              "per_sample_ms": 0.04414,
+              "throughput_samples_per_sec": 22655.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 7.7982,
+              "median_ms": 7.0078,
+              "p95_ms": 14.8874,
+              "std_ms": 3.6137,
+              "per_sample_ms": 0.01523,
+              "throughput_samples_per_sec": 65656.4
+            }
+          },
+          "throughput_samples_per_sec": 65656.4,
+          "full_test_duration_sec": 0.1173,
+          "test_samples": 42278,
+          "process_ram_mb": 770.17,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "Ridge",
+          "model_id": "ridge",
+          "model_type": "linear",
+          "artifact_path": "artifacts\\models\\ridge_h24.joblib",
+          "artifact_size_mb": 0.0031,
+          "model_load_time_sec": 0.0354,
+          "training_time_sec": 1.172,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 66.7946,
+            "rmse": 91.4045,
+            "r2": 0.2319,
+            "smape": 78.2935,
+            "extreme_mae": 118.1426
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 8.5738,
+              "median_ms": 7.3843,
+              "p95_ms": 16.5477,
+              "std_ms": 4.381,
+              "min_ms": 2.2594,
+              "max_ms": 27.4673
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 7.3293,
+              "median_ms": 5.6583,
+              "p95_ms": 17.3594,
+              "std_ms": 4.5065,
+              "per_sample_ms": 0.22904,
+              "throughput_samples_per_sec": 4366.0
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 12.6358,
+              "median_ms": 11.7511,
+              "p95_ms": 22.2739,
+              "std_ms": 8.1742,
+              "per_sample_ms": 0.09872,
+              "throughput_samples_per_sec": 10130.0
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 11.4499,
+              "median_ms": 6.1156,
+              "p95_ms": 32.4339,
+              "std_ms": 12.1214,
+              "per_sample_ms": 0.02236,
+              "throughput_samples_per_sec": 44716.7
+            }
+          },
+          "throughput_samples_per_sec": 44716.7,
+          "full_test_duration_sec": 0.1017,
+          "test_samples": 42278,
+          "process_ram_mb": 770.39,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "HistGradientBoosting",
+          "model_id": "hist_gradient_boosting",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\hist_gradient_boosting_h24.joblib",
+          "artifact_size_mb": 0.5813,
+          "model_load_time_sec": 0.2474,
+          "training_time_sec": 11.367,
+          "complexity": {
+            "max_depth": 8,
+            "n_iter": 150
+          },
+          "predictive_performance": {
+            "mae": 67.7646,
+            "rmse": 94.9974,
+            "r2": 0.1703,
+            "smape": 78.1967,
+            "extreme_mae": 113.6698
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 64.4695,
+              "median_ms": 64.2513,
+              "p95_ms": 67.78,
+              "std_ms": 4.0664,
+              "min_ms": 58.8362,
+              "max_ms": 97.7517
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 59.6283,
+              "median_ms": 60.5777,
+              "p95_ms": 64.8301,
+              "std_ms": 3.7351,
+              "per_sample_ms": 1.86338,
+              "throughput_samples_per_sec": 536.7
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 64.5732,
+              "median_ms": 64.7481,
+              "p95_ms": 66.6781,
+              "std_ms": 1.5961,
+              "per_sample_ms": 0.50448,
+              "throughput_samples_per_sec": 1982.2
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 70.8419,
+              "median_ms": 70.9678,
+              "p95_ms": 73.5552,
+              "std_ms": 1.8139,
+              "per_sample_ms": 0.13836,
+              "throughput_samples_per_sec": 7227.4
+            }
+          },
+          "throughput_samples_per_sec": 7227.4,
+          "full_test_duration_sec": 1.0365,
+          "test_samples": 42278,
+          "process_ram_mb": 771.51,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "Random Forest",
+          "model_id": "random_forest",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\random_forest_h24.joblib",
+          "artifact_size_mb": 41.8616,
+          "model_load_time_sec": 0.3827,
+          "training_time_sec": 99.673,
+          "complexity": {
+            "n_estimators": 60,
+            "max_depth": 14
+          },
+          "predictive_performance": {
+            "mae": 68.8332,
+            "rmse": 96.6436,
+            "r2": 0.1413,
+            "smape": 78.5519,
+            "extreme_mae": 115.6686
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 110.978,
+              "median_ms": 109.6426,
+              "p95_ms": 122.9496,
+              "std_ms": 7.8033,
+              "min_ms": 97.0924,
+              "max_ms": 141.8929
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 117.4622,
+              "median_ms": 108.0391,
+              "p95_ms": 129.4742,
+              "std_ms": 48.7655,
+              "per_sample_ms": 3.67069,
+              "throughput_samples_per_sec": 272.4
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 113.9335,
+              "median_ms": 112.969,
+              "p95_ms": 125.4915,
+              "std_ms": 8.3606,
+              "per_sample_ms": 0.89011,
+              "throughput_samples_per_sec": 1123.5
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 127.5999,
+              "median_ms": 125.489,
+              "p95_ms": 140.8981,
+              "std_ms": 7.4047,
+              "per_sample_ms": 0.24922,
+              "throughput_samples_per_sec": 4012.5
+            }
+          },
+          "throughput_samples_per_sec": 4012.5,
+          "full_test_duration_sec": 0.3244,
+          "test_samples": 42278,
+          "process_ram_mb": 821.45,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "XGBoost",
+          "model_id": "xgboost",
+          "model_type": "tree",
+          "artifact_path": "artifacts\\models\\xgboost_h24.joblib",
+          "artifact_size_mb": 0.5725,
+          "model_load_time_sec": 0.0316,
+          "training_time_sec": 6.869,
+          "complexity": {
+            "n_estimators": 180,
+            "max_depth": 7
+          },
+          "predictive_performance": {
+            "mae": 67.2555,
+            "rmse": 93.4117,
+            "r2": 0.1978,
+            "smape": 78.1109,
+            "extreme_mae": 119.3985
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 41.8536,
+              "median_ms": 40.3167,
+              "p95_ms": 49.1355,
+              "std_ms": 7.4696,
+              "min_ms": 35.8055,
+              "max_ms": 93.2915
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 39.9961,
+              "median_ms": 39.9261,
+              "p95_ms": 43.1407,
+              "std_ms": 1.8089,
+              "per_sample_ms": 1.24988,
+              "throughput_samples_per_sec": 800.1
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 41.459,
+              "median_ms": 40.5737,
+              "p95_ms": 47.7066,
+              "std_ms": 3.1974,
+              "per_sample_ms": 0.3239,
+              "throughput_samples_per_sec": 3087.4
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 42.6416,
+              "median_ms": 42.5053,
+              "p95_ms": 45.3589,
+              "std_ms": 1.9076,
+              "per_sample_ms": 0.08328,
+              "throughput_samples_per_sec": 12007.1
+            }
+          },
+          "throughput_samples_per_sec": 12007.1,
+          "full_test_duration_sec": 0.1349,
+          "test_samples": 42278,
+          "process_ram_mb": 765.91,
+          "gpu_memory_mb": 0.0
+        },
+        {
+          "horizon_hours": 24,
+          "model_name": "LSTM",
+          "model_id": "lstm",
+          "model_type": "deep_learning",
+          "artifact_path": "artifacts\\models\\lstm_h24.joblib",
+          "artifact_size_mb": 0.2513,
+          "model_load_time_sec": 0.0545,
+          "training_time_sec": 102.946,
+          "complexity": {},
+          "predictive_performance": {
+            "mae": 66.4708,
+            "rmse": 92.483,
+            "r2": 0.2137,
+            "smape": 76.8525,
+            "extreme_mae": 114.3315
+          },
+          "latency_benchmarks": {
+            "single_sample": {
+              "mean_ms": 16.7766,
+              "median_ms": 16.0974,
+              "p95_ms": 19.3961,
+              "std_ms": 3.0604,
+              "min_ms": 13.9412,
+              "max_ms": 40.2807
+            },
+            "batch_32": {
+              "batch_size": 32,
+              "mean_ms": 18.0288,
+              "median_ms": 17.9571,
+              "p95_ms": 19.0881,
+              "std_ms": 0.7497,
+              "per_sample_ms": 0.5634,
+              "throughput_samples_per_sec": 1774.9
+            },
+            "batch_128": {
+              "batch_size": 128,
+              "mean_ms": 20.4413,
+              "median_ms": 20.1552,
+              "p95_ms": 23.6931,
+              "std_ms": 1.7733,
+              "per_sample_ms": 0.1597,
+              "throughput_samples_per_sec": 6261.8
+            },
+            "batch_512": {
+              "batch_size": 512,
+              "mean_ms": 32.4412,
+              "median_ms": 32.4251,
+              "p95_ms": 33.9882,
+              "std_ms": 0.9851,
+              "per_sample_ms": 0.06336,
+              "throughput_samples_per_sec": 15782.4
+            }
+          },
+          "throughput_samples_per_sec": 15782.4,
+          "full_test_duration_sec": 1.7073,
+          "test_samples": 42278,
+          "process_ram_mb": 759.32,
+          "gpu_memory_mb": 0.0
+        }
+      ]
+    },
+    "stage2_features": {
+      "experiment": "Phase 11 Stage 2: Feature Efficiency & Selection",
+      "timestamp": "2026-11-05T15:03:58Z",
+      "summary": "Controlled validation-driven feature selection reducing dimensionality from 47 to 16-24 features.",
+      "results": {
+        "h1": {
+          "horizon_hours": 1,
+          "baseline_47_features": {
+            "n_features": 47,
+            "test_mae": 11.607,
+            "test_rmse": 23.443,
+            "test_r2": 0.9494,
+            "training_time_sec": 14.854,
+            "mean_per_sample_latency_ms": 0.018179,
+            "throughput_samples_per_sec": 55009.86,
+            "test_matrix_ram_mb": 14.77
+          },
+          "optimized_compact_features": {
+            "n_features": 16,
+            "selected_features": [
+              "PM2.5",
+              "PM2.5_roll_min_3",
+              "PM2.5_roll_mean_3",
+              "PM10",
+              "PM2.5_roll_max_3",
+              "WSPM",
+              "wind_v",
+              "dew_point_depression",
+              "RAIN",
+              "PM2.5_roll_max_6",
+              "PM2.5_roll_std_3",
+              "has_rain",
+              "PM2.5_lag_1",
+              "PM2.5_roll_max_12",
+              "CO",
+              "PM2.5_roll_max_24"
+            ],
+            "test_mae": 11.825,
+            "test_rmse": 23.731,
+            "test_r2": 0.9481,
+            "training_time_sec": 6.828,
+            "mean_per_sample_latency_ms": 0.011656,
+            "throughput_samples_per_sec": 85792.92,
+            "test_matrix_ram_mb": 5.36
+          },
+          "comparison": {
+            "feature_reduction_count": 31,
+            "feature_reduction_pct": 66.0,
+            "delta_mae": 0.218,
+            "delta_rmse": 0.288,
+            "delta_r2": -0.0013,
+            "training_speedup_factor": 2.18,
+            "throughput_gain_pct": 56.0,
+            "ram_savings_pct": 63.7
+          },
+          "group_benchmarks_validation": [
+            {
+              "group_name": "temporal_baseline",
+              "n_features": 8,
+              "val_mae": 51.203,
+              "val_rmse": 65.547,
+              "val_r2": -0.0975,
+              "fit_time_sec": 1.302
+            },
+            {
+              "group_name": "historical_pollutants",
+              "n_features": 14,
+              "val_mae": 8.954,
+              "val_rmse": 17.764,
+              "val_r2": 0.9194,
+              "fit_time_sec": 4.125
+            },
+            {
+              "group_name": "lag_features",
+              "n_features": 20,
+              "val_mae": 8.636,
+              "val_rmse": 17.32,
+              "val_r2": 0.9234,
+              "fit_time_sec": 5.63
+            },
+            {
+              "group_name": "rolling_features",
+              "n_features": 36,
+              "val_mae": 8.601,
+              "val_rmse": 17.199,
+              "val_r2": 0.9244,
+              "fit_time_sec": 8.466
+            },
+            {
+              "group_name": "meteorological_features",
+              "n_features": 25,
+              "val_mae": 8.702,
+              "val_rmse": 17.509,
+              "val_r2": 0.9217,
+              "fit_time_sec": 5.031
+            },
+            {
+              "group_name": "combined_all",
+              "n_features": 47,
+              "val_mae": 8.421,
+              "val_rmse": 16.952,
+              "val_r2": 0.9266,
+              "fit_time_sec": 9.412
+            }
+          ],
+          "subset_size_benchmarks_validation": [
+            {
+              "k_features": 10,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "PM10",
+                "PM2.5_roll_max_3",
+                "WSPM",
+                "wind_v",
+                "dew_point_depression",
+                "RAIN",
+                "PM2.5_roll_max_6"
+              ],
+              "val_mae": 8.55,
+              "val_rmse": 17.172,
+              "val_r2": 0.9247,
+              "fit_time_sec": 6.55
+            },
+            {
+              "k_features": 16,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "PM10",
+                "PM2.5_roll_max_3",
+                "WSPM",
+                "wind_v",
+                "dew_point_depression",
+                "RAIN",
+                "PM2.5_roll_max_6",
+                "PM2.5_roll_std_3",
+                "has_rain",
+                "PM2.5_lag_1",
+                "PM2.5_roll_max_12",
+                "CO",
+                "PM2.5_roll_max_24"
+              ],
+              "val_mae": 8.441,
+              "val_rmse": 16.907,
+              "val_r2": 0.927,
+              "fit_time_sec": 7.083
+            },
+            {
+              "k_features": 24,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "PM10",
+                "PM2.5_roll_max_3",
+                "WSPM",
+                "wind_v",
+                "dew_point_depression",
+                "RAIN",
+                "PM2.5_roll_max_6",
+                "PM2.5_roll_std_3",
+                "has_rain",
+                "PM2.5_lag_1",
+                "PM2.5_roll_max_12",
+                "CO",
+                "PM2.5_roll_max_24",
+                "PM2.5_roll_mean_24",
+                "PM2.5_lag_3",
+                "NO2",
+                "PM2.5_roll_std_12",
+                "wd_cos",
+                "hour_cos",
+                "PM2.5_lag_48",
+                "PM2.5_roll_mean_6"
+              ],
+              "val_mae": 8.407,
+              "val_rmse": 16.929,
+              "val_r2": 0.9268,
+              "fit_time_sec": 7.787
+            },
+            {
+              "k_features": 32,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "PM10",
+                "PM2.5_roll_max_3",
+                "WSPM",
+                "wind_v",
+                "dew_point_depression",
+                "RAIN",
+                "PM2.5_roll_max_6",
+                "PM2.5_roll_std_3",
+                "has_rain",
+                "PM2.5_lag_1",
+                "PM2.5_roll_max_12",
+                "CO",
+                "PM2.5_roll_max_24",
+                "PM2.5_roll_mean_24",
+                "PM2.5_lag_3",
+                "NO2",
+                "PM2.5_roll_std_12",
+                "wd_cos",
+                "hour_cos",
+                "PM2.5_lag_48",
+                "PM2.5_roll_mean_6",
+                "TEMP",
+                "wind_u",
+                "PM2.5_roll_min_6",
+                "SO2",
+                "PM2.5_roll_mean_12",
+                "DEWP",
+                "is_weekend",
+                "PM2.5_roll_std_6"
+              ],
+              "val_mae": 8.417,
+              "val_rmse": 17.098,
+              "val_r2": 0.9253,
+              "fit_time_sec": 11.13
+            }
+          ],
+          "top_10_features_by_gain": [
+            {
+              "feature": "PM2.5",
+              "gain": 8405741.0
+            },
+            {
+              "feature": "PM2.5_roll_min_3",
+              "gain": 5250488.0
+            },
+            {
+              "feature": "PM2.5_roll_mean_3",
+              "gain": 3105371.25
+            },
+            {
+              "feature": "PM10",
+              "gain": 355089.90625
+            },
+            {
+              "feature": "PM2.5_roll_max_3",
+              "gain": 266825.3125
+            },
+            {
+              "feature": "WSPM",
+              "gain": 47414.86328125
+            },
+            {
+              "feature": "wind_v",
+              "gain": 46565.65625
+            },
+            {
+              "feature": "dew_point_depression",
+              "gain": 46479.59765625
+            },
+            {
+              "feature": "RAIN",
+              "gain": 42271.359375
+            },
+            {
+              "feature": "PM2.5_roll_max_6",
+              "gain": 41230.1328125
+            }
+          ],
+          "redundant_collinear_pairs": [
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_lag_1",
+              "correlation": 0.9613
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.975
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9931
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9264
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9241
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9597
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9778
+            },
+            {
+              "feat1": "PM2.5_roll_mean_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9722
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.9253
+            },
+            {
+              "feat1": "PM2.5_lag_6",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.9489
+            }
+          ]
+        },
+        "h6": {
+          "horizon_hours": 6,
+          "baseline_47_features": {
+            "n_features": 47,
+            "test_mae": 36.792,
+            "test_rmse": 62.624,
+            "test_r2": 0.6389,
+            "training_time_sec": 14.488,
+            "mean_per_sample_latency_ms": 0.021129,
+            "throughput_samples_per_sec": 47328.81,
+            "test_matrix_ram_mb": 14.75
+          },
+          "optimized_compact_features": {
+            "n_features": 24,
+            "selected_features": [
+              "PM2.5",
+              "PM2.5_roll_min_3",
+              "PM2.5_roll_mean_3",
+              "wd_cos",
+              "wind_v",
+              "is_heating_season",
+              "WSPM",
+              "PM10",
+              "hour_cos",
+              "TEMP",
+              "PM2.5_roll_max_24",
+              "month_cos",
+              "PM2.5_roll_std_24",
+              "month_sin",
+              "has_rain",
+              "RAIN",
+              "hour_sin",
+              "DEWP",
+              "PM2.5_roll_max_12",
+              "PM2.5_roll_mean_24",
+              "PRES",
+              "PM2.5_lag_48",
+              "dew_point_depression",
+              "PM2.5_roll_min_12"
+            ],
+            "test_mae": 37.001,
+            "test_rmse": 62.118,
+            "test_r2": 0.6447,
+            "training_time_sec": 7.341,
+            "mean_per_sample_latency_ms": 0.016787,
+            "throughput_samples_per_sec": 59569.36,
+            "test_matrix_ram_mb": 7.78
+          },
+          "comparison": {
+            "feature_reduction_count": 23,
+            "feature_reduction_pct": 48.9,
+            "delta_mae": 0.209,
+            "delta_rmse": -0.506,
+            "delta_r2": 0.0058,
+            "training_speedup_factor": 1.97,
+            "throughput_gain_pct": 25.9,
+            "ram_savings_pct": 47.3
+          },
+          "group_benchmarks_validation": [
+            {
+              "group_name": "temporal_baseline",
+              "n_features": 8,
+              "val_mae": 51.209,
+              "val_rmse": 65.501,
+              "val_r2": -0.1022,
+              "fit_time_sec": 1.174
+            },
+            {
+              "group_name": "historical_pollutants",
+              "n_features": 14,
+              "val_mae": 25.537,
+              "val_rmse": 41.679,
+              "val_r2": 0.5537,
+              "fit_time_sec": 3.313
+            },
+            {
+              "group_name": "lag_features",
+              "n_features": 20,
+              "val_mae": 25.161,
+              "val_rmse": 41.248,
+              "val_r2": 0.5629,
+              "fit_time_sec": 4.97
+            },
+            {
+              "group_name": "rolling_features",
+              "n_features": 36,
+              "val_mae": 25.124,
+              "val_rmse": 40.986,
+              "val_r2": 0.5684,
+              "fit_time_sec": 7.029
+            },
+            {
+              "group_name": "meteorological_features",
+              "n_features": 25,
+              "val_mae": 23.71,
+              "val_rmse": 39.891,
+              "val_r2": 0.5912,
+              "fit_time_sec": 6.389
+            },
+            {
+              "group_name": "combined_all",
+              "n_features": 47,
+              "val_mae": 23.672,
+              "val_rmse": 39.776,
+              "val_r2": 0.5935,
+              "fit_time_sec": 10.724
+            }
+          ],
+          "subset_size_benchmarks_validation": [
+            {
+              "k_features": 10,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "wd_cos",
+                "wind_v",
+                "is_heating_season",
+                "WSPM",
+                "PM10",
+                "hour_cos",
+                "TEMP"
+              ],
+              "val_mae": 24.42,
+              "val_rmse": 41.303,
+              "val_r2": 0.5617,
+              "fit_time_sec": 4.421
+            },
+            {
+              "k_features": 16,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "wd_cos",
+                "wind_v",
+                "is_heating_season",
+                "WSPM",
+                "PM10",
+                "hour_cos",
+                "TEMP",
+                "PM2.5_roll_max_24",
+                "month_cos",
+                "PM2.5_roll_std_24",
+                "month_sin",
+                "has_rain",
+                "RAIN"
+              ],
+              "val_mae": 24.211,
+              "val_rmse": 40.686,
+              "val_r2": 0.5747,
+              "fit_time_sec": 5.909
+            },
+            {
+              "k_features": 24,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "wd_cos",
+                "wind_v",
+                "is_heating_season",
+                "WSPM",
+                "PM10",
+                "hour_cos",
+                "TEMP",
+                "PM2.5_roll_max_24",
+                "month_cos",
+                "PM2.5_roll_std_24",
+                "month_sin",
+                "has_rain",
+                "RAIN",
+                "hour_sin",
+                "DEWP",
+                "PM2.5_roll_max_12",
+                "PM2.5_roll_mean_24",
+                "PRES",
+                "PM2.5_lag_48",
+                "dew_point_depression",
+                "PM2.5_roll_min_12"
+              ],
+              "val_mae": 23.98,
+              "val_rmse": 40.142,
+              "val_r2": 0.586,
+              "fit_time_sec": 7.192
+            },
+            {
+              "k_features": 32,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_min_3",
+                "PM2.5_roll_mean_3",
+                "wd_cos",
+                "wind_v",
+                "is_heating_season",
+                "WSPM",
+                "PM10",
+                "hour_cos",
+                "TEMP",
+                "PM2.5_roll_max_24",
+                "month_cos",
+                "PM2.5_roll_std_24",
+                "month_sin",
+                "has_rain",
+                "RAIN",
+                "hour_sin",
+                "DEWP",
+                "PM2.5_roll_max_12",
+                "PM2.5_roll_mean_24",
+                "PRES",
+                "PM2.5_lag_48",
+                "dew_point_depression",
+                "PM2.5_roll_min_12",
+                "day_of_week",
+                "wind_u",
+                "CO",
+                "PM2.5_roll_max_3",
+                "PM2.5_lag_12",
+                "PM2.5_roll_min_24",
+                "SO2",
+                "PM2.5_roll_min_6"
+              ],
+              "val_mae": 23.791,
+              "val_rmse": 39.81,
+              "val_r2": 0.5928,
+              "fit_time_sec": 9.302
+            }
+          ],
+          "top_10_features_by_gain": [
+            {
+              "feature": "PM2.5",
+              "gain": 11876227.0
+            },
+            {
+              "feature": "PM2.5_roll_min_3",
+              "gain": 4884386.0
+            },
+            {
+              "feature": "PM2.5_roll_mean_3",
+              "gain": 4799911.5
+            },
+            {
+              "feature": "wd_cos",
+              "gain": 387070.21875
+            },
+            {
+              "feature": "wind_v",
+              "gain": 375780.84375
+            },
+            {
+              "feature": "is_heating_season",
+              "gain": 344693.875
+            },
+            {
+              "feature": "WSPM",
+              "gain": 304073.0625
+            },
+            {
+              "feature": "PM10",
+              "gain": 298967.75
+            },
+            {
+              "feature": "hour_cos",
+              "gain": 275207.53125
+            },
+            {
+              "feature": "TEMP",
+              "gain": 253078.3125
+            }
+          ],
+          "redundant_collinear_pairs": [
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_lag_1",
+              "correlation": 0.9613
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.975
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9931
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9263
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9242
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9597
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9778
+            },
+            {
+              "feat1": "PM2.5_roll_mean_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9723
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.9252
+            },
+            {
+              "feat1": "PM2.5_lag_6",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.949
+            }
+          ]
+        },
+        "h24": {
+          "horizon_hours": 24,
+          "baseline_47_features": {
+            "n_features": 47,
+            "test_mae": 67.09,
+            "test_rmse": 93.628,
+            "test_r2": 0.1941,
+            "training_time_sec": 7.726,
+            "mean_per_sample_latency_ms": 0.057584,
+            "throughput_samples_per_sec": 17365.8,
+            "test_matrix_ram_mb": 14.68
+          },
+          "optimized_compact_features": {
+            "n_features": 24,
+            "selected_features": [
+              "PM2.5",
+              "PM2.5_roll_mean_3",
+              "PM2.5_roll_min_3",
+              "PRES",
+              "PM2.5_roll_std_12",
+              "month_sin",
+              "NO2",
+              "wind_v",
+              "day_of_week",
+              "PM2.5_roll_max_24",
+              "is_heating_season",
+              "month_cos",
+              "PM10",
+              "PM2.5_lag_48",
+              "PM2.5_roll_max_12",
+              "DEWP",
+              "PM2.5_roll_std_24",
+              "dew_point_depression",
+              "PM2.5_roll_min_24",
+              "PM2.5_roll_std_6",
+              "PM2.5_roll_min_12",
+              "TEMP",
+              "SO2",
+              "PM2.5_roll_max_6"
+            ],
+            "test_mae": 67.493,
+            "test_rmse": 93.484,
+            "test_r2": 0.1965,
+            "training_time_sec": 4.423,
+            "mean_per_sample_latency_ms": 0.040277,
+            "throughput_samples_per_sec": 24828.35,
+            "test_matrix_ram_mb": 7.74
+          },
+          "comparison": {
+            "feature_reduction_count": 23,
+            "feature_reduction_pct": 48.9,
+            "delta_mae": 0.403,
+            "delta_rmse": -0.144,
+            "delta_r2": 0.0024,
+            "training_speedup_factor": 1.75,
+            "throughput_gain_pct": 43.0,
+            "ram_savings_pct": 47.3
+          },
+          "group_benchmarks_validation": [
+            {
+              "group_name": "temporal_baseline",
+              "n_features": 8,
+              "val_mae": 50.872,
+              "val_rmse": 64.795,
+              "val_r2": -0.1061,
+              "fit_time_sec": 1.162
+            },
+            {
+              "group_name": "historical_pollutants",
+              "n_features": 14,
+              "val_mae": 42.462,
+              "val_rmse": 57.608,
+              "val_r2": 0.1256,
+              "fit_time_sec": 2.59
+            },
+            {
+              "group_name": "lag_features",
+              "n_features": 20,
+              "val_mae": 42.27,
+              "val_rmse": 57.497,
+              "val_r2": 0.129,
+              "fit_time_sec": 3.544
+            },
+            {
+              "group_name": "rolling_features",
+              "n_features": 36,
+              "val_mae": 42.196,
+              "val_rmse": 57.195,
+              "val_r2": 0.1382,
+              "fit_time_sec": 5.168
+            },
+            {
+              "group_name": "meteorological_features",
+              "n_features": 25,
+              "val_mae": 41.603,
+              "val_rmse": 57.505,
+              "val_r2": 0.1288,
+              "fit_time_sec": 3.62
+            },
+            {
+              "group_name": "combined_all",
+              "n_features": 47,
+              "val_mae": 41.477,
+              "val_rmse": 57.291,
+              "val_r2": 0.1353,
+              "fit_time_sec": 6.949
+            }
+          ],
+          "subset_size_benchmarks_validation": [
+            {
+              "k_features": 10,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_mean_3",
+                "PM2.5_roll_min_3",
+                "PRES",
+                "PM2.5_roll_std_12",
+                "month_sin",
+                "NO2",
+                "wind_v",
+                "day_of_week",
+                "PM2.5_roll_max_24"
+              ],
+              "val_mae": 42.316,
+              "val_rmse": 57.88,
+              "val_r2": 0.1174,
+              "fit_time_sec": 3.994
+            },
+            {
+              "k_features": 16,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_mean_3",
+                "PM2.5_roll_min_3",
+                "PRES",
+                "PM2.5_roll_std_12",
+                "month_sin",
+                "NO2",
+                "wind_v",
+                "day_of_week",
+                "PM2.5_roll_max_24",
+                "is_heating_season",
+                "month_cos",
+                "PM10",
+                "PM2.5_lag_48",
+                "PM2.5_roll_max_12",
+                "DEWP"
+              ],
+              "val_mae": 42.517,
+              "val_rmse": 57.917,
+              "val_r2": 0.1163,
+              "fit_time_sec": 3.656
+            },
+            {
+              "k_features": 24,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_mean_3",
+                "PM2.5_roll_min_3",
+                "PRES",
+                "PM2.5_roll_std_12",
+                "month_sin",
+                "NO2",
+                "wind_v",
+                "day_of_week",
+                "PM2.5_roll_max_24",
+                "is_heating_season",
+                "month_cos",
+                "PM10",
+                "PM2.5_lag_48",
+                "PM2.5_roll_max_12",
+                "DEWP",
+                "PM2.5_roll_std_24",
+                "dew_point_depression",
+                "PM2.5_roll_min_24",
+                "PM2.5_roll_std_6",
+                "PM2.5_roll_min_12",
+                "TEMP",
+                "SO2",
+                "PM2.5_roll_max_6"
+              ],
+              "val_mae": 42.457,
+              "val_rmse": 57.678,
+              "val_r2": 0.1235,
+              "fit_time_sec": 4.329
+            },
+            {
+              "k_features": 32,
+              "features": [
+                "PM2.5",
+                "PM2.5_roll_mean_3",
+                "PM2.5_roll_min_3",
+                "PRES",
+                "PM2.5_roll_std_12",
+                "month_sin",
+                "NO2",
+                "wind_v",
+                "day_of_week",
+                "PM2.5_roll_max_24",
+                "is_heating_season",
+                "month_cos",
+                "PM10",
+                "PM2.5_lag_48",
+                "PM2.5_roll_max_12",
+                "DEWP",
+                "PM2.5_roll_std_24",
+                "dew_point_depression",
+                "PM2.5_roll_min_24",
+                "PM2.5_roll_std_6",
+                "PM2.5_roll_min_12",
+                "TEMP",
+                "SO2",
+                "PM2.5_roll_max_6",
+                "PM2.5_roll_mean_24",
+                "WSPM",
+                "PM2.5_lag_24",
+                "RAIN",
+                "PM2.5_roll_max_3",
+                "O3",
+                "PM2.5_lag_12",
+                "is_weekend"
+              ],
+              "val_mae": 41.753,
+              "val_rmse": 57.652,
+              "val_r2": 0.1243,
+              "fit_time_sec": 7.197
+            }
+          ],
+          "top_10_features_by_gain": [
+            {
+              "feature": "PM2.5",
+              "gain": 10308948.0
+            },
+            {
+              "feature": "PM2.5_roll_mean_3",
+              "gain": 3702565.5
+            },
+            {
+              "feature": "PM2.5_roll_min_3",
+              "gain": 2882825.25
+            },
+            {
+              "feature": "PRES",
+              "gain": 1255134.375
+            },
+            {
+              "feature": "PM2.5_roll_std_12",
+              "gain": 1003976.5625
+            },
+            {
+              "feature": "month_sin",
+              "gain": 875818.875
+            },
+            {
+              "feature": "NO2",
+              "gain": 848112.625
+            },
+            {
+              "feature": "wind_v",
+              "gain": 829988.0625
+            },
+            {
+              "feature": "day_of_week",
+              "gain": 718007.875
+            },
+            {
+              "feature": "PM2.5_roll_max_24",
+              "gain": 716565.25
+            }
+          ],
+          "redundant_collinear_pairs": [
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_lag_1",
+              "correlation": 0.9613
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9751
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.993
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_3",
+              "correlation": 0.9264
+            },
+            {
+              "feat1": "PM2.5",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9245
+            },
+            {
+              "feat1": "PM2.5_lag_1",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9598
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9777
+            },
+            {
+              "feat1": "PM2.5_roll_mean_3",
+              "feat2": "PM2.5_roll_mean_6",
+              "correlation": 0.9724
+            },
+            {
+              "feat1": "PM2.5_lag_3",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.9256
+            },
+            {
+              "feat1": "PM2.5_lag_6",
+              "feat2": "PM2.5_roll_mean_12",
+              "correlation": 0.9493
+            }
+          ]
+        }
+      }
+    },
+    "stage3_complexity": {
+      "experiment": "Phase 11 Stage 3: Model Complexity Optimization",
+      "timestamp": "2026-11-05T15:30:26Z",
+      "results": {
+        "h1": [
+          {
+            "model_name": "RandomForest_Baseline (60 trees, depth 14)",
+            "training_time_sec": 107.758,
+            "artifact_size_mb": 24.5871,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 11.524,
+            "test_rmse": 23.078,
+            "test_r2": 0.9509,
+            "mean_latency_ms": 0.2043,
+            "throughput_samples_per_sec": 4894.8
+          },
+          {
+            "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+            "training_time_sec": 98.963,
+            "artifact_size_mb": 2.989,
+            "val_mae": 8.477,
+            "val_rmse": 16.773,
+            "val_r2": 0.9281,
+            "test_mae": 11.656,
+            "test_rmse": 23.313,
+            "test_r2": 0.9499,
+            "mean_latency_ms": 0.2142,
+            "throughput_samples_per_sec": 4668.53
+          },
+          {
+            "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+            "training_time_sec": 41.396,
+            "artifact_size_mb": 0.599,
+            "val_mae": 8.58,
+            "val_rmse": 16.853,
+            "val_r2": 0.9274,
+            "test_mae": 11.881,
+            "test_rmse": 23.589,
+            "test_r2": 0.9488,
+            "mean_latency_ms": 0.166552,
+            "throughput_samples_per_sec": 6004.14
+          },
+          {
+            "model_name": "XGBoost_Baseline (180 trees, depth 7, lr 0.05)",
+            "training_time_sec": 12.618,
+            "artifact_size_mb": 1.1577,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 11.572,
+            "test_rmse": 23.334,
+            "test_r2": 0.9499,
+            "mean_latency_ms": 0.03513,
+            "throughput_samples_per_sec": 28468.4
+          },
+          {
+            "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+            "training_time_sec": 10.846,
+            "artifact_size_mb": 0.4,
+            "val_mae": 8.421,
+            "val_rmse": 16.952,
+            "val_r2": 0.9266,
+            "test_mae": 11.665,
+            "test_rmse": 23.415,
+            "test_r2": 0.9495,
+            "mean_latency_ms": 0.059221,
+            "throughput_samples_per_sec": 16885.78
+          },
+          {
+            "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+            "training_time_sec": 5.794,
+            "artifact_size_mb": 0.144,
+            "val_mae": 8.516,
+            "val_rmse": 17.08,
+            "val_r2": 0.9255,
+            "test_mae": 11.828,
+            "test_rmse": 23.628,
+            "test_r2": 0.9486,
+            "mean_latency_ms": 0.057335,
+            "throughput_samples_per_sec": 17441.5
+          },
+          {
+            "model_name": "Ridge_Reference (L2 alpha 10.0)",
+            "training_time_sec": 0.982,
+            "artifact_size_mb": 0.0031,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 11.963,
+            "test_rmse": 23.191,
+            "test_r2": 0.9505,
+            "mean_latency_ms": 0.02586,
+            "throughput_samples_per_sec": 38674.3
+          },
+          {
+            "model_name": "LSTM_Baseline (2 layers, hidden 64)",
+            "training_time_sec": 335.749,
+            "artifact_size_mb": 0.2516,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 11.572,
+            "test_rmse": 22.292,
+            "test_r2": 0.9542,
+            "mean_latency_ms": 0.04996,
+            "throughput_samples_per_sec": 20014.4
+          },
+          {
+            "model_name": "LSTM_Compact (1 layer, hidden 32)",
+            "training_time_sec": 162.03,
+            "artifact_size_mb": 0.048,
+            "val_mae": 8.889,
+            "val_rmse": 17.222,
+            "val_r2": 0.9242,
+            "test_mae": 12.396,
+            "test_rmse": 23.865,
+            "test_r2": 0.9475,
+            "mean_latency_ms": 0.040914,
+            "throughput_samples_per_sec": 24441.54
+          }
+        ],
+        "h6": [
+          {
+            "model_name": "RandomForest_Baseline (60 trees, depth 14)",
+            "training_time_sec": 103.026,
+            "artifact_size_mb": 34.22,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 37.677,
+            "test_rmse": 63.526,
+            "test_r2": 0.6284,
+            "mean_latency_ms": 0.23138,
+            "throughput_samples_per_sec": 4321.9
+          },
+          {
+            "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+            "training_time_sec": 80.017,
+            "artifact_size_mb": 3.262,
+            "val_mae": 24.289,
+            "val_rmse": 40.735,
+            "val_r2": 0.5737,
+            "test_mae": 37.702,
+            "test_rmse": 63.27,
+            "test_r2": 0.6314,
+            "mean_latency_ms": 0.195611,
+            "throughput_samples_per_sec": 5112.2
+          },
+          {
+            "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+            "training_time_sec": 32.006,
+            "artifact_size_mb": 0.616,
+            "val_mae": 24.583,
+            "val_rmse": 40.999,
+            "val_r2": 0.5681,
+            "test_mae": 38.124,
+            "test_rmse": 63.542,
+            "test_r2": 0.6282,
+            "mean_latency_ms": 0.174385,
+            "throughput_samples_per_sec": 5734.43
+          },
+          {
+            "model_name": "XGBoost_Baseline (180 trees, depth 7, lr 0.05)",
+            "training_time_sec": 11.85,
+            "artifact_size_mb": 1.0777,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 36.954,
+            "test_rmse": 62.571,
+            "test_r2": 0.6395,
+            "mean_latency_ms": 0.04989,
+            "throughput_samples_per_sec": 20043.8
+          },
+          {
+            "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+            "training_time_sec": 12.162,
+            "artifact_size_mb": 0.432,
+            "val_mae": 23.718,
+            "val_rmse": 39.822,
+            "val_r2": 0.5926,
+            "test_mae": 37.042,
+            "test_rmse": 62.63,
+            "test_r2": 0.6388,
+            "mean_latency_ms": 0.02302,
+            "throughput_samples_per_sec": 43440.05
+          },
+          {
+            "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+            "training_time_sec": 7.355,
+            "artifact_size_mb": 0.145,
+            "val_mae": 23.893,
+            "val_rmse": 40.241,
+            "val_r2": 0.584,
+            "test_mae": 37.449,
+            "test_rmse": 62.648,
+            "test_r2": 0.6386,
+            "mean_latency_ms": 0.059111,
+            "throughput_samples_per_sec": 16917.29
+          },
+          {
+            "model_name": "Ridge_Reference (L2 alpha 10.0)",
+            "training_time_sec": 1.119,
+            "artifact_size_mb": 0.0031,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 39.24,
+            "test_rmse": 63.367,
+            "test_r2": 0.6303,
+            "mean_latency_ms": 0.01361,
+            "throughput_samples_per_sec": 73478.9
+          },
+          {
+            "model_name": "LSTM_Baseline (2 layers, hidden 64)",
+            "training_time_sec": 166.736,
+            "artifact_size_mb": 0.2513,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 37.219,
+            "test_rmse": 61.839,
+            "test_r2": 0.6479,
+            "mean_latency_ms": 0.05316,
+            "throughput_samples_per_sec": 18812.2
+          },
+          {
+            "model_name": "LSTM_Compact (1 layer, hidden 32)",
+            "training_time_sec": 120.11,
+            "artifact_size_mb": 0.048,
+            "val_mae": 24.164,
+            "val_rmse": 40.151,
+            "val_r2": 0.5858,
+            "test_mae": 37.561,
+            "test_rmse": 61.929,
+            "test_r2": 0.6469,
+            "mean_latency_ms": 0.026335,
+            "throughput_samples_per_sec": 37972.71
+          }
+        ],
+        "h24": [
+          {
+            "model_name": "RandomForest_Baseline (60 trees, depth 14)",
+            "training_time_sec": 99.673,
+            "artifact_size_mb": 41.8616,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 68.833,
+            "test_rmse": 96.644,
+            "test_r2": 0.1413,
+            "mean_latency_ms": 0.24922,
+            "throughput_samples_per_sec": 4012.5
+          },
+          {
+            "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+            "training_time_sec": 43.952,
+            "artifact_size_mb": 3.777,
+            "val_mae": 42.225,
+            "val_rmse": 58.852,
+            "val_r2": 0.0875,
+            "test_mae": 68.232,
+            "test_rmse": 95.805,
+            "test_r2": 0.1562,
+            "mean_latency_ms": 0.155288,
+            "throughput_samples_per_sec": 6439.67
+          },
+          {
+            "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+            "training_time_sec": 22.118,
+            "artifact_size_mb": 0.657,
+            "val_mae": 42.123,
+            "val_rmse": 58.61,
+            "val_r2": 0.095,
+            "test_mae": 67.228,
+            "test_rmse": 93.985,
+            "test_r2": 0.1879,
+            "mean_latency_ms": 0.109142,
+            "throughput_samples_per_sec": 9162.35
+          },
+          {
+            "model_name": "XGBoost_Baseline (180 trees, depth 7, lr 0.05)",
+            "training_time_sec": 6.869,
+            "artifact_size_mb": 0.5725,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 67.255,
+            "test_rmse": 93.412,
+            "test_r2": 0.1978,
+            "mean_latency_ms": 0.08328,
+            "throughput_samples_per_sec": 12007.1
+          },
+          {
+            "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+            "training_time_sec": 5.461,
+            "artifact_size_mb": 0.288,
+            "val_mae": 41.477,
+            "val_rmse": 57.291,
+            "val_r2": 0.1353,
+            "test_mae": 66.674,
+            "test_rmse": 93.178,
+            "test_r2": 0.2018,
+            "mean_latency_ms": 0.048505,
+            "throughput_samples_per_sec": 20616.28
+          },
+          {
+            "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+            "training_time_sec": 3.966,
+            "artifact_size_mb": 0.134,
+            "val_mae": 41.349,
+            "val_rmse": 57.363,
+            "val_r2": 0.1331,
+            "test_mae": 66.074,
+            "test_rmse": 92.573,
+            "test_r2": 0.2121,
+            "mean_latency_ms": 0.049805,
+            "throughput_samples_per_sec": 20078.27
+          },
+          {
+            "model_name": "Ridge_Reference (L2 alpha 10.0)",
+            "training_time_sec": 1.172,
+            "artifact_size_mb": 0.0031,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 66.795,
+            "test_rmse": 91.404,
+            "test_r2": 0.2319,
+            "mean_latency_ms": 0.02236,
+            "throughput_samples_per_sec": 44716.7
+          },
+          {
+            "model_name": "LSTM_Baseline (2 layers, hidden 64)",
+            "training_time_sec": 102.946,
+            "artifact_size_mb": 0.2513,
+            "val_mae": null,
+            "val_rmse": null,
+            "val_r2": null,
+            "test_mae": 66.471,
+            "test_rmse": 92.483,
+            "test_r2": 0.2137,
+            "mean_latency_ms": 0.06336,
+            "throughput_samples_per_sec": 15782.4
+          },
+          {
+            "model_name": "LSTM_Compact (1 layer, hidden 32)",
+            "training_time_sec": 93.837,
+            "artifact_size_mb": 0.048,
+            "val_mae": 41.181,
+            "val_rmse": 57.048,
+            "val_r2": 0.1426,
+            "test_mae": 66.928,
+            "test_rmse": 93.628,
+            "test_r2": 0.1941,
+            "mean_latency_ms": 0.00982,
+            "throughput_samples_per_sec": 101829.68
+          }
+        ]
+      }
+    },
+    "stage4_training": {
+      "experiment": "Phase 11 Stage 4: Training-Time Optimization",
+      "timestamp": "2026-11-05T15:35:33Z",
+      "precision_optimization": {
+        "memory_float64_mb": 106.78,
+        "memory_float32_mb": 53.39,
+        "memory_reduction_pct": 50.0,
+        "ridge": {
+          "fit_time_float64_sec": 0.4435,
+          "fit_time_float32_sec": 2.2405,
+          "speedup": 0.2,
+          "mae_float64": 12.0356,
+          "mae_float32": 12.0356,
+          "max_abs_prediction_diff": 0.001821
+        },
+        "xgboost": {
+          "fit_time_float64_sec": 3.5097,
+          "fit_time_float32_sec": 3.6807,
+          "speedup": 0.95,
+          "mae_float64": 11.9392,
+          "mae_float32": 11.9392,
+          "max_abs_prediction_diff": 0.0
+        }
+      },
+      "dataloader_tuning": {
+        "results": [
+          {
+            "batch_size": 128,
+            "epoch_duration_sec": 2.6828,
+            "throughput_samples_per_sec": 108684.2
+          },
+          {
+            "batch_size": 256,
+            "epoch_duration_sec": 3.384,
+            "throughput_samples_per_sec": 86161.5
+          },
+          {
+            "batch_size": 512,
+            "epoch_duration_sec": 3.2562,
+            "throughput_samples_per_sec": 89544.4
+          },
+          {
+            "batch_size": 1024,
+            "epoch_duration_sec": 3.0462,
+            "throughput_samples_per_sec": 95716.1
+          },
+          {
+            "batch_size": 2048,
+            "epoch_duration_sec": 2.2952,
+            "throughput_samples_per_sec": 127038.1
+          }
+        ]
+      },
+      "threading_scaling": {
+        "xgboost_scaling": [
+          {
+            "threads": 1,
+            "training_time_sec": 4.908,
+            "speedup": 1.0,
+            "parallel_efficiency_pct": 100.0
+          },
+          {
+            "threads": 2,
+            "training_time_sec": 3.02,
+            "speedup": 1.63,
+            "parallel_efficiency_pct": 81.5
+          },
+          {
+            "threads": 4,
+            "training_time_sec": 4.11,
+            "speedup": 1.19,
+            "parallel_efficiency_pct": 29.8
+          },
+          {
+            "threads": 8,
+            "training_time_sec": 3.517,
+            "speedup": 1.4,
+            "parallel_efficiency_pct": 17.5
+          },
+          {
+            "threads": 12,
+            "training_time_sec": 3.721,
+            "speedup": 1.32,
+            "parallel_efficiency_pct": 11.0
+          }
+        ],
+        "random_forest_scaling": [
+          {
+            "threads": 1,
+            "training_time_sec": 80.707,
+            "speedup": 1.0,
+            "parallel_efficiency_pct": 100.0
+          },
+          {
+            "threads": 2,
+            "training_time_sec": 36.607,
+            "speedup": 2.2,
+            "parallel_efficiency_pct": 110.0
+          },
+          {
+            "threads": 4,
+            "training_time_sec": 28.532,
+            "speedup": 2.83,
+            "parallel_efficiency_pct": 70.8
+          },
+          {
+            "threads": 8,
+            "training_time_sec": 22.413,
+            "speedup": 3.6,
+            "parallel_efficiency_pct": 45.0
+          },
+          {
+            "threads": 12,
+            "training_time_sec": 21.064,
+            "speedup": 3.83,
+            "parallel_efficiency_pct": 31.9
+          }
+        ]
+      },
+      "vectorization": {
+        "sample_size": 200000,
+        "vectorized_groupby_duration_sec": 0.0496,
+        "iterative_duration_sec": 4.201,
+        "vectorization_speedup": 84.7
+      }
+    },
+    "stage5_inference": {
+      "experiment": "Phase 11 Stage 5: Inference Optimization",
+      "timestamp": "2026-11-05T15:38:09Z",
+      "single_sample_benchmarks": {
+        "Ridge": {
+          "baseline_pandas_df_mean_ms": 9.9325,
+          "baseline_pandas_df_p95_ms": 8.5776,
+          "optimized_numpy_buf_mean_ms": 0.1471,
+          "optimized_numpy_buf_p95_ms": 0.216,
+          "direct_numpy_mean_ms": 0.1294,
+          "speedup_vs_baseline": 67.52,
+          "numerical_equivalence_max_diff": 0.49230230200294756
+        },
+        "HistGradientBoosting": {
+          "baseline_pandas_df_mean_ms": 69.8847,
+          "baseline_pandas_df_p95_ms": 34.9856,
+          "optimized_numpy_buf_mean_ms": 6.1143,
+          "optimized_numpy_buf_p95_ms": 13.5995,
+          "direct_numpy_mean_ms": 9.5814,
+          "speedup_vs_baseline": 11.43,
+          "numerical_equivalence_max_diff": 0.2021852068973775
+        },
+        "RandomForest": {
+          "baseline_pandas_df_mean_ms": 75.1648,
+          "baseline_pandas_df_p95_ms": 97.8761,
+          "optimized_numpy_buf_mean_ms": 53.7641,
+          "optimized_numpy_buf_p95_ms": 87.2945,
+          "direct_numpy_mean_ms": 39.3193,
+          "speedup_vs_baseline": 1.4,
+          "numerical_equivalence_max_diff": 3.552713678800501e-15
+        },
+        "XGBoost": {
+          "baseline_pandas_df_mean_ms": 35.597,
+          "baseline_pandas_df_p95_ms": 38.1681,
+          "optimized_numpy_buf_mean_ms": 4.3282,
+          "optimized_numpy_buf_p95_ms": 7.4323,
+          "direct_numpy_mean_ms": 3.5868,
+          "speedup_vs_baseline": 8.22,
+          "numerical_equivalence_max_diff": 0.14540958404541016
+        },
+        "LSTM": {
+          "baseline_pandas_df_mean_ms": 12.5609,
+          "baseline_pandas_df_p95_ms": 19.7873,
+          "optimized_numpy_buf_mean_ms": 1.4903,
+          "optimized_numpy_buf_p95_ms": 3.7513,
+          "direct_numpy_mean_ms": 2.6887,
+          "speedup_vs_baseline": 8.43,
+          "numerical_equivalence_max_diff": 2.075519561767578
+        }
+      },
+      "batch_scaling_benchmarks": {
+        "Ridge": [
+          {
+            "batch_size": 1,
+            "mean_batch_latency_ms": 0.1258,
+            "p50_batch_latency_ms": 0.1211,
+            "p95_batch_latency_ms": 0.1428,
+            "p99_batch_latency_ms": 0.1821,
+            "per_sample_latency_ms": 0.12584,
+            "throughput_samples_per_sec": 7946.3
+          },
+          {
+            "batch_size": 16,
+            "mean_batch_latency_ms": 0.1392,
+            "p50_batch_latency_ms": 0.1273,
+            "p95_batch_latency_ms": 0.1976,
+            "p99_batch_latency_ms": 0.1983,
+            "per_sample_latency_ms": 0.0087,
+            "throughput_samples_per_sec": 114959.0
+          },
+          {
+            "batch_size": 32,
+            "mean_batch_latency_ms": 0.1293,
+            "p50_batch_latency_ms": 0.1286,
+            "p95_batch_latency_ms": 0.1429,
+            "p99_batch_latency_ms": 0.1477,
+            "per_sample_latency_ms": 0.00404,
+            "throughput_samples_per_sec": 247409.9
+          },
+          {
+            "batch_size": 64,
+            "mean_batch_latency_ms": 0.133,
+            "p50_batch_latency_ms": 0.1326,
+            "p95_batch_latency_ms": 0.1363,
+            "p99_batch_latency_ms": 0.1465,
+            "per_sample_latency_ms": 0.00208,
+            "throughput_samples_per_sec": 481293.5
+          },
+          {
+            "batch_size": 128,
+            "mean_batch_latency_ms": 0.1405,
+            "p50_batch_latency_ms": 0.1395,
+            "p95_batch_latency_ms": 0.1434,
+            "p99_batch_latency_ms": 0.1585,
+            "per_sample_latency_ms": 0.0011,
+            "throughput_samples_per_sec": 910902.4
+          },
+          {
+            "batch_size": 256,
+            "mean_batch_latency_ms": 0.1559,
+            "p50_batch_latency_ms": 0.1545,
+            "p95_batch_latency_ms": 0.1605,
+            "p99_batch_latency_ms": 0.1696,
+            "per_sample_latency_ms": 0.00061,
+            "throughput_samples_per_sec": 1642394.3
+          },
+          {
+            "batch_size": 512,
+            "mean_batch_latency_ms": 0.1805,
+            "p50_batch_latency_ms": 0.1798,
+            "p95_batch_latency_ms": 0.1835,
+            "p99_batch_latency_ms": 0.1979,
+            "per_sample_latency_ms": 0.00035,
+            "throughput_samples_per_sec": 2837036.6
+          },
+          {
+            "batch_size": 1024,
+            "mean_batch_latency_ms": 0.2362,
+            "p50_batch_latency_ms": 0.2337,
+            "p95_batch_latency_ms": 0.2539,
+            "p99_batch_latency_ms": 0.2547,
+            "per_sample_latency_ms": 0.00023,
+            "throughput_samples_per_sec": 4335492.7
+          }
+        ],
+        "HistGradientBoosting": [
+          {
+            "batch_size": 1,
+            "mean_batch_latency_ms": 7.1897,
+            "p50_batch_latency_ms": 3.6269,
+            "p95_batch_latency_ms": 16.9463,
+            "p99_batch_latency_ms": 18.1345,
+            "per_sample_latency_ms": 7.18972,
+            "throughput_samples_per_sec": 139.1
+          },
+          {
+            "batch_size": 16,
+            "mean_batch_latency_ms": 10.5436,
+            "p50_batch_latency_ms": 12.4912,
+            "p95_batch_latency_ms": 16.4197,
+            "p99_batch_latency_ms": 18.1775,
+            "per_sample_latency_ms": 0.65898,
+            "throughput_samples_per_sec": 1517.5
+          },
+          {
+            "batch_size": 32,
+            "mean_batch_latency_ms": 11.7282,
+            "p50_batch_latency_ms": 13.8631,
+            "p95_batch_latency_ms": 17.8623,
+            "p99_batch_latency_ms": 18.1657,
+            "per_sample_latency_ms": 0.36651,
+            "throughput_samples_per_sec": 2728.5
+          },
+          {
+            "batch_size": 64,
+            "mean_batch_latency_ms": 13.414,
+            "p50_batch_latency_ms": 11.1048,
+            "p95_batch_latency_ms": 31.8441,
+            "p99_batch_latency_ms": 60.1966,
+            "per_sample_latency_ms": 0.20959,
+            "throughput_samples_per_sec": 4771.1
+          },
+          {
+            "batch_size": 128,
+            "mean_batch_latency_ms": 12.2749,
+            "p50_batch_latency_ms": 13.0769,
+            "p95_batch_latency_ms": 17.2962,
+            "p99_batch_latency_ms": 18.3161,
+            "per_sample_latency_ms": 0.0959,
+            "throughput_samples_per_sec": 10427.8
+          },
+          {
+            "batch_size": 256,
+            "mean_batch_latency_ms": 14.2358,
+            "p50_batch_latency_ms": 15.5097,
+            "p95_batch_latency_ms": 19.287,
+            "p99_batch_latency_ms": 24.8361,
+            "per_sample_latency_ms": 0.05561,
+            "throughput_samples_per_sec": 17982.8
+          },
+          {
+            "batch_size": 512,
+            "mean_batch_latency_ms": 24.0402,
+            "p50_batch_latency_ms": 19.9941,
+            "p95_batch_latency_ms": 46.0682,
+            "p99_batch_latency_ms": 65.9461,
+            "per_sample_latency_ms": 0.04695,
+            "throughput_samples_per_sec": 21297.7
+          },
+          {
+            "batch_size": 1024,
+            "mean_batch_latency_ms": 18.8604,
+            "p50_batch_latency_ms": 19.8715,
+            "p95_batch_latency_ms": 27.1353,
+            "p99_batch_latency_ms": 28.3216,
+            "per_sample_latency_ms": 0.01842,
+            "throughput_samples_per_sec": 54293.6
+          }
+        ],
+        "RandomForest": [
+          {
+            "batch_size": 1,
+            "mean_batch_latency_ms": 47.5379,
+            "p50_batch_latency_ms": 43.9492,
+            "p95_batch_latency_ms": 75.1859,
+            "p99_batch_latency_ms": 89.9252,
+            "per_sample_latency_ms": 47.53792,
+            "throughput_samples_per_sec": 21.0
+          },
+          {
+            "batch_size": 16,
+            "mean_batch_latency_ms": 32.1274,
+            "p50_batch_latency_ms": 33.5489,
+            "p95_batch_latency_ms": 50.1004,
+            "p99_batch_latency_ms": 52.1875,
+            "per_sample_latency_ms": 2.00796,
+            "throughput_samples_per_sec": 498.0
+          },
+          {
+            "batch_size": 32,
+            "mean_batch_latency_ms": 53.9137,
+            "p50_batch_latency_ms": 52.6834,
+            "p95_batch_latency_ms": 64.3529,
+            "p99_batch_latency_ms": 71.2271,
+            "per_sample_latency_ms": 1.6848,
+            "throughput_samples_per_sec": 593.5
+          },
+          {
+            "batch_size": 64,
+            "mean_batch_latency_ms": 66.0791,
+            "p50_batch_latency_ms": 65.7856,
+            "p95_batch_latency_ms": 101.6278,
+            "p99_batch_latency_ms": 114.6705,
+            "per_sample_latency_ms": 1.03249,
+            "throughput_samples_per_sec": 968.5
+          },
+          {
+            "batch_size": 128,
+            "mean_batch_latency_ms": 70.7675,
+            "p50_batch_latency_ms": 57.6363,
+            "p95_batch_latency_ms": 119.5048,
+            "p99_batch_latency_ms": 126.6307,
+            "per_sample_latency_ms": 0.55287,
+            "throughput_samples_per_sec": 1808.7
+          },
+          {
+            "batch_size": 256,
+            "mean_batch_latency_ms": 59.2997,
+            "p50_batch_latency_ms": 39.3707,
+            "p95_batch_latency_ms": 114.1155,
+            "p99_batch_latency_ms": 115.0783,
+            "per_sample_latency_ms": 0.23164,
+            "throughput_samples_per_sec": 4317.1
+          },
+          {
+            "batch_size": 512,
+            "mean_batch_latency_ms": 73.2835,
+            "p50_batch_latency_ms": 74.1151,
+            "p95_batch_latency_ms": 99.7645,
+            "p99_batch_latency_ms": 102.6061,
+            "per_sample_latency_ms": 0.14313,
+            "throughput_samples_per_sec": 6986.6
+          },
+          {
+            "batch_size": 1024,
+            "mean_batch_latency_ms": 65.9583,
+            "p50_batch_latency_ms": 72.9736,
+            "p95_batch_latency_ms": 88.9026,
+            "p99_batch_latency_ms": 91.4003,
+            "per_sample_latency_ms": 0.06441,
+            "throughput_samples_per_sec": 15525.0
+          }
+        ],
+        "XGBoost": [
+          {
+            "batch_size": 1,
+            "mean_batch_latency_ms": 3.4891,
+            "p50_batch_latency_ms": 3.454,
+            "p95_batch_latency_ms": 4.1589,
+            "p99_batch_latency_ms": 4.282,
+            "per_sample_latency_ms": 3.48909,
+            "throughput_samples_per_sec": 286.6
+          },
+          {
+            "batch_size": 16,
+            "mean_batch_latency_ms": 3.983,
+            "p50_batch_latency_ms": 3.9646,
+            "p95_batch_latency_ms": 4.3477,
+            "p99_batch_latency_ms": 4.5383,
+            "per_sample_latency_ms": 0.24894,
+            "throughput_samples_per_sec": 4017.1
+          },
+          {
+            "batch_size": 32,
+            "mean_batch_latency_ms": 4.2631,
+            "p50_batch_latency_ms": 4.0444,
+            "p95_batch_latency_ms": 5.5019,
+            "p99_batch_latency_ms": 6.5247,
+            "per_sample_latency_ms": 0.13322,
+            "throughput_samples_per_sec": 7506.2
+          },
+          {
+            "batch_size": 64,
+            "mean_batch_latency_ms": 4.4651,
+            "p50_batch_latency_ms": 4.4257,
+            "p95_batch_latency_ms": 4.9721,
+            "p99_batch_latency_ms": 5.0154,
+            "per_sample_latency_ms": 0.06977,
+            "throughput_samples_per_sec": 14333.5
+          },
+          {
+            "batch_size": 128,
+            "mean_batch_latency_ms": 4.6167,
+            "p50_batch_latency_ms": 4.434,
+            "p95_batch_latency_ms": 5.0696,
+            "p99_batch_latency_ms": 6.669,
+            "per_sample_latency_ms": 0.03607,
+            "throughput_samples_per_sec": 27725.4
+          },
+          {
+            "batch_size": 256,
+            "mean_batch_latency_ms": 4.5036,
+            "p50_batch_latency_ms": 4.4432,
+            "p95_batch_latency_ms": 5.0906,
+            "p99_batch_latency_ms": 5.1043,
+            "per_sample_latency_ms": 0.01759,
+            "throughput_samples_per_sec": 56843.9
+          },
+          {
+            "batch_size": 512,
+            "mean_batch_latency_ms": 4.9278,
+            "p50_batch_latency_ms": 4.6043,
+            "p95_batch_latency_ms": 5.8428,
+            "p99_batch_latency_ms": 6.3599,
+            "per_sample_latency_ms": 0.00962,
+            "throughput_samples_per_sec": 103900.5
+          },
+          {
+            "batch_size": 1024,
+            "mean_batch_latency_ms": 5.4269,
+            "p50_batch_latency_ms": 5.3252,
+            "p95_batch_latency_ms": 5.9883,
+            "p99_batch_latency_ms": 6.2439,
+            "per_sample_latency_ms": 0.0053,
+            "throughput_samples_per_sec": 188688.3
+          }
+        ],
+        "LSTM": [
+          {
+            "batch_size": 1,
+            "mean_batch_latency_ms": 3.0996,
+            "p50_batch_latency_ms": 3.2959,
+            "p95_batch_latency_ms": 3.8782,
+            "p99_batch_latency_ms": 4.0431,
+            "per_sample_latency_ms": 3.09957,
+            "throughput_samples_per_sec": 322.6
+          },
+          {
+            "batch_size": 16,
+            "mean_batch_latency_ms": 2.0602,
+            "p50_batch_latency_ms": 0.9999,
+            "p95_batch_latency_ms": 4.4247,
+            "p99_batch_latency_ms": 4.5097,
+            "per_sample_latency_ms": 0.12877,
+            "throughput_samples_per_sec": 7766.1
+          },
+          {
+            "batch_size": 32,
+            "mean_batch_latency_ms": 1.9606,
+            "p50_batch_latency_ms": 1.0393,
+            "p95_batch_latency_ms": 4.4587,
+            "p99_batch_latency_ms": 4.5225,
+            "per_sample_latency_ms": 0.06127,
+            "throughput_samples_per_sec": 16321.7
+          },
+          {
+            "batch_size": 64,
+            "mean_batch_latency_ms": 3.4596,
+            "p50_batch_latency_ms": 4.0829,
+            "p95_batch_latency_ms": 5.5812,
+            "p99_batch_latency_ms": 5.7498,
+            "per_sample_latency_ms": 0.05406,
+            "throughput_samples_per_sec": 18499.0
+          },
+          {
+            "batch_size": 128,
+            "mean_batch_latency_ms": 5.1852,
+            "p50_batch_latency_ms": 6.3569,
+            "p95_batch_latency_ms": 7.731,
+            "p99_batch_latency_ms": 7.7714,
+            "per_sample_latency_ms": 0.04051,
+            "throughput_samples_per_sec": 24685.6
+          },
+          {
+            "batch_size": 256,
+            "mean_batch_latency_ms": 6.7986,
+            "p50_batch_latency_ms": 2.981,
+            "p95_batch_latency_ms": 13.5269,
+            "p99_batch_latency_ms": 55.4273,
+            "per_sample_latency_ms": 0.02656,
+            "throughput_samples_per_sec": 37654.9
+          },
+          {
+            "batch_size": 512,
+            "mean_batch_latency_ms": 9.4201,
+            "p50_batch_latency_ms": 6.4001,
+            "p95_batch_latency_ms": 16.7605,
+            "p99_batch_latency_ms": 18.0356,
+            "per_sample_latency_ms": 0.0184,
+            "throughput_samples_per_sec": 54352.0
+          },
+          {
+            "batch_size": 1024,
+            "mean_batch_latency_ms": 24.4985,
+            "p50_batch_latency_ms": 29.0797,
+            "p95_batch_latency_ms": 31.8014,
+            "p99_batch_latency_ms": 31.9149,
+            "per_sample_latency_ms": 0.02392,
+            "throughput_samples_per_sec": 41798.5
+          }
+        ]
+      }
+    },
+    "stage6_memory": {
+      "experiment": "Phase 11 Stage 6: Memory and Storage Optimization",
+      "timestamp": "2026-11-05T15:39:34Z",
+      "model_compression": {
+        "RandomForest": [
+          {
+            "compress_level": 0,
+            "size_mb": 24.587,
+            "save_time_sec": 0.0406,
+            "load_time_sec": 0.0989,
+            "compression_ratio": 1.0
+          },
+          {
+            "compress_level": 3,
+            "size_mb": 7.858,
+            "save_time_sec": 0.3866,
+            "load_time_sec": 0.1845,
+            "compression_ratio": 3.13
+          },
+          {
+            "compress_level": 6,
+            "size_mb": 7.576,
+            "save_time_sec": 0.866,
+            "load_time_sec": 0.1944,
+            "compression_ratio": 3.25
+          }
+        ],
+        "XGBoost": [
+          {
+            "compress_level": 0,
+            "size_mb": 1.158,
+            "save_time_sec": 0.0339,
+            "load_time_sec": 0.0738,
+            "compression_ratio": 1.0
+          },
+          {
+            "compress_level": 3,
+            "size_mb": 0.398,
+            "save_time_sec": 0.1088,
+            "load_time_sec": 0.0515,
+            "compression_ratio": 2.91
+          },
+          {
+            "compress_level": 6,
+            "size_mb": 0.365,
+            "save_time_sec": 0.1351,
+            "load_time_sec": 0.0477,
+            "compression_ratio": 3.17
+          }
+        ],
+        "HistGradientBoosting": [
+          {
+            "compress_level": 0,
+            "size_mb": 0.582,
+            "save_time_sec": 0.0303,
+            "load_time_sec": 0.0426,
+            "compression_ratio": 1.0
+          },
+          {
+            "compress_level": 3,
+            "size_mb": 0.241,
+            "save_time_sec": 0.0281,
+            "load_time_sec": 0.0384,
+            "compression_ratio": 2.41
+          },
+          {
+            "compress_level": 6,
+            "size_mb": 0.227,
+            "save_time_sec": 0.0359,
+            "load_time_sec": 0.0412,
+            "compression_ratio": 2.56
+          }
+        ],
+        "LSTM": [
+          {
+            "compress_level": 0,
+            "size_mb": 0.252,
+            "save_time_sec": 0.0028,
+            "load_time_sec": 0.0488,
+            "compression_ratio": 1.0
+          },
+          {
+            "compress_level": 3,
+            "size_mb": 0.229,
+            "save_time_sec": 0.02,
+            "load_time_sec": 0.0425,
+            "compression_ratio": 1.1
+          },
+          {
+            "compress_level": 6,
+            "size_mb": 0.228,
+            "save_time_sec": 0.0208,
+            "load_time_sec": 0.0385,
+            "compression_ratio": 1.11
+          }
+        ]
+      },
+      "dataset_downcasting": {
+        "n_rows": 420768,
+        "n_columns": 70,
+        "memory_float64_mb": 227.38,
+        "memory_float32_mb": 121.45,
+        "ram_savings_pct": 46.59
+      },
+      "parquet_codecs": {
+        "results": [
+          {
+            "codec": "none",
+            "file_size_mb": 24.81,
+            "write_time_sec": 0.9123,
+            "read_time_sec": 0.2865,
+            "compression_ratio": 1.0
+          },
+          {
+            "codec": "snappy",
+            "file_size_mb": 23.1,
+            "write_time_sec": 1.1736,
+            "read_time_sec": 0.2856,
+            "compression_ratio": 1.07
+          },
+          {
+            "codec": "gzip",
+            "file_size_mb": 19.73,
+            "write_time_sec": 2.444,
+            "read_time_sec": 0.3493,
+            "compression_ratio": 1.26
+          },
+          {
+            "codec": "zstd",
+            "file_size_mb": 20.46,
+            "write_time_sec": 0.8608,
+            "read_time_sec": 0.1887,
+            "compression_ratio": 1.21
+          }
+        ]
+      },
+      "memory_leak_verification": {
+        "start_ram_mb": 347.9,
+        "end_ram_mb": 350.14,
+        "net_growth_mb": 2.24,
+        "is_memory_stable": true
+      }
+    },
+    "stage7_horizon": {
+      "experiment": "Phase 11 Stage 7: Horizon-Specific Model Selection",
+      "timestamp": "2026-11-05T15:40:10Z",
+      "results": {
+        "h1": {
+          "all_candidates": [
+            {
+              "model_name": "XGBoost (Baseline)",
+              "architecture": "XGBoost",
+              "variant": "Baseline",
+              "test_mae": 11.572,
+              "test_rmse": 23.334,
+              "test_r2": 0.9499,
+              "mean_latency_ms": 0.03513,
+              "throughput_samples_per_sec": 28468.4,
+              "artifact_size_mb": 1.158,
+              "training_time_sec": 12.618,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9422
+            },
+            {
+              "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Pruned",
+              "test_mae": 11.665,
+              "test_rmse": 23.415,
+              "test_r2": 0.9495,
+              "mean_latency_ms": 0.05922,
+              "throughput_samples_per_sec": 16885.8,
+              "artifact_size_mb": 0.4,
+              "training_time_sec": 10.846,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.8644
+            },
+            {
+              "model_name": "LSTM (Baseline)",
+              "architecture": "LSTM",
+              "variant": "Baseline",
+              "test_mae": 11.572,
+              "test_rmse": 22.292,
+              "test_r2": 0.9542,
+              "mean_latency_ms": 0.04996,
+              "throughput_samples_per_sec": 20014.4,
+              "artifact_size_mb": 0.252,
+              "training_time_sec": 335.749,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8324
+            },
+            {
+              "model_name": "HistGradientBoosting (Baseline)",
+              "architecture": "HistGradientBoosting",
+              "variant": "Baseline",
+              "test_mae": 11.677,
+              "test_rmse": 23.122,
+              "test_r2": 0.9508,
+              "mean_latency_ms": 0.10832,
+              "throughput_samples_per_sec": 9231.8,
+              "artifact_size_mb": 0.581,
+              "training_time_sec": 13.028,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.793
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 11.828,
+              "test_rmse": 23.628,
+              "test_r2": 0.9486,
+              "mean_latency_ms": 0.05733,
+              "throughput_samples_per_sec": 17441.5,
+              "artifact_size_mb": 0.144,
+              "training_time_sec": 5.794,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7788
+            },
+            {
+              "model_name": "Linear Regression (Baseline)",
+              "architecture": "Linear Regression",
+              "variant": "Baseline",
+              "test_mae": 11.961,
+              "test_rmse": 23.188,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02646,
+              "throughput_samples_per_sec": 37788.4,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.874,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "Ridge (Baseline)",
+              "architecture": "Ridge",
+              "variant": "Baseline",
+              "test_mae": 11.963,
+              "test_rmse": 23.191,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02586,
+              "throughput_samples_per_sec": 38674.3,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 0.982,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "Ridge_Reference (L2 alpha 10.0)",
+              "architecture": "Ridge",
+              "variant": "Ridge_Reference",
+              "test_mae": 11.963,
+              "test_rmse": 23.191,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02586,
+              "throughput_samples_per_sec": 38674.3,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 0.982,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Pruned",
+              "test_mae": 11.656,
+              "test_rmse": 23.313,
+              "test_r2": 0.9499,
+              "mean_latency_ms": 0.2142,
+              "throughput_samples_per_sec": 4668.5,
+              "artifact_size_mb": 2.989,
+              "training_time_sec": 98.963,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.6285
+            },
+            {
+              "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Compact",
+              "test_mae": 11.881,
+              "test_rmse": 23.589,
+              "test_r2": 0.9488,
+              "mean_latency_ms": 0.16655,
+              "throughput_samples_per_sec": 6004.1,
+              "artifact_size_mb": 0.599,
+              "training_time_sec": 41.396,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.5955
+            },
+            {
+              "model_name": "Random Forest (Baseline)",
+              "architecture": "Random Forest",
+              "variant": "Baseline",
+              "test_mae": 11.524,
+              "test_rmse": 23.078,
+              "test_r2": 0.9509,
+              "mean_latency_ms": 0.2043,
+              "throughput_samples_per_sec": 4894.8,
+              "artifact_size_mb": 24.587,
+              "training_time_sec": 107.758,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5806
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 12.418,
+              "test_rmse": 24.732,
+              "test_r2": 0.9437,
+              "mean_latency_ms": 0.01944,
+              "throughput_samples_per_sec": 51444.7,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.103,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5
+            },
+            {
+              "model_name": "LSTM_Compact (1 layer, hidden 32)",
+              "architecture": "LSTM",
+              "variant": "LSTM_Compact",
+              "test_mae": 12.396,
+              "test_rmse": 23.865,
+              "test_r2": 0.9475,
+              "mean_latency_ms": 0.04091,
+              "throughput_samples_per_sec": 24441.5,
+              "artifact_size_mb": 0.048,
+              "training_time_sec": 162.03,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.4362
+            }
+          ],
+          "pareto_frontier": [
+            {
+              "model_name": "XGBoost (Baseline)",
+              "architecture": "XGBoost",
+              "variant": "Baseline",
+              "test_mae": 11.572,
+              "test_rmse": 23.334,
+              "test_r2": 0.9499,
+              "mean_latency_ms": 0.03513,
+              "throughput_samples_per_sec": 28468.4,
+              "artifact_size_mb": 1.158,
+              "training_time_sec": 12.618,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9422
+            },
+            {
+              "model_name": "LSTM (Baseline)",
+              "architecture": "LSTM",
+              "variant": "Baseline",
+              "test_mae": 11.572,
+              "test_rmse": 22.292,
+              "test_r2": 0.9542,
+              "mean_latency_ms": 0.04996,
+              "throughput_samples_per_sec": 20014.4,
+              "artifact_size_mb": 0.252,
+              "training_time_sec": 335.749,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8324
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 11.828,
+              "test_rmse": 23.628,
+              "test_r2": 0.9486,
+              "mean_latency_ms": 0.05733,
+              "throughput_samples_per_sec": 17441.5,
+              "artifact_size_mb": 0.144,
+              "training_time_sec": 5.794,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7788
+            },
+            {
+              "model_name": "Linear Regression (Baseline)",
+              "architecture": "Linear Regression",
+              "variant": "Baseline",
+              "test_mae": 11.961,
+              "test_rmse": 23.188,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02646,
+              "throughput_samples_per_sec": 37788.4,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.874,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "Ridge (Baseline)",
+              "architecture": "Ridge",
+              "variant": "Baseline",
+              "test_mae": 11.963,
+              "test_rmse": 23.191,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02586,
+              "throughput_samples_per_sec": 38674.3,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 0.982,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "Ridge_Reference (L2 alpha 10.0)",
+              "architecture": "Ridge",
+              "variant": "Ridge_Reference",
+              "test_mae": 11.963,
+              "test_rmse": 23.191,
+              "test_r2": 0.9505,
+              "mean_latency_ms": 0.02586,
+              "throughput_samples_per_sec": 38674.3,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 0.982,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.746
+            },
+            {
+              "model_name": "Random Forest (Baseline)",
+              "architecture": "Random Forest",
+              "variant": "Baseline",
+              "test_mae": 11.524,
+              "test_rmse": 23.078,
+              "test_r2": 0.9509,
+              "mean_latency_ms": 0.2043,
+              "throughput_samples_per_sec": 4894.8,
+              "artifact_size_mb": 24.587,
+              "training_time_sec": 107.758,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5806
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 12.418,
+              "test_rmse": 24.732,
+              "test_r2": 0.9437,
+              "mean_latency_ms": 0.01944,
+              "throughput_samples_per_sec": 51444.7,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.103,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5
+            }
+          ],
+          "selected_model": {
+            "model_name": "XGBoost (Baseline)",
+            "architecture": "XGBoost",
+            "variant": "Baseline",
+            "test_mae": 11.572,
+            "test_rmse": 23.334,
+            "test_r2": 0.9499,
+            "mean_latency_ms": 0.03513,
+            "throughput_samples_per_sec": 28468.4,
+            "artifact_size_mb": 1.158,
+            "training_time_sec": 12.618,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9422
+          }
+        },
+        "h6": {
+          "all_candidates": [
+            {
+              "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Pruned",
+              "test_mae": 37.042,
+              "test_rmse": 62.63,
+              "test_r2": 0.6388,
+              "mean_latency_ms": 0.02302,
+              "throughput_samples_per_sec": 43440.1,
+              "artifact_size_mb": 0.432,
+              "training_time_sec": 12.162,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9669
+            },
+            {
+              "model_name": "XGBoost (Baseline)",
+              "architecture": "XGBoost",
+              "variant": "Baseline",
+              "test_mae": 36.954,
+              "test_rmse": 62.571,
+              "test_r2": 0.6395,
+              "mean_latency_ms": 0.04989,
+              "throughput_samples_per_sec": 20043.8,
+              "artifact_size_mb": 1.078,
+              "training_time_sec": 11.85,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9435
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 37.449,
+              "test_rmse": 62.648,
+              "test_r2": 0.6386,
+              "mean_latency_ms": 0.05911,
+              "throughput_samples_per_sec": 16917.3,
+              "artifact_size_mb": 0.145,
+              "training_time_sec": 7.355,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8854
+            },
+            {
+              "model_name": "LSTM_Compact (1 layer, hidden 32)",
+              "architecture": "LSTM",
+              "variant": "LSTM_Compact",
+              "test_mae": 37.561,
+              "test_rmse": 61.929,
+              "test_r2": 0.6469,
+              "mean_latency_ms": 0.02634,
+              "throughput_samples_per_sec": 37972.7,
+              "artifact_size_mb": 0.048,
+              "training_time_sec": 120.11,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8429
+            },
+            {
+              "model_name": "HistGradientBoosting (Baseline)",
+              "architecture": "HistGradientBoosting",
+              "variant": "Baseline",
+              "test_mae": 37.263,
+              "test_rmse": 63.47,
+              "test_r2": 0.6291,
+              "mean_latency_ms": 0.11769,
+              "throughput_samples_per_sec": 8496.8,
+              "artifact_size_mb": 0.581,
+              "training_time_sec": 11.345,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.8353
+            },
+            {
+              "model_name": "LSTM (Baseline)",
+              "architecture": "LSTM",
+              "variant": "Baseline",
+              "test_mae": 37.219,
+              "test_rmse": 61.839,
+              "test_r2": 0.6479,
+              "mean_latency_ms": 0.05316,
+              "throughput_samples_per_sec": 18812.2,
+              "artifact_size_mb": 0.251,
+              "training_time_sec": 166.736,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8213
+            },
+            {
+              "model_name": "Ridge (Baseline)",
+              "architecture": "Ridge",
+              "variant": "Baseline",
+              "test_mae": 39.24,
+              "test_rmse": 63.367,
+              "test_r2": 0.6303,
+              "mean_latency_ms": 0.01361,
+              "throughput_samples_per_sec": 73478.9,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.119,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7443
+            },
+            {
+              "model_name": "Ridge_Reference (L2 alpha 10.0)",
+              "architecture": "Ridge",
+              "variant": "Ridge_Reference",
+              "test_mae": 39.24,
+              "test_rmse": 63.367,
+              "test_r2": 0.6303,
+              "mean_latency_ms": 0.01361,
+              "throughput_samples_per_sec": 73478.9,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.119,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7443
+            },
+            {
+              "model_name": "Linear Regression (Baseline)",
+              "architecture": "Linear Regression",
+              "variant": "Baseline",
+              "test_mae": 39.24,
+              "test_rmse": 63.362,
+              "test_r2": 0.6303,
+              "mean_latency_ms": 0.01729,
+              "throughput_samples_per_sec": 57841.7,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 2.016,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.7396
+            },
+            {
+              "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Compact",
+              "test_mae": 38.124,
+              "test_rmse": 63.542,
+              "test_r2": 0.6282,
+              "mean_latency_ms": 0.17439,
+              "throughput_samples_per_sec": 5734.4,
+              "artifact_size_mb": 0.616,
+              "training_time_sec": 32.006,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.6639
+            },
+            {
+              "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Pruned",
+              "test_mae": 37.702,
+              "test_rmse": 63.27,
+              "test_r2": 0.6314,
+              "mean_latency_ms": 0.19561,
+              "throughput_samples_per_sec": 5112.2,
+              "artifact_size_mb": 3.262,
+              "training_time_sec": 80.017,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.6459
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 41.5,
+              "test_rmse": 70.698,
+              "test_r2": 0.5398,
+              "mean_latency_ms": 0.01033,
+              "throughput_samples_per_sec": 96760.9,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.129,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5
+            },
+            {
+              "model_name": "Random Forest (Baseline)",
+              "architecture": "Random Forest",
+              "variant": "Baseline",
+              "test_mae": 37.677,
+              "test_rmse": 63.526,
+              "test_r2": 0.6284,
+              "mean_latency_ms": 0.23138,
+              "throughput_samples_per_sec": 4321.9,
+              "artifact_size_mb": 34.22,
+              "training_time_sec": 103.026,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.4587
+            }
+          ],
+          "pareto_frontier": [
+            {
+              "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Pruned",
+              "test_mae": 37.042,
+              "test_rmse": 62.63,
+              "test_r2": 0.6388,
+              "mean_latency_ms": 0.02302,
+              "throughput_samples_per_sec": 43440.1,
+              "artifact_size_mb": 0.432,
+              "training_time_sec": 12.162,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9669
+            },
+            {
+              "model_name": "XGBoost (Baseline)",
+              "architecture": "XGBoost",
+              "variant": "Baseline",
+              "test_mae": 36.954,
+              "test_rmse": 62.571,
+              "test_r2": 0.6395,
+              "mean_latency_ms": 0.04989,
+              "throughput_samples_per_sec": 20043.8,
+              "artifact_size_mb": 1.078,
+              "training_time_sec": 11.85,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9435
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 37.449,
+              "test_rmse": 62.648,
+              "test_r2": 0.6386,
+              "mean_latency_ms": 0.05911,
+              "throughput_samples_per_sec": 16917.3,
+              "artifact_size_mb": 0.145,
+              "training_time_sec": 7.355,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8854
+            },
+            {
+              "model_name": "LSTM_Compact (1 layer, hidden 32)",
+              "architecture": "LSTM",
+              "variant": "LSTM_Compact",
+              "test_mae": 37.561,
+              "test_rmse": 61.929,
+              "test_r2": 0.6469,
+              "mean_latency_ms": 0.02634,
+              "throughput_samples_per_sec": 37972.7,
+              "artifact_size_mb": 0.048,
+              "training_time_sec": 120.11,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8429
+            },
+            {
+              "model_name": "LSTM (Baseline)",
+              "architecture": "LSTM",
+              "variant": "Baseline",
+              "test_mae": 37.219,
+              "test_rmse": 61.839,
+              "test_r2": 0.6479,
+              "mean_latency_ms": 0.05316,
+              "throughput_samples_per_sec": 18812.2,
+              "artifact_size_mb": 0.251,
+              "training_time_sec": 166.736,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8213
+            },
+            {
+              "model_name": "Ridge (Baseline)",
+              "architecture": "Ridge",
+              "variant": "Baseline",
+              "test_mae": 39.24,
+              "test_rmse": 63.367,
+              "test_r2": 0.6303,
+              "mean_latency_ms": 0.01361,
+              "throughput_samples_per_sec": 73478.9,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.119,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7443
+            },
+            {
+              "model_name": "Ridge_Reference (L2 alpha 10.0)",
+              "architecture": "Ridge",
+              "variant": "Ridge_Reference",
+              "test_mae": 39.24,
+              "test_rmse": 63.367,
+              "test_r2": 0.6303,
+              "mean_latency_ms": 0.01361,
+              "throughput_samples_per_sec": 73478.9,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.119,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.7443
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 41.5,
+              "test_rmse": 70.698,
+              "test_r2": 0.5398,
+              "mean_latency_ms": 0.01033,
+              "throughput_samples_per_sec": 96760.9,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.129,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.5
+            }
+          ],
+          "selected_model": {
+            "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+            "architecture": "XGBoost",
+            "variant": "XGBoost_Pruned",
+            "test_mae": 37.042,
+            "test_rmse": 62.63,
+            "test_r2": 0.6388,
+            "mean_latency_ms": 0.02302,
+            "throughput_samples_per_sec": 43440.1,
+            "artifact_size_mb": 0.432,
+            "training_time_sec": 12.162,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9669
+          }
+        },
+        "h24": {
+          "all_candidates": [
+            {
+              "model_name": "Linear Regression (Baseline)",
+              "architecture": "Linear Regression",
+              "variant": "Baseline",
+              "test_mae": 66.794,
+              "test_rmse": 91.405,
+              "test_r2": 0.2319,
+              "mean_latency_ms": 0.01523,
+              "throughput_samples_per_sec": 65656.4,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.89,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9633
+            },
+            {
+              "model_name": "Ridge (Baseline)",
+              "architecture": "Ridge",
+              "variant": "Baseline",
+              "test_mae": 66.795,
+              "test_rmse": 91.404,
+              "test_r2": 0.2319,
+              "mean_latency_ms": 0.02236,
+              "throughput_samples_per_sec": 44716.7,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.172,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.9565
+            },
+            {
+              "model_name": "Ridge_Reference (L2 alpha 10.0)",
+              "architecture": "Ridge",
+              "variant": "Ridge_Reference",
+              "test_mae": 66.795,
+              "test_rmse": 91.404,
+              "test_r2": 0.2319,
+              "mean_latency_ms": 0.02236,
+              "throughput_samples_per_sec": 44716.7,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.172,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.9565
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 66.074,
+              "test_rmse": 92.573,
+              "test_r2": 0.2121,
+              "mean_latency_ms": 0.04981,
+              "throughput_samples_per_sec": 20078.3,
+              "artifact_size_mb": 0.134,
+              "training_time_sec": 3.966,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9541
+            },
+            {
+              "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Pruned",
+              "test_mae": 66.674,
+              "test_rmse": 93.178,
+              "test_r2": 0.2018,
+              "mean_latency_ms": 0.0485,
+              "throughput_samples_per_sec": 20616.3,
+              "artifact_size_mb": 0.288,
+              "training_time_sec": 5.461,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9289
+            },
+            {
+              "model_name": "LSTM_Compact (1 layer, hidden 32)",
+              "architecture": "LSTM",
+              "variant": "LSTM_Compact",
+              "test_mae": 66.928,
+              "test_rmse": 93.628,
+              "test_r2": 0.1941,
+              "mean_latency_ms": 0.00982,
+              "throughput_samples_per_sec": 101829.7,
+              "artifact_size_mb": 0.048,
+              "training_time_sec": 93.837,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8738
+            },
+            {
+              "model_name": "XGBoost (Baseline)",
+              "architecture": "XGBoost",
+              "variant": "Baseline",
+              "test_mae": 67.255,
+              "test_rmse": 93.412,
+              "test_r2": 0.1978,
+              "mean_latency_ms": 0.08328,
+              "throughput_samples_per_sec": 12007.1,
+              "artifact_size_mb": 0.573,
+              "training_time_sec": 6.869,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.8665
+            },
+            {
+              "model_name": "LSTM (Baseline)",
+              "architecture": "LSTM",
+              "variant": "Baseline",
+              "test_mae": 66.471,
+              "test_rmse": 92.483,
+              "test_r2": 0.2137,
+              "mean_latency_ms": 0.06336,
+              "throughput_samples_per_sec": 15782.4,
+              "artifact_size_mb": 0.251,
+              "training_time_sec": 102.946,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.827
+            },
+            {
+              "model_name": "RandomForest_Compact (20 trees, depth 8, leaf 12)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Compact",
+              "test_mae": 67.228,
+              "test_rmse": 93.985,
+              "test_r2": 0.1879,
+              "mean_latency_ms": 0.10914,
+              "throughput_samples_per_sec": 9162.4,
+              "artifact_size_mb": 0.657,
+              "training_time_sec": 22.118,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.8255
+            },
+            {
+              "model_name": "HistGradientBoosting (Baseline)",
+              "architecture": "HistGradientBoosting",
+              "variant": "Baseline",
+              "test_mae": 67.765,
+              "test_rmse": 94.997,
+              "test_r2": 0.1703,
+              "mean_latency_ms": 0.13836,
+              "throughput_samples_per_sec": 7227.4,
+              "artifact_size_mb": 0.581,
+              "training_time_sec": 11.367,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.7838
+            },
+            {
+              "model_name": "RandomForest_Pruned (35 trees, depth 10, leaf 8)",
+              "architecture": "RandomForest",
+              "variant": "RandomForest_Pruned",
+              "test_mae": 68.232,
+              "test_rmse": 95.805,
+              "test_r2": 0.1562,
+              "mean_latency_ms": 0.15529,
+              "throughput_samples_per_sec": 6439.7,
+              "artifact_size_mb": 3.777,
+              "training_time_sec": 43.952,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.7039
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 78.324,
+              "test_rmse": 113.322,
+              "test_r2": -0.1806,
+              "mean_latency_ms": 0.01288,
+              "throughput_samples_per_sec": 77610.7,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.162,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.4968
+            },
+            {
+              "model_name": "Random Forest (Baseline)",
+              "architecture": "Random Forest",
+              "variant": "Baseline",
+              "test_mae": 68.833,
+              "test_rmse": 96.644,
+              "test_r2": 0.1413,
+              "mean_latency_ms": 0.24922,
+              "throughput_samples_per_sec": 4012.5,
+              "artifact_size_mb": 41.862,
+              "training_time_sec": 99.673,
+              "is_pareto_optimal": false,
+              "composite_utility_score": 0.3906
+            }
+          ],
+          "pareto_frontier": [
+            {
+              "model_name": "Linear Regression (Baseline)",
+              "architecture": "Linear Regression",
+              "variant": "Baseline",
+              "test_mae": 66.794,
+              "test_rmse": 91.405,
+              "test_r2": 0.2319,
+              "mean_latency_ms": 0.01523,
+              "throughput_samples_per_sec": 65656.4,
+              "artifact_size_mb": 0.003,
+              "training_time_sec": 1.89,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9633
+            },
+            {
+              "model_name": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Fast",
+              "test_mae": 66.074,
+              "test_rmse": 92.573,
+              "test_r2": 0.2121,
+              "mean_latency_ms": 0.04981,
+              "throughput_samples_per_sec": 20078.3,
+              "artifact_size_mb": 0.134,
+              "training_time_sec": 3.966,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9541
+            },
+            {
+              "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+              "architecture": "XGBoost",
+              "variant": "XGBoost_Pruned",
+              "test_mae": 66.674,
+              "test_rmse": 93.178,
+              "test_r2": 0.2018,
+              "mean_latency_ms": 0.0485,
+              "throughput_samples_per_sec": 20616.3,
+              "artifact_size_mb": 0.288,
+              "training_time_sec": 5.461,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.9289
+            },
+            {
+              "model_name": "LSTM_Compact (1 layer, hidden 32)",
+              "architecture": "LSTM",
+              "variant": "LSTM_Compact",
+              "test_mae": 66.928,
+              "test_rmse": 93.628,
+              "test_r2": 0.1941,
+              "mean_latency_ms": 0.00982,
+              "throughput_samples_per_sec": 101829.7,
+              "artifact_size_mb": 0.048,
+              "training_time_sec": 93.837,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.8738
+            },
+            {
+              "model_name": "Persistence (Baseline)",
+              "architecture": "Persistence",
+              "variant": "Baseline",
+              "test_mae": 78.324,
+              "test_rmse": 113.322,
+              "test_r2": -0.1806,
+              "mean_latency_ms": 0.01288,
+              "throughput_samples_per_sec": 77610.7,
+              "artifact_size_mb": 0.001,
+              "training_time_sec": 0.162,
+              "is_pareto_optimal": true,
+              "composite_utility_score": 0.4968
+            }
+          ],
+          "selected_model": {
+            "model_name": "Linear Regression (Baseline)",
+            "architecture": "Linear Regression",
+            "variant": "Baseline",
+            "test_mae": 66.794,
+            "test_rmse": 91.405,
+            "test_r2": 0.2319,
+            "mean_latency_ms": 0.01523,
+            "throughput_samples_per_sec": 65656.4,
+            "artifact_size_mb": 0.003,
+            "training_time_sec": 1.89,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9633
+          }
+        }
+      },
+      "suite_summary": {
+        "selected_horizon_suite": {
+          "h1": {
+            "model_name": "XGBoost (Baseline)",
+            "architecture": "XGBoost",
+            "variant": "Baseline",
+            "test_mae": 11.572,
+            "test_rmse": 23.334,
+            "test_r2": 0.9499,
+            "mean_latency_ms": 0.03513,
+            "throughput_samples_per_sec": 28468.4,
+            "artifact_size_mb": 1.158,
+            "training_time_sec": 12.618,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9422
+          },
+          "h6": {
+            "model_name": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+            "architecture": "XGBoost",
+            "variant": "XGBoost_Pruned",
+            "test_mae": 37.042,
+            "test_rmse": 62.63,
+            "test_r2": 0.6388,
+            "mean_latency_ms": 0.02302,
+            "throughput_samples_per_sec": 43440.1,
+            "artifact_size_mb": 0.432,
+            "training_time_sec": 12.162,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9669
+          },
+          "h24": {
+            "model_name": "Linear Regression (Baseline)",
+            "architecture": "Linear Regression",
+            "variant": "Baseline",
+            "test_mae": 66.794,
+            "test_rmse": 91.405,
+            "test_r2": 0.2319,
+            "mean_latency_ms": 0.01523,
+            "throughput_samples_per_sec": 65656.4,
+            "artifact_size_mb": 0.003,
+            "training_time_sec": 1.89,
+            "is_pareto_optimal": true,
+            "composite_utility_score": 0.9633
+          }
+        },
+        "suite_comparison": {
+          "horizon_specific_suite": {
+            "avg_test_mae": 38.469,
+            "total_model_size_mb": 1.593,
+            "total_train_time_sec": 26.67
+          }
+        }
+      }
+    },
+    "stage8_api": {
+      "experiment": "Phase 11 Stage 8: API Serving Performance",
+      "timestamp": "2026-11-05T15:41:42Z",
+      "endpoints": {
+        "health": {
+          "endpoint": "/health",
+          "n_requests": 100,
+          "mean_latency_ms": 10.158,
+          "p50_latency_ms": 7.747,
+          "p95_latency_ms": 29.724,
+          "p99_latency_ms": 34.681,
+          "min_latency_ms": 2.111,
+          "max_latency_ms": 35.937
+        },
+        "model_info": {
+          "endpoint": "/model-info",
+          "n_requests": 100,
+          "mean_latency_ms": 13.725,
+          "p50_latency_ms": 10.422,
+          "p95_latency_ms": 28.394,
+          "p99_latency_ms": 34.648,
+          "min_latency_ms": 4.481,
+          "max_latency_ms": 42.917
+        },
+        "predict_single": {
+          "endpoint": "/predict",
+          "n_requests": 100,
+          "mean_latency_ms": 71.858,
+          "p50_latency_ms": 70.159,
+          "p95_latency_ms": 99.657,
+          "p99_latency_ms": 101.01,
+          "min_latency_ms": 25.688,
+          "max_latency_ms": 101.64
+        }
+      },
+      "concurrency_scaling": [
+        {
+          "concurrent_workers": 1,
+          "total_requests": 50,
+          "wall_clock_time_sec": 3.651,
+          "throughput_req_per_sec": 13.7,
+          "mean_latency_ms": 72.873,
+          "p50_latency_ms": 70.087,
+          "p95_latency_ms": 99.87,
+          "p99_latency_ms": 101.561
+        },
+        {
+          "concurrent_workers": 5,
+          "total_requests": 50,
+          "wall_clock_time_sec": 3.798,
+          "throughput_req_per_sec": 13.2,
+          "mean_latency_ms": 368.35,
+          "p50_latency_ms": 425.513,
+          "p95_latency_ms": 488.039,
+          "p99_latency_ms": 497.115
+        },
+        {
+          "concurrent_workers": 10,
+          "total_requests": 50,
+          "wall_clock_time_sec": 3.305,
+          "throughput_req_per_sec": 15.1,
+          "mean_latency_ms": 624.279,
+          "p50_latency_ms": 700.089,
+          "p95_latency_ms": 939.382,
+          "p99_latency_ms": 956.596
+        },
+        {
+          "concurrent_workers": 25,
+          "total_requests": 50,
+          "wall_clock_time_sec": 3.534,
+          "throughput_req_per_sec": 14.1,
+          "mean_latency_ms": 1471.183,
+          "p50_latency_ms": 1366.395,
+          "p95_latency_ms": 2247.59,
+          "p99_latency_ms": 2438.817
+        }
+      ],
+      "batch_scaling": [
+        {
+          "endpoint": "/predict/batch",
+          "n_requests": 20,
+          "mean_latency_ms": 78.292,
+          "p50_latency_ms": 81.581,
+          "p95_latency_ms": 105.074,
+          "p99_latency_ms": 105.181,
+          "min_latency_ms": 28.861,
+          "max_latency_ms": 105.208,
+          "batch_size": 10,
+          "per_sample_latency_ms": 7.8292,
+          "throughput_samples_per_sec": 127.7
+        },
+        {
+          "endpoint": "/predict/batch",
+          "n_requests": 20,
+          "mean_latency_ms": 83.025,
+          "p50_latency_ms": 83.882,
+          "p95_latency_ms": 112.556,
+          "p99_latency_ms": 117.212,
+          "min_latency_ms": 36.113,
+          "max_latency_ms": 118.375,
+          "batch_size": 50,
+          "per_sample_latency_ms": 1.6605,
+          "throughput_samples_per_sec": 602.2
+        },
+        {
+          "endpoint": "/predict/batch",
+          "n_requests": 20,
+          "mean_latency_ms": 92.642,
+          "p50_latency_ms": 99.351,
+          "p95_latency_ms": 141.833,
+          "p99_latency_ms": 144.974,
+          "min_latency_ms": 37.091,
+          "max_latency_ms": 145.76,
+          "batch_size": 100,
+          "per_sample_latency_ms": 0.9264,
+          "throughput_samples_per_sec": 1079.4
+        },
+        {
+          "endpoint": "/predict/batch",
+          "n_requests": 20,
+          "mean_latency_ms": 107.781,
+          "p50_latency_ms": 116.012,
+          "p95_latency_ms": 150.784,
+          "p99_latency_ms": 151.444,
+          "min_latency_ms": 52.688,
+          "max_latency_ms": 151.609,
+          "batch_size": 250,
+          "per_sample_latency_ms": 0.4311,
+          "throughput_samples_per_sec": 2319.5
+        },
+        {
+          "endpoint": "/predict/batch",
+          "n_requests": 20,
+          "mean_latency_ms": 127.84,
+          "p50_latency_ms": 123.903,
+          "p95_latency_ms": 164.017,
+          "p99_latency_ms": 166.469,
+          "min_latency_ms": 78.22,
+          "max_latency_ms": 167.082,
+          "batch_size": 500,
+          "per_sample_latency_ms": 0.2557,
+          "throughput_samples_per_sec": 3911.1
+        }
+      ]
+    },
+    "stage8_dashboard": {
+      "experiment": "Phase 11 Stage 8: Dashboard Performance",
+      "timestamp": "2026-11-05T15:41:42Z",
+      "artifact_loading": {
+        "results": [
+          {
+            "artifact": "artifacts/metrics/efficiency_baseline.json",
+            "size_kb": 37.4,
+            "cold_disk_load_ms": 2.766,
+            "warm_cache_access_ms": 0.0014,
+            "speedup": 1975.7
+          },
+          {
+            "artifact": "artifacts/metrics/feature_efficiency_comparison.json",
+            "size_kb": 25.0,
+            "cold_disk_load_ms": 1.942,
+            "warm_cache_access_ms": 0.1072,
+            "speedup": 18.1
+          },
+          {
+            "artifact": "artifacts/metrics/model_complexity_optimization.json",
+            "size_kb": 11.1,
+            "cold_disk_load_ms": 1.521,
+            "warm_cache_access_ms": 0.0913,
+            "speedup": 16.7
+          }
+        ]
+      }
+    },
+    "stage9_regression": {
+      "experiment": "Phase 11 Stage 9: Regression Verification",
+      "timestamp": "2026-11-05T15:47:11Z",
+      "test_suite": {
+        "total_tests": 52,
+        "passed_tests": 52,
+        "failed_tests": 0,
+        "pass_rate_pct": 100.0,
+        "runtime_sec": 23.27
+      },
+      "numerical_equivalence": {
+        "xgboost_h1": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "correlation": 1.0,
+          "is_numerically_identical": true
+        },
+        "xgboost_h6": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "correlation": 0.9999999999999998,
+          "is_numerically_identical": true
+        },
+        "xgboost_h24": {
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "correlation": 0.9999999999999999,
+          "is_numerically_identical": true
+        }
+      },
+      "station_generalization": {
+        "station_count": 12,
+        "station_breakdown": {
+          "Aotizhongxin": {
+            "n_samples": 3571,
+            "mae": 11.477,
+            "rmse": 22.524,
+            "r2": 0.9538
+          },
+          "Changping": {
+            "n_samples": 3575,
+            "mae": 11.615,
+            "rmse": 21.283,
+            "r2": 0.9448
+          },
+          "Dingling": {
+            "n_samples": 3454,
+            "mae": 9.792,
+            "rmse": 19.477,
+            "r2": 0.9436
+          },
+          "Dongsi": {
+            "n_samples": 3520,
+            "mae": 13.182,
+            "rmse": 26.685,
+            "r2": 0.9462
+          },
+          "Guanyuan": {
+            "n_samples": 3528,
+            "mae": 12.431,
+            "rmse": 23.777,
+            "r2": 0.9497
+          },
+          "Gucheng": {
+            "n_samples": 3558,
+            "mae": 11.888,
+            "rmse": 24.842,
+            "r2": 0.9518
+          },
+          "Huairou": {
+            "n_samples": 3577,
+            "mae": 9.549,
+            "rmse": 20.819,
+            "r2": 0.9407
+          },
+          "Nongzhanguan": {
+            "n_samples": 3539,
+            "mae": 11.983,
+            "rmse": 24.268,
+            "r2": 0.9523
+          },
+          "Shunyi": {
+            "n_samples": 3540,
+            "mae": 11.51,
+            "rmse": 22.959,
+            "r2": 0.9503
+          },
+          "Tiantan": {
+            "n_samples": 3567,
+            "mae": 11.599,
+            "rmse": 22.179,
+            "r2": 0.9561
+          },
+          "Wanliu": {
+            "n_samples": 3565,
+            "mae": 10.721,
+            "rmse": 21.422,
+            "r2": 0.9562
+          },
+          "Wanshouxigong": {
+            "n_samples": 3560,
+            "mae": 13.106,
+            "rmse": 28.248,
+            "r2": 0.9412
+          }
+        },
+        "mean_station_mae": 11.571
+      },
+      "bounds_compliance": {
+        "single_sample_latency_budget_ms": 75.0,
+        "batch_throughput_floor_samples_per_sec": 1000.0,
+        "model_size_cap_mb": 5.0,
+        "all_budgets_met": true
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "experiment": "Phase 11 Stage 4: Training-Time Optimization",
+  "timestamp": "2026-11-05T15:35:33Z",
+  "precision_optimization": {
+    "memory_float64_mb": 106.78,
+    "memory_float32_mb": 53.39,
+    "memory_reduction_pct": 50.0,
+    "ridge": {
+      "fit_time_float64_sec": 0.4435,
+      "fit_time_float32_sec": 2.2405,
+      "speedup": 0.2,
+      "mae_float64": 12.0356,
+      "mae_float32": 12.0356,
+      "max_abs_prediction_diff": 0.001821
+    },
+    "xgboost": {
+      "fit_time_float64_sec": 3.5097,
+      "fit_time_float32_sec": 3.6807,
+      "speedup": 0.95,
+      "mae_float64": 11.9392,
+      "mae_float32": 11.9392,
+      "max_abs_prediction_diff": 0.0
+    }
+  },
+  "dataloader_tuning": {
+    "results": [
+      {
+        "batch_size": 128,
+        "epoch_duration_sec": 2.6828,
+        "throughput_samples_per_sec": 108684.2
+      },
+      {
+        "batch_size": 256,
+        "epoch_duration_sec": 3.384,
+        "throughput_samples_per_sec": 86161.5
+      },
+      {
+        "batch_size": 512,
+        "epoch_duration_sec": 3.2562,
+        "throughput_samples_per_sec": 89544.4
+      },
+      {
+        "batch_size": 1024,
+        "epoch_duration_sec": 3.0462,
+        "throughput_samples_per_sec": 95716.1
+      },
+      {
+        "batch_size": 2048,
+        "epoch_duration_sec": 2.2952,
+        "throughput_samples_per_sec": 127038.1
+      }
+    ]
+  },
+  "threading_scaling": {
+    "xgboost_scaling": [
+      {
+        "threads": 1,
+        "training_time_sec": 4.908,
+        "speedup": 1.0,
+        "parallel_efficiency_pct": 100.0
+      },
+      {
+        "threads": 2,
+        "training_time_sec": 3.02,
+        "speedup": 1.63,
+        "parallel_efficiency_pct": 81.5
+      },
+      {
+        "threads": 4,
+        "training_time_sec": 4.11,
+        "speedup": 1.19,
+        "parallel_efficiency_pct": 29.8
+      },
+      {
+        "threads": 8,
+        "training_time_sec": 3.517,
+        "speedup": 1.4,
+        "parallel_efficiency_pct": 17.5
+      },
+      {
+        "threads": 12,
+        "training_time_sec": 3.721,
+        "speedup": 1.32,
+        "parallel_efficiency_pct": 11.0
+      }
+    ],
+    "random_forest_scaling": [
+      {
+        "threads": 1,
+        "training_time_sec": 80.707,
+        "speedup": 1.0,
+        "parallel_efficiency_pct": 100.0
+      },
+      {
+        "threads": 2,
+        "training_time_sec": 36.607,
+        "speedup": 2.2,
+        "parallel_efficiency_pct": 110.0
+      },
+      {
+        "threads": 4,
+        "training_time_sec": 28.532,
+        "speedup": 2.83,
+        "parallel_efficiency_pct": 70.8
+      },
+      {
+        "threads": 8,
+        "training_time_sec": 22.413,
+        "speedup": 3.6,
+        "parallel_efficiency_pct": 45.0
+      },
+      {
+        "threads": 12,
+        "training_time_sec": 21.064,
+        "speedup": 3.83,
+        "parallel_efficiency_pct": 31.9
+      }
+    ]
+  },
+  "vectorization": {
+    "sample_size": 200000,
+    "vectorized_groupby_duration_sec": 0.0496,
+    "iterative_duration_sec": 4.201,
+    "vectorization_speedup": 84.7
+  }
+}

@@ -1,0 +1,116 @@
+# ==============================================================================
+# AirCast Research — Git Ignore Specification
+# ==============================================================================
+
+# Python bytecode and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables & secrets (defense-in-depth)
+.env
+.env.*
+*.pem
+*.key
+*.cert
+*.secret
+
+# Automated testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# Type checking & linting
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# IDE & editor temporary files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Operating system metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Ephemeral runtime logs & scratch scripts
+*.log
+scratch/
+tmp/
+
+# Extraneous non-project artifacts & archives
+data.csv
+test.csv
+*.JPG
+*.zip
+*.tar.gz
+
+# ==============================================================================
+# Raw PRSA 2017 Atmospheric Telemetry Dataset
+# (Excluded from GitHub repository; preserved locally for reproducibility)
+# ==============================================================================
+PRSA_Data_20130301-20170228/
+PRSA_Data_*.csv
+*.csv
+
+# ==============================================================================
+# Experimental Baseline Models (Preserved locally; excluded from Git release)
+# Recommended Pareto production models & calibrators are explicitly whitelisted below
+# ==============================================================================
+artifacts/models/*.joblib
+!artifacts/models/xgboost_h1.joblib
+!artifacts/models/xgboost_pruned_h6.joblib
+!artifacts/models/xgboost_fast_h24.joblib
+!artifacts/models/conformal_calibrator_h1.joblib
+!artifacts/models/conformal_calibrator_h6.joblib
+!artifacts/models/conformal_calibrator_h24.joblib
+
+# ==============================================================================
+# Whitelisted Core Research Evidence & Processed Feature Cache
+# ==============================================================================
+!artifacts/metrics/*.json
+!artifacts/plots/*.png
+!data/processed/forecasting_features_cache.parquet
+!research/**/*.md

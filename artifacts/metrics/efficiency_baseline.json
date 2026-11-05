@@ -1,0 +1,1299 @@
+{
+  "experiment": "Phase 11 Stage 1: Empirical Performance Baseline",
+  "timestamp": "2026-11-05T14:57:12Z",
+  "feature_group": "combined_all",
+  "n_features": 47,
+  "feature_slicing_per_sample_ms": 0.01075,
+  "peak_ram_mb": 759.32,
+  "gpu_memory_used_mb": 0.0,
+  "cuda_available": false,
+  "results": [
+    {
+      "horizon_hours": 1,
+      "model_name": "Persistence",
+      "model_id": "persistence",
+      "model_type": "baseline",
+      "artifact_path": "artifacts\\models\\persistence_h1.joblib",
+      "artifact_size_mb": 0.0012,
+      "model_load_time_sec": 0.0028,
+      "training_time_sec": 0.103,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 12.4185,
+        "rmse": 24.7316,
+        "r2": 0.9437,
+        "smape": 21.2431,
+        "extreme_mae": 21.6784
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 10.1583,
+          "median_ms": 9.7191,
+          "p95_ms": 14.3017,
+          "std_ms": 2.1702,
+          "min_ms": 7.1128,
+          "max_ms": 17.6038
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 9.1709,
+          "median_ms": 8.5273,
+          "p95_ms": 12.6363,
+          "std_ms": 1.9871,
+          "per_sample_ms": 0.28659,
+          "throughput_samples_per_sec": 3489.3
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 10.1569,
+          "median_ms": 9.9699,
+          "p95_ms": 12.4601,
+          "std_ms": 1.4156,
+          "per_sample_ms": 0.07935,
+          "throughput_samples_per_sec": 12602.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 9.9524,
+          "median_ms": 9.5702,
+          "p95_ms": 12.1622,
+          "std_ms": 1.4933,
+          "per_sample_ms": 0.01944,
+          "throughput_samples_per_sec": 51444.7
+        }
+      },
+      "throughput_samples_per_sec": 51444.7,
+      "full_test_duration_sec": 0.0743,
+      "test_samples": 42554,
+      "process_ram_mb": 733.46,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "Linear Regression",
+      "model_id": "linear_regression",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\linear_regression_h1.joblib",
+      "artifact_size_mb": 0.0034,
+      "model_load_time_sec": 0.005,
+      "training_time_sec": 1.874,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 11.9615,
+        "rmse": 23.1879,
+        "r2": 0.9505,
+        "smape": 25.8127,
+        "extreme_mae": 20.5262
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 11.9052,
+          "median_ms": 11.5487,
+          "p95_ms": 16.031,
+          "std_ms": 2.1078,
+          "min_ms": 9.1694,
+          "max_ms": 20.4607
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 12.2482,
+          "median_ms": 11.4565,
+          "p95_ms": 18.3794,
+          "std_ms": 2.5647,
+          "per_sample_ms": 0.38276,
+          "throughput_samples_per_sec": 2612.6
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 11.9589,
+          "median_ms": 11.1789,
+          "p95_ms": 17.9211,
+          "std_ms": 2.3813,
+          "per_sample_ms": 0.09343,
+          "throughput_samples_per_sec": 10703.3
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 13.5491,
+          "median_ms": 13.2194,
+          "p95_ms": 17.2798,
+          "std_ms": 1.9257,
+          "per_sample_ms": 0.02646,
+          "throughput_samples_per_sec": 37788.4
+        }
+      },
+      "throughput_samples_per_sec": 37788.4,
+      "full_test_duration_sec": 0.1475,
+      "test_samples": 42554,
+      "process_ram_mb": 733.5,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "Ridge",
+      "model_id": "ridge",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\ridge_h1.joblib",
+      "artifact_size_mb": 0.0031,
+      "model_load_time_sec": 0.0047,
+      "training_time_sec": 0.982,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 11.9633,
+        "rmse": 23.1907,
+        "r2": 0.9505,
+        "smape": 25.8161,
+        "extreme_mae": 20.5319
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 12.2981,
+          "median_ms": 11.7019,
+          "p95_ms": 15.8662,
+          "std_ms": 2.8108,
+          "min_ms": 9.3333,
+          "max_ms": 30.0366
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 11.5461,
+          "median_ms": 11.4269,
+          "p95_ms": 13.1707,
+          "std_ms": 1.3276,
+          "per_sample_ms": 0.36081,
+          "throughput_samples_per_sec": 2771.5
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 12.0707,
+          "median_ms": 11.8771,
+          "p95_ms": 14.7959,
+          "std_ms": 1.5013,
+          "per_sample_ms": 0.0943,
+          "throughput_samples_per_sec": 10604.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 13.2388,
+          "median_ms": 13.0355,
+          "p95_ms": 16.1685,
+          "std_ms": 1.7164,
+          "per_sample_ms": 0.02586,
+          "throughput_samples_per_sec": 38674.3
+        }
+      },
+      "throughput_samples_per_sec": 38674.3,
+      "full_test_duration_sec": 0.1553,
+      "test_samples": 42554,
+      "process_ram_mb": 733.5,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "HistGradientBoosting",
+      "model_id": "hist_gradient_boosting",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\hist_gradient_boosting_h1.joblib",
+      "artifact_size_mb": 0.5814,
+      "model_load_time_sec": 0.146,
+      "training_time_sec": 13.028,
+      "complexity": {
+        "max_depth": 8,
+        "n_iter": 150
+      },
+      "predictive_performance": {
+        "mae": 11.6768,
+        "rmse": 23.1215,
+        "r2": 0.9508,
+        "smape": 19.6166,
+        "extreme_mae": 21.8403
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 59.737,
+          "median_ms": 63.2888,
+          "p95_ms": 68.03,
+          "std_ms": 15.5667,
+          "min_ms": 17.7347,
+          "max_ms": 131.5359
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 34.5285,
+          "median_ms": 35.5466,
+          "p95_ms": 52.6565,
+          "std_ms": 12.4191,
+          "per_sample_ms": 1.07902,
+          "throughput_samples_per_sec": 926.8
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 42.5817,
+          "median_ms": 38.6833,
+          "p95_ms": 70.6634,
+          "std_ms": 15.3286,
+          "per_sample_ms": 0.33267,
+          "throughput_samples_per_sec": 3006.0
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 55.4603,
+          "median_ms": 52.7323,
+          "p95_ms": 81.0308,
+          "std_ms": 21.7788,
+          "per_sample_ms": 0.10832,
+          "throughput_samples_per_sec": 9231.8
+        }
+      },
+      "throughput_samples_per_sec": 9231.8,
+      "full_test_duration_sec": 2.9209,
+      "test_samples": 42554,
+      "process_ram_mb": 734.18,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "Random Forest",
+      "model_id": "random_forest",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\random_forest_h1.joblib",
+      "artifact_size_mb": 24.5871,
+      "model_load_time_sec": 0.2179,
+      "training_time_sec": 107.758,
+      "complexity": {
+        "n_estimators": 60,
+        "max_depth": 14
+      },
+      "predictive_performance": {
+        "mae": 11.5238,
+        "rmse": 23.0782,
+        "r2": 0.9509,
+        "smape": 19.5055,
+        "extreme_mae": 21.0821
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 99.3971,
+          "median_ms": 98.4727,
+          "p95_ms": 126.6096,
+          "std_ms": 16.5993,
+          "min_ms": 67.9483,
+          "max_ms": 133.2068
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 91.8078,
+          "median_ms": 88.7829,
+          "p95_ms": 115.0522,
+          "std_ms": 16.1004,
+          "per_sample_ms": 2.86899,
+          "throughput_samples_per_sec": 348.6
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 94.7437,
+          "median_ms": 91.0913,
+          "p95_ms": 121.3853,
+          "std_ms": 15.023,
+          "per_sample_ms": 0.74019,
+          "throughput_samples_per_sec": 1351.0
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 104.6004,
+          "median_ms": 102.4479,
+          "p95_ms": 139.1606,
+          "std_ms": 19.6748,
+          "per_sample_ms": 0.2043,
+          "throughput_samples_per_sec": 4894.8
+        }
+      },
+      "throughput_samples_per_sec": 4894.8,
+      "full_test_duration_sec": 0.3625,
+      "test_samples": 42554,
+      "process_ram_mb": 763.67,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "XGBoost",
+      "model_id": "xgboost",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\xgboost_h1.joblib",
+      "artifact_size_mb": 1.1577,
+      "model_load_time_sec": 0.0374,
+      "training_time_sec": 12.618,
+      "complexity": {
+        "n_estimators": 180,
+        "max_depth": 7
+      },
+      "predictive_performance": {
+        "mae": 11.5723,
+        "rmse": 23.3344,
+        "r2": 0.9499,
+        "smape": 19.2805,
+        "extreme_mae": 21.7483
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 17.1632,
+          "median_ms": 13.4374,
+          "p95_ms": 40.3061,
+          "std_ms": 8.9728,
+          "min_ms": 9.6209,
+          "max_ms": 48.8472
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 33.1833,
+          "median_ms": 27.7182,
+          "p95_ms": 55.8133,
+          "std_ms": 16.715,
+          "per_sample_ms": 1.03698,
+          "throughput_samples_per_sec": 964.3
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 17.1536,
+          "median_ms": 13.2247,
+          "p95_ms": 46.625,
+          "std_ms": 9.4484,
+          "per_sample_ms": 0.13401,
+          "throughput_samples_per_sec": 7462.0
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 17.9848,
+          "median_ms": 17.2232,
+          "p95_ms": 25.6448,
+          "std_ms": 4.2744,
+          "per_sample_ms": 0.03513,
+          "throughput_samples_per_sec": 28468.4
+        }
+      },
+      "throughput_samples_per_sec": 28468.4,
+      "full_test_duration_sec": 0.2015,
+      "test_samples": 42554,
+      "process_ram_mb": 736.33,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 1,
+      "model_name": "LSTM",
+      "model_id": "lstm",
+      "model_type": "deep_learning",
+      "artifact_path": "artifacts\\models\\lstm_h1.joblib",
+      "artifact_size_mb": 0.2516,
+      "model_load_time_sec": 0.0528,
+      "training_time_sec": 335.749,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 11.5715,
+        "rmse": 22.292,
+        "r2": 0.9542,
+        "smape": 19.7361,
+        "extreme_mae": 21.7387
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 11.0977,
+          "median_ms": 8.48,
+          "p95_ms": 19.8391,
+          "std_ms": 4.8264,
+          "min_ms": 5.5587,
+          "max_ms": 24.8019
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 10.9364,
+          "median_ms": 7.4707,
+          "p95_ms": 19.7697,
+          "std_ms": 5.485,
+          "per_sample_ms": 0.34176,
+          "throughput_samples_per_sec": 2926.0
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 15.6753,
+          "median_ms": 17.0189,
+          "p95_ms": 24.9539,
+          "std_ms": 6.5216,
+          "per_sample_ms": 0.12246,
+          "throughput_samples_per_sec": 8165.7
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 25.5815,
+          "median_ms": 28.3814,
+          "p95_ms": 36.5748,
+          "std_ms": 8.9312,
+          "per_sample_ms": 0.04996,
+          "throughput_samples_per_sec": 20014.4
+        }
+      },
+      "throughput_samples_per_sec": 20014.4,
+      "full_test_duration_sec": 0.8588,
+      "test_samples": 42554,
+      "process_ram_mb": 752.29,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "Persistence",
+      "model_id": "persistence",
+      "model_type": "baseline",
+      "artifact_path": "artifacts\\models\\persistence_h6.joblib",
+      "artifact_size_mb": 0.0012,
+      "model_load_time_sec": 0.0721,
+      "training_time_sec": 0.129,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 41.4997,
+        "rmse": 70.6975,
+        "r2": 0.5398,
+        "smape": 51.8432,
+        "extreme_mae": 69.7187
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 7.3614,
+          "median_ms": 6.314,
+          "p95_ms": 15.32,
+          "std_ms": 6.0548,
+          "min_ms": 1.7617,
+          "max_ms": 51.8183
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 6.3843,
+          "median_ms": 5.6579,
+          "p95_ms": 11.2884,
+          "std_ms": 2.8177,
+          "per_sample_ms": 0.19951,
+          "throughput_samples_per_sec": 5012.3
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 4.7287,
+          "median_ms": 5.0584,
+          "p95_ms": 8.6413,
+          "std_ms": 2.0807,
+          "per_sample_ms": 0.03694,
+          "throughput_samples_per_sec": 27068.6
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 5.2914,
+          "median_ms": 5.2773,
+          "p95_ms": 9.0461,
+          "std_ms": 1.989,
+          "per_sample_ms": 0.01033,
+          "throughput_samples_per_sec": 96760.9
+        }
+      },
+      "throughput_samples_per_sec": 96760.9,
+      "full_test_duration_sec": 0.0582,
+      "test_samples": 42494,
+      "process_ram_mb": 756.4,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "Linear Regression",
+      "model_id": "linear_regression",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\linear_regression_h6.joblib",
+      "artifact_size_mb": 0.0034,
+      "model_load_time_sec": 0.0744,
+      "training_time_sec": 2.016,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 39.2402,
+        "rmse": 63.3625,
+        "r2": 0.6303,
+        "smape": 55.1204,
+        "extreme_mae": 69.1818
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 4.7994,
+          "median_ms": 4.3371,
+          "p95_ms": 10.5855,
+          "std_ms": 2.6653,
+          "min_ms": 1.9473,
+          "max_ms": 15.0714
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 6.3516,
+          "median_ms": 5.367,
+          "p95_ms": 13.0474,
+          "std_ms": 3.5769,
+          "per_sample_ms": 0.19849,
+          "throughput_samples_per_sec": 5038.1
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 6.759,
+          "median_ms": 5.93,
+          "p95_ms": 12.3827,
+          "std_ms": 3.2128,
+          "per_sample_ms": 0.0528,
+          "throughput_samples_per_sec": 18937.6
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 8.8517,
+          "median_ms": 8.5657,
+          "p95_ms": 14.3474,
+          "std_ms": 3.1393,
+          "per_sample_ms": 0.01729,
+          "throughput_samples_per_sec": 57841.7
+        }
+      },
+      "throughput_samples_per_sec": 57841.7,
+      "full_test_duration_sec": 0.0905,
+      "test_samples": 42494,
+      "process_ram_mb": 756.47,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "Ridge",
+      "model_id": "ridge",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\ridge_h6.joblib",
+      "artifact_size_mb": 0.0031,
+      "model_load_time_sec": 0.0358,
+      "training_time_sec": 1.119,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 39.2399,
+        "rmse": 63.3665,
+        "r2": 0.6303,
+        "smape": 55.1133,
+        "extreme_mae": 69.1933
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 5.4833,
+          "median_ms": 4.631,
+          "p95_ms": 11.7718,
+          "std_ms": 3.0101,
+          "min_ms": 2.0059,
+          "max_ms": 14.4685
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 4.8499,
+          "median_ms": 4.5049,
+          "p95_ms": 7.7122,
+          "std_ms": 1.9246,
+          "per_sample_ms": 0.15156,
+          "throughput_samples_per_sec": 6598.1
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 6.8621,
+          "median_ms": 6.6852,
+          "p95_ms": 11.7642,
+          "std_ms": 2.893,
+          "per_sample_ms": 0.05361,
+          "throughput_samples_per_sec": 18653.1
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 6.968,
+          "median_ms": 6.4519,
+          "p95_ms": 13.1822,
+          "std_ms": 3.4445,
+          "per_sample_ms": 0.01361,
+          "throughput_samples_per_sec": 73478.9
+        }
+      },
+      "throughput_samples_per_sec": 73478.9,
+      "full_test_duration_sec": 0.0982,
+      "test_samples": 42494,
+      "process_ram_mb": 756.47,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "HistGradientBoosting",
+      "model_id": "hist_gradient_boosting",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\hist_gradient_boosting_h6.joblib",
+      "artifact_size_mb": 0.5814,
+      "model_load_time_sec": 0.0996,
+      "training_time_sec": 11.345,
+      "complexity": {
+        "max_depth": 8,
+        "n_iter": 150
+      },
+      "predictive_performance": {
+        "mae": 37.2632,
+        "rmse": 63.4699,
+        "r2": 0.6291,
+        "smape": 46.4813,
+        "extreme_mae": 69.2722
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 38.6983,
+          "median_ms": 41.1538,
+          "p95_ms": 57.7725,
+          "std_ms": 13.3295,
+          "min_ms": 9.0705,
+          "max_ms": 67.0248
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 36.3481,
+          "median_ms": 37.3682,
+          "p95_ms": 59.4501,
+          "std_ms": 15.7661,
+          "per_sample_ms": 1.13588,
+          "throughput_samples_per_sec": 880.4
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 45.1533,
+          "median_ms": 47.56,
+          "p95_ms": 54.5182,
+          "std_ms": 9.0974,
+          "per_sample_ms": 0.35276,
+          "throughput_samples_per_sec": 2834.8
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 60.2583,
+          "median_ms": 59.6034,
+          "p95_ms": 82.0677,
+          "std_ms": 14.6084,
+          "per_sample_ms": 0.11769,
+          "throughput_samples_per_sec": 8496.8
+        }
+      },
+      "throughput_samples_per_sec": 8496.8,
+      "full_test_duration_sec": 0.8998,
+      "test_samples": 42494,
+      "process_ram_mb": 756.44,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "Random Forest",
+      "model_id": "random_forest",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\random_forest_h6.joblib",
+      "artifact_size_mb": 34.22,
+      "model_load_time_sec": 0.2651,
+      "training_time_sec": 103.026,
+      "complexity": {
+        "n_estimators": 60,
+        "max_depth": 14
+      },
+      "predictive_performance": {
+        "mae": 37.6773,
+        "rmse": 63.526,
+        "r2": 0.6284,
+        "smape": 45.8713,
+        "extreme_mae": 68.6084
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 104.89,
+          "median_ms": 103.1849,
+          "p95_ms": 133.115,
+          "std_ms": 22.8771,
+          "min_ms": 61.5591,
+          "max_ms": 235.9522
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 85.2197,
+          "median_ms": 81.4316,
+          "p95_ms": 111.107,
+          "std_ms": 21.6799,
+          "per_sample_ms": 2.66311,
+          "throughput_samples_per_sec": 375.5
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 103.7137,
+          "median_ms": 101.6107,
+          "p95_ms": 136.4485,
+          "std_ms": 20.0705,
+          "per_sample_ms": 0.81026,
+          "throughput_samples_per_sec": 1234.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 118.4669,
+          "median_ms": 117.2245,
+          "p95_ms": 147.7111,
+          "std_ms": 14.9451,
+          "per_sample_ms": 0.23138,
+          "throughput_samples_per_sec": 4321.9
+        }
+      },
+      "throughput_samples_per_sec": 4321.9,
+      "full_test_duration_sec": 0.3356,
+      "test_samples": 42494,
+      "process_ram_mb": 796.38,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "XGBoost",
+      "model_id": "xgboost",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\xgboost_h6.joblib",
+      "artifact_size_mb": 1.0777,
+      "model_load_time_sec": 0.034,
+      "training_time_sec": 11.85,
+      "complexity": {
+        "n_estimators": 180,
+        "max_depth": 7
+      },
+      "predictive_performance": {
+        "mae": 36.9541,
+        "rmse": 62.5712,
+        "r2": 0.6395,
+        "smape": 45.6466,
+        "extreme_mae": 68.5754
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 22.7524,
+          "median_ms": 13.9417,
+          "p95_ms": 50.4561,
+          "std_ms": 15.0756,
+          "min_ms": 9.9128,
+          "max_ms": 52.9934
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 33.1029,
+          "median_ms": 22.668,
+          "p95_ms": 73.9911,
+          "std_ms": 21.9841,
+          "per_sample_ms": 1.03447,
+          "throughput_samples_per_sec": 966.7
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 25.2986,
+          "median_ms": 19.5946,
+          "p95_ms": 53.2024,
+          "std_ms": 12.8749,
+          "per_sample_ms": 0.19765,
+          "throughput_samples_per_sec": 5059.6
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 25.5441,
+          "median_ms": 17.962,
+          "p95_ms": 47.4358,
+          "std_ms": 13.1105,
+          "per_sample_ms": 0.04989,
+          "throughput_samples_per_sec": 20043.8
+        }
+      },
+      "throughput_samples_per_sec": 20043.8,
+      "full_test_duration_sec": 0.1727,
+      "test_samples": 42494,
+      "process_ram_mb": 756.12,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 6,
+      "model_name": "LSTM",
+      "model_id": "lstm",
+      "model_type": "deep_learning",
+      "artifact_path": "artifacts\\models\\lstm_h6.joblib",
+      "artifact_size_mb": 0.2513,
+      "model_load_time_sec": 0.0665,
+      "training_time_sec": 166.736,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 37.2191,
+        "rmse": 61.839,
+        "r2": 0.6479,
+        "smape": 47.9185,
+        "extreme_mae": 68.027
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 16.6681,
+          "median_ms": 17.0923,
+          "p95_ms": 20.1327,
+          "std_ms": 3.1609,
+          "min_ms": 4.8951,
+          "max_ms": 21.7134
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 24.0321,
+          "median_ms": 21.9731,
+          "p95_ms": 36.7192,
+          "std_ms": 5.8993,
+          "per_sample_ms": 0.751,
+          "throughput_samples_per_sec": 1331.6
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 12.7701,
+          "median_ms": 10.2125,
+          "p95_ms": 25.1546,
+          "std_ms": 5.8439,
+          "per_sample_ms": 0.09977,
+          "throughput_samples_per_sec": 10023.4
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 27.2164,
+          "median_ms": 20.3058,
+          "p95_ms": 55.9762,
+          "std_ms": 14.4822,
+          "per_sample_ms": 0.05316,
+          "throughput_samples_per_sec": 18812.2
+        }
+      },
+      "throughput_samples_per_sec": 18812.2,
+      "full_test_duration_sec": 1.6744,
+      "test_samples": 42494,
+      "process_ram_mb": 768.01,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "Persistence",
+      "model_id": "persistence",
+      "model_type": "baseline",
+      "artifact_path": "artifacts\\models\\persistence_h24.joblib",
+      "artifact_size_mb": 0.0012,
+      "model_load_time_sec": 0.0013,
+      "training_time_sec": 0.162,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 78.3239,
+        "rmse": 113.3217,
+        "r2": -0.1806,
+        "smape": 91.0021,
+        "extreme_mae": 114.4867
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 7.2913,
+          "median_ms": 7.9153,
+          "p95_ms": 11.1139,
+          "std_ms": 2.7268,
+          "min_ms": 2.0383,
+          "max_ms": 15.1482
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 5.5246,
+          "median_ms": 5.2336,
+          "p95_ms": 9.1916,
+          "std_ms": 2.2379,
+          "per_sample_ms": 0.17265,
+          "throughput_samples_per_sec": 5792.2
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 9.1775,
+          "median_ms": 9.1426,
+          "p95_ms": 13.6403,
+          "std_ms": 3.1548,
+          "per_sample_ms": 0.0717,
+          "throughput_samples_per_sec": 13947.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 6.597,
+          "median_ms": 6.0754,
+          "p95_ms": 12.5713,
+          "std_ms": 3.3308,
+          "per_sample_ms": 0.01288,
+          "throughput_samples_per_sec": 77610.7
+        }
+      },
+      "throughput_samples_per_sec": 77610.7,
+      "full_test_duration_sec": 0.0469,
+      "test_samples": 42278,
+      "process_ram_mb": 769.96,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "Linear Regression",
+      "model_id": "linear_regression",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\linear_regression_h24.joblib",
+      "artifact_size_mb": 0.0034,
+      "model_load_time_sec": 0.0814,
+      "training_time_sec": 1.89,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 66.7944,
+        "rmse": 91.4047,
+        "r2": 0.2319,
+        "smape": 78.2971,
+        "extreme_mae": 118.1232
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 5.3026,
+          "median_ms": 4.606,
+          "p95_ms": 11.8575,
+          "std_ms": 2.9096,
+          "min_ms": 2.0675,
+          "max_ms": 15.165
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 4.3343,
+          "median_ms": 4.049,
+          "p95_ms": 8.7066,
+          "std_ms": 2.0746,
+          "per_sample_ms": 0.13545,
+          "throughput_samples_per_sec": 7383.0
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 5.6499,
+          "median_ms": 5.469,
+          "p95_ms": 11.64,
+          "std_ms": 3.0491,
+          "per_sample_ms": 0.04414,
+          "throughput_samples_per_sec": 22655.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 7.7982,
+          "median_ms": 7.0078,
+          "p95_ms": 14.8874,
+          "std_ms": 3.6137,
+          "per_sample_ms": 0.01523,
+          "throughput_samples_per_sec": 65656.4
+        }
+      },
+      "throughput_samples_per_sec": 65656.4,
+      "full_test_duration_sec": 0.1173,
+      "test_samples": 42278,
+      "process_ram_mb": 770.17,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "Ridge",
+      "model_id": "ridge",
+      "model_type": "linear",
+      "artifact_path": "artifacts\\models\\ridge_h24.joblib",
+      "artifact_size_mb": 0.0031,
+      "model_load_time_sec": 0.0354,
+      "training_time_sec": 1.172,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 66.7946,
+        "rmse": 91.4045,
+        "r2": 0.2319,
+        "smape": 78.2935,
+        "extreme_mae": 118.1426
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 8.5738,
+          "median_ms": 7.3843,
+          "p95_ms": 16.5477,
+          "std_ms": 4.381,
+          "min_ms": 2.2594,
+          "max_ms": 27.4673
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 7.3293,
+          "median_ms": 5.6583,
+          "p95_ms": 17.3594,
+          "std_ms": 4.5065,
+          "per_sample_ms": 0.22904,
+          "throughput_samples_per_sec": 4366.0
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 12.6358,
+          "median_ms": 11.7511,
+          "p95_ms": 22.2739,
+          "std_ms": 8.1742,
+          "per_sample_ms": 0.09872,
+          "throughput_samples_per_sec": 10130.0
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 11.4499,
+          "median_ms": 6.1156,
+          "p95_ms": 32.4339,
+          "std_ms": 12.1214,
+          "per_sample_ms": 0.02236,
+          "throughput_samples_per_sec": 44716.7
+        }
+      },
+      "throughput_samples_per_sec": 44716.7,
+      "full_test_duration_sec": 0.1017,
+      "test_samples": 42278,
+      "process_ram_mb": 770.39,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "HistGradientBoosting",
+      "model_id": "hist_gradient_boosting",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\hist_gradient_boosting_h24.joblib",
+      "artifact_size_mb": 0.5813,
+      "model_load_time_sec": 0.2474,
+      "training_time_sec": 11.367,
+      "complexity": {
+        "max_depth": 8,
+        "n_iter": 150
+      },
+      "predictive_performance": {
+        "mae": 67.7646,
+        "rmse": 94.9974,
+        "r2": 0.1703,
+        "smape": 78.1967,
+        "extreme_mae": 113.6698
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 64.4695,
+          "median_ms": 64.2513,
+          "p95_ms": 67.78,
+          "std_ms": 4.0664,
+          "min_ms": 58.8362,
+          "max_ms": 97.7517
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 59.6283,
+          "median_ms": 60.5777,
+          "p95_ms": 64.8301,
+          "std_ms": 3.7351,
+          "per_sample_ms": 1.86338,
+          "throughput_samples_per_sec": 536.7
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 64.5732,
+          "median_ms": 64.7481,
+          "p95_ms": 66.6781,
+          "std_ms": 1.5961,
+          "per_sample_ms": 0.50448,
+          "throughput_samples_per_sec": 1982.2
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 70.8419,
+          "median_ms": 70.9678,
+          "p95_ms": 73.5552,
+          "std_ms": 1.8139,
+          "per_sample_ms": 0.13836,
+          "throughput_samples_per_sec": 7227.4
+        }
+      },
+      "throughput_samples_per_sec": 7227.4,
+      "full_test_duration_sec": 1.0365,
+      "test_samples": 42278,
+      "process_ram_mb": 771.51,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "Random Forest",
+      "model_id": "random_forest",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\random_forest_h24.joblib",
+      "artifact_size_mb": 41.8616,
+      "model_load_time_sec": 0.3827,
+      "training_time_sec": 99.673,
+      "complexity": {
+        "n_estimators": 60,
+        "max_depth": 14
+      },
+      "predictive_performance": {
+        "mae": 68.8332,
+        "rmse": 96.6436,
+        "r2": 0.1413,
+        "smape": 78.5519,
+        "extreme_mae": 115.6686
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 110.978,
+          "median_ms": 109.6426,
+          "p95_ms": 122.9496,
+          "std_ms": 7.8033,
+          "min_ms": 97.0924,
+          "max_ms": 141.8929
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 117.4622,
+          "median_ms": 108.0391,
+          "p95_ms": 129.4742,
+          "std_ms": 48.7655,
+          "per_sample_ms": 3.67069,
+          "throughput_samples_per_sec": 272.4
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 113.9335,
+          "median_ms": 112.969,
+          "p95_ms": 125.4915,
+          "std_ms": 8.3606,
+          "per_sample_ms": 0.89011,
+          "throughput_samples_per_sec": 1123.5
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 127.5999,
+          "median_ms": 125.489,
+          "p95_ms": 140.8981,
+          "std_ms": 7.4047,
+          "per_sample_ms": 0.24922,
+          "throughput_samples_per_sec": 4012.5
+        }
+      },
+      "throughput_samples_per_sec": 4012.5,
+      "full_test_duration_sec": 0.3244,
+      "test_samples": 42278,
+      "process_ram_mb": 821.45,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "XGBoost",
+      "model_id": "xgboost",
+      "model_type": "tree",
+      "artifact_path": "artifacts\\models\\xgboost_h24.joblib",
+      "artifact_size_mb": 0.5725,
+      "model_load_time_sec": 0.0316,
+      "training_time_sec": 6.869,
+      "complexity": {
+        "n_estimators": 180,
+        "max_depth": 7
+      },
+      "predictive_performance": {
+        "mae": 67.2555,
+        "rmse": 93.4117,
+        "r2": 0.1978,
+        "smape": 78.1109,
+        "extreme_mae": 119.3985
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 41.8536,
+          "median_ms": 40.3167,
+          "p95_ms": 49.1355,
+          "std_ms": 7.4696,
+          "min_ms": 35.8055,
+          "max_ms": 93.2915
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 39.9961,
+          "median_ms": 39.9261,
+          "p95_ms": 43.1407,
+          "std_ms": 1.8089,
+          "per_sample_ms": 1.24988,
+          "throughput_samples_per_sec": 800.1
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 41.459,
+          "median_ms": 40.5737,
+          "p95_ms": 47.7066,
+          "std_ms": 3.1974,
+          "per_sample_ms": 0.3239,
+          "throughput_samples_per_sec": 3087.4
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 42.6416,
+          "median_ms": 42.5053,
+          "p95_ms": 45.3589,
+          "std_ms": 1.9076,
+          "per_sample_ms": 0.08328,
+          "throughput_samples_per_sec": 12007.1
+        }
+      },
+      "throughput_samples_per_sec": 12007.1,
+      "full_test_duration_sec": 0.1349,
+      "test_samples": 42278,
+      "process_ram_mb": 765.91,
+      "gpu_memory_mb": 0.0
+    },
+    {
+      "horizon_hours": 24,
+      "model_name": "LSTM",
+      "model_id": "lstm",
+      "model_type": "deep_learning",
+      "artifact_path": "artifacts\\models\\lstm_h24.joblib",
+      "artifact_size_mb": 0.2513,
+      "model_load_time_sec": 0.0545,
+      "training_time_sec": 102.946,
+      "complexity": {},
+      "predictive_performance": {
+        "mae": 66.4708,
+        "rmse": 92.483,
+        "r2": 0.2137,
+        "smape": 76.8525,
+        "extreme_mae": 114.3315
+      },
+      "latency_benchmarks": {
+        "single_sample": {
+          "mean_ms": 16.7766,
+          "median_ms": 16.0974,
+          "p95_ms": 19.3961,
+          "std_ms": 3.0604,
+          "min_ms": 13.9412,
+          "max_ms": 40.2807
+        },
+        "batch_32": {
+          "batch_size": 32,
+          "mean_ms": 18.0288,
+          "median_ms": 17.9571,
+          "p95_ms": 19.0881,
+          "std_ms": 0.7497,
+          "per_sample_ms": 0.5634,
+          "throughput_samples_per_sec": 1774.9
+        },
+        "batch_128": {
+          "batch_size": 128,
+          "mean_ms": 20.4413,
+          "median_ms": 20.1552,
+          "p95_ms": 23.6931,
+          "std_ms": 1.7733,
+          "per_sample_ms": 0.1597,
+          "throughput_samples_per_sec": 6261.8
+        },
+        "batch_512": {
+          "batch_size": 512,
+          "mean_ms": 32.4412,
+          "median_ms": 32.4251,
+          "p95_ms": 33.9882,
+          "std_ms": 0.9851,
+          "per_sample_ms": 0.06336,
+          "throughput_samples_per_sec": 15782.4
+        }
+      },
+      "throughput_samples_per_sec": 15782.4,
+      "full_test_duration_sec": 1.7073,
+      "test_samples": 42278,
+      "process_ram_mb": 759.32,
+      "gpu_memory_mb": 0.0
+    }
+  ]
+}

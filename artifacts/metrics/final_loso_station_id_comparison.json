@@ -1,0 +1,284 @@
+{
+  "experiment": "Task 3: LOSO Validation With vs Without Station ID",
+  "horizon_hours": 24,
+  "n_stations": 12,
+  "total_evaluation_samples": 411165,
+  "macro_averaged": {
+    "with_station_id": {
+      "mean_mae": 43.062,
+      "std_mae": 1.5224,
+      "mean_rmse": 59.7762,
+      "mean_r2": 0.4432
+    },
+    "without_station_id": {
+      "mean_mae": 42.9863,
+      "std_mae": 1.5276,
+      "mean_rmse": 59.6555,
+      "mean_r2": 0.4454
+    },
+    "persistence": {
+      "mean_mae": 58.779,
+      "mean_rmse": 87.9815,
+      "mean_r2": -0.1972
+    }
+  },
+  "pooled": {
+    "with_station_id": {
+      "mae": 43.063,
+      "rmse": 59.8181,
+      "r2": 0.4528
+    },
+    "without_station_id": {
+      "mae": 42.9877,
+      "rmse": 59.6996,
+      "r2": 0.455
+    },
+    "persistence": {
+      "mae": 58.7851,
+      "rmse": 88.1733,
+      "r2": -0.1889
+    }
+  },
+  "folds": [
+    {
+      "station": "Aotizhongxin",
+      "sample_count": 34067,
+      "with_station_id": {
+        "mae": 42.7583,
+        "rmse": 58.8595,
+        "r2": 0.487
+      },
+      "without_station_id": {
+        "mae": 42.617,
+        "rmse": 58.6937,
+        "r2": 0.4899
+      },
+      "persistence": {
+        "mae": 60.4391,
+        "rmse": 90.6794,
+        "r2": -0.2176
+      },
+      "delta_mae_without_minus_with": -0.1413
+    },
+    {
+      "station": "Changping",
+      "sample_count": 34218,
+      "with_station_id": {
+        "mae": 40.7988,
+        "rmse": 57.1793,
+        "r2": 0.3757
+      },
+      "without_station_id": {
+        "mae": 41.0198,
+        "rmse": 57.3432,
+        "r2": 0.3721
+      },
+      "persistence": {
+        "mae": 53.2565,
+        "rmse": 79.2788,
+        "r2": -0.2001
+      },
+      "delta_mae_without_minus_with": 0.221
+    },
+    {
+      "station": "Dingling",
+      "sample_count": 34213,
+      "with_station_id": {
+        "mae": 41.4103,
+        "rmse": 57.8598,
+        "r2": 0.3598
+      },
+      "without_station_id": {
+        "mae": 41.2078,
+        "rmse": 57.6595,
+        "r2": 0.3642
+      },
+      "persistence": {
+        "mae": 52.6553,
+        "rmse": 79.7588,
+        "r2": -0.2165
+      },
+      "delta_mae_without_minus_with": -0.2025
+    },
+    {
+      "station": "Dongsi",
+      "sample_count": 34242,
+      "with_station_id": {
+        "mae": 45.1951,
+        "rmse": 62.276,
+        "r2": 0.4831
+      },
+      "without_station_id": {
+        "mae": 44.7947,
+        "rmse": 61.7538,
+        "r2": 0.4917
+      },
+      "persistence": {
+        "mae": 63.3917,
+        "rmse": 94.7067,
+        "r2": -0.1955
+      },
+      "delta_mae_without_minus_with": -0.4004
+    },
+    {
+      "station": "Guanyuan",
+      "sample_count": 34376,
+      "with_station_id": {
+        "mae": 41.6029,
+        "rmse": 56.7424,
+        "r2": 0.5089
+      },
+      "without_station_id": {
+        "mae": 41.5624,
+        "rmse": 56.5548,
+        "r2": 0.5122
+      },
+      "persistence": {
+        "mae": 59.1487,
+        "rmse": 88.1565,
+        "r2": -0.1854
+      },
+      "delta_mae_without_minus_with": -0.0405
+    },
+    {
+      "station": "Gucheng",
+      "sample_count": 34346,
+      "with_station_id": {
+        "mae": 43.7534,
+        "rmse": 62.1776,
+        "r2": 0.4366
+      },
+      "without_station_id": {
+        "mae": 43.8447,
+        "rmse": 62.2912,
+        "r2": 0.4346
+      },
+      "persistence": {
+        "mae": 59.6259,
+        "rmse": 89.2069,
+        "r2": -0.1596
+      },
+      "delta_mae_without_minus_with": 0.0913
+    },
+    {
+      "station": "Huairou",
+      "sample_count": 34039,
+      "with_station_id": {
+        "mae": 41.148,
+        "rmse": 57.5376,
+        "r2": 0.3481
+      },
+      "without_station_id": {
+        "mae": 40.7652,
+        "rmse": 57.0209,
+        "r2": 0.3598
+      },
+      "persistence": {
+        "mae": 51.9868,
+        "rmse": 77.7163,
+        "r2": -0.1892
+      },
+      "delta_mae_without_minus_with": -0.3828
+    },
+    {
+      "station": "Nongzhanguan",
+      "sample_count": 34364,
+      "with_station_id": {
+        "mae": 44.5694,
+        "rmse": 61.5798,
+        "r2": 0.4905
+      },
+      "without_station_id": {
+        "mae": 44.5589,
+        "rmse": 61.588,
+        "r2": 0.4903
+      },
+      "persistence": {
+        "mae": 63.0277,
+        "rmse": 94.7159,
+        "r2": -0.2055
+      },
+      "delta_mae_without_minus_with": -0.0105
+    },
+    {
+      "station": "Shunyi",
+      "sample_count": 34079,
+      "with_station_id": {
+        "mae": 45.2474,
+        "rmse": 63.2249,
+        "r2": 0.3949
+      },
+      "without_station_id": {
+        "mae": 45.3343,
+        "rmse": 63.3969,
+        "r2": 0.3916
+      },
+      "persistence": {
+        "mae": 59.8584,
+        "rmse": 90.2155,
+        "r2": -0.2321
+      },
+      "delta_mae_without_minus_with": 0.0869
+    },
+    {
+      "station": "Tiantan",
+      "sample_count": 34315,
+      "with_station_id": {
+        "mae": 42.523,
+        "rmse": 58.2717,
+        "r2": 0.482
+      },
+      "without_station_id": {
+        "mae": 42.4503,
+        "rmse": 58.1278,
+        "r2": 0.4846
+      },
+      "persistence": {
+        "mae": 59.5456,
+        "rmse": 88.6078,
+        "r2": -0.1977
+      },
+      "delta_mae_without_minus_with": -0.0727
+    },
+    {
+      "station": "Wanliu",
+      "sample_count": 34610,
+      "with_station_id": {
+        "mae": 43.4163,
+        "rmse": 59.6915,
+        "r2": 0.4694
+      },
+      "without_station_id": {
+        "mae": 43.5799,
+        "rmse": 59.8602,
+        "r2": 0.4664
+      },
+      "persistence": {
+        "mae": 59.7493,
+        "rmse": 88.8666,
+        "r2": -0.1761
+      },
+      "delta_mae_without_minus_with": 0.1636
+    },
+    {
+      "station": "Wanshouxigong",
+      "sample_count": 34296,
+      "with_station_id": {
+        "mae": 44.321,
+        "rmse": 61.9143,
+        "r2": 0.482
+      },
+      "without_station_id": {
+        "mae": 44.1007,
+        "rmse": 61.5764,
+        "r2": 0.4876
+      },
+      "persistence": {
+        "mae": 62.6634,
+        "rmse": 93.8692,
+        "r2": -0.1908
+      },
+      "delta_mae_without_minus_with": -0.2203
+    }
+  ]
+}

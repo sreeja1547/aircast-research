@@ -1,0 +1,968 @@
+{
+  "experiment": "Phase 11 Stage 2: Feature Efficiency & Selection",
+  "timestamp": "2026-11-05T15:03:58Z",
+  "summary": "Controlled validation-driven feature selection reducing dimensionality from 47 to 16-24 features.",
+  "results": {
+    "h1": {
+      "horizon_hours": 1,
+      "baseline_47_features": {
+        "n_features": 47,
+        "test_mae": 11.607,
+        "test_rmse": 23.443,
+        "test_r2": 0.9494,
+        "training_time_sec": 14.854,
+        "mean_per_sample_latency_ms": 0.018179,
+        "throughput_samples_per_sec": 55009.86,
+        "test_matrix_ram_mb": 14.77
+      },
+      "optimized_compact_features": {
+        "n_features": 16,
+        "selected_features": [
+          "PM2.5",
+          "PM2.5_roll_min_3",
+          "PM2.5_roll_mean_3",
+          "PM10",
+          "PM2.5_roll_max_3",
+          "WSPM",
+          "wind_v",
+          "dew_point_depression",
+          "RAIN",
+          "PM2.5_roll_max_6",
+          "PM2.5_roll_std_3",
+          "has_rain",
+          "PM2.5_lag_1",
+          "PM2.5_roll_max_12",
+          "CO",
+          "PM2.5_roll_max_24"
+        ],
+        "test_mae": 11.825,
+        "test_rmse": 23.731,
+        "test_r2": 0.9481,
+        "training_time_sec": 6.828,
+        "mean_per_sample_latency_ms": 0.011656,
+        "throughput_samples_per_sec": 85792.92,
+        "test_matrix_ram_mb": 5.36
+      },
+      "comparison": {
+        "feature_reduction_count": 31,
+        "feature_reduction_pct": 66.0,
+        "delta_mae": 0.218,
+        "delta_rmse": 0.288,
+        "delta_r2": -0.0013,
+        "training_speedup_factor": 2.18,
+        "throughput_gain_pct": 56.0,
+        "ram_savings_pct": 63.7
+      },
+      "group_benchmarks_validation": [
+        {
+          "group_name": "temporal_baseline",
+          "n_features": 8,
+          "val_mae": 51.203,
+          "val_rmse": 65.547,
+          "val_r2": -0.0975,
+          "fit_time_sec": 1.302
+        },
+        {
+          "group_name": "historical_pollutants",
+          "n_features": 14,
+          "val_mae": 8.954,
+          "val_rmse": 17.764,
+          "val_r2": 0.9194,
+          "fit_time_sec": 4.125
+        },
+        {
+          "group_name": "lag_features",
+          "n_features": 20,
+          "val_mae": 8.636,
+          "val_rmse": 17.32,
+          "val_r2": 0.9234,
+          "fit_time_sec": 5.63
+        },
+        {
+          "group_name": "rolling_features",
+          "n_features": 36,
+          "val_mae": 8.601,
+          "val_rmse": 17.199,
+          "val_r2": 0.9244,
+          "fit_time_sec": 8.466
+        },
+        {
+          "group_name": "meteorological_features",
+          "n_features": 25,
+          "val_mae": 8.702,
+          "val_rmse": 17.509,
+          "val_r2": 0.9217,
+          "fit_time_sec": 5.031
+        },
+        {
+          "group_name": "combined_all",
+          "n_features": 47,
+          "val_mae": 8.421,
+          "val_rmse": 16.952,
+          "val_r2": 0.9266,
+          "fit_time_sec": 9.412
+        }
+      ],
+      "subset_size_benchmarks_validation": [
+        {
+          "k_features": 10,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "PM10",
+            "PM2.5_roll_max_3",
+            "WSPM",
+            "wind_v",
+            "dew_point_depression",
+            "RAIN",
+            "PM2.5_roll_max_6"
+          ],
+          "val_mae": 8.55,
+          "val_rmse": 17.172,
+          "val_r2": 0.9247,
+          "fit_time_sec": 6.55
+        },
+        {
+          "k_features": 16,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "PM10",
+            "PM2.5_roll_max_3",
+            "WSPM",
+            "wind_v",
+            "dew_point_depression",
+            "RAIN",
+            "PM2.5_roll_max_6",
+            "PM2.5_roll_std_3",
+            "has_rain",
+            "PM2.5_lag_1",
+            "PM2.5_roll_max_12",
+            "CO",
+            "PM2.5_roll_max_24"
+          ],
+          "val_mae": 8.441,
+          "val_rmse": 16.907,
+          "val_r2": 0.927,
+          "fit_time_sec": 7.083
+        },
+        {
+          "k_features": 24,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "PM10",
+            "PM2.5_roll_max_3",
+            "WSPM",
+            "wind_v",
+            "dew_point_depression",
+            "RAIN",
+            "PM2.5_roll_max_6",
+            "PM2.5_roll_std_3",
+            "has_rain",
+            "PM2.5_lag_1",
+            "PM2.5_roll_max_12",
+            "CO",
+            "PM2.5_roll_max_24",
+            "PM2.5_roll_mean_24",
+            "PM2.5_lag_3",
+            "NO2",
+            "PM2.5_roll_std_12",
+            "wd_cos",
+            "hour_cos",
+            "PM2.5_lag_48",
+            "PM2.5_roll_mean_6"
+          ],
+          "val_mae": 8.407,
+          "val_rmse": 16.929,
+          "val_r2": 0.9268,
+          "fit_time_sec": 7.787
+        },
+        {
+          "k_features": 32,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "PM10",
+            "PM2.5_roll_max_3",
+            "WSPM",
+            "wind_v",
+            "dew_point_depression",
+            "RAIN",
+            "PM2.5_roll_max_6",
+            "PM2.5_roll_std_3",
+            "has_rain",
+            "PM2.5_lag_1",
+            "PM2.5_roll_max_12",
+            "CO",
+            "PM2.5_roll_max_24",
+            "PM2.5_roll_mean_24",
+            "PM2.5_lag_3",
+            "NO2",
+            "PM2.5_roll_std_12",
+            "wd_cos",
+            "hour_cos",
+            "PM2.5_lag_48",
+            "PM2.5_roll_mean_6",
+            "TEMP",
+            "wind_u",
+            "PM2.5_roll_min_6",
+            "SO2",
+            "PM2.5_roll_mean_12",
+            "DEWP",
+            "is_weekend",
+            "PM2.5_roll_std_6"
+          ],
+          "val_mae": 8.417,
+          "val_rmse": 17.098,
+          "val_r2": 0.9253,
+          "fit_time_sec": 11.13
+        }
+      ],
+      "top_10_features_by_gain": [
+        {
+          "feature": "PM2.5",
+          "gain": 8405741.0
+        },
+        {
+          "feature": "PM2.5_roll_min_3",
+          "gain": 5250488.0
+        },
+        {
+          "feature": "PM2.5_roll_mean_3",
+          "gain": 3105371.25
+        },
+        {
+          "feature": "PM10",
+          "gain": 355089.90625
+        },
+        {
+          "feature": "PM2.5_roll_max_3",
+          "gain": 266825.3125
+        },
+        {
+          "feature": "WSPM",
+          "gain": 47414.86328125
+        },
+        {
+          "feature": "wind_v",
+          "gain": 46565.65625
+        },
+        {
+          "feature": "dew_point_depression",
+          "gain": 46479.59765625
+        },
+        {
+          "feature": "RAIN",
+          "gain": 42271.359375
+        },
+        {
+          "feature": "PM2.5_roll_max_6",
+          "gain": 41230.1328125
+        }
+      ],
+      "redundant_collinear_pairs": [
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_lag_1",
+          "correlation": 0.9613
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.975
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9931
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9264
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9241
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9597
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9778
+        },
+        {
+          "feat1": "PM2.5_roll_mean_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9722
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.9253
+        },
+        {
+          "feat1": "PM2.5_lag_6",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.9489
+        }
+      ]
+    },
+    "h6": {
+      "horizon_hours": 6,
+      "baseline_47_features": {
+        "n_features": 47,
+        "test_mae": 36.792,
+        "test_rmse": 62.624,
+        "test_r2": 0.6389,
+        "training_time_sec": 14.488,
+        "mean_per_sample_latency_ms": 0.021129,
+        "throughput_samples_per_sec": 47328.81,
+        "test_matrix_ram_mb": 14.75
+      },
+      "optimized_compact_features": {
+        "n_features": 24,
+        "selected_features": [
+          "PM2.5",
+          "PM2.5_roll_min_3",
+          "PM2.5_roll_mean_3",
+          "wd_cos",
+          "wind_v",
+          "is_heating_season",
+          "WSPM",
+          "PM10",
+          "hour_cos",
+          "TEMP",
+          "PM2.5_roll_max_24",
+          "month_cos",
+          "PM2.5_roll_std_24",
+          "month_sin",
+          "has_rain",
+          "RAIN",
+          "hour_sin",
+          "DEWP",
+          "PM2.5_roll_max_12",
+          "PM2.5_roll_mean_24",
+          "PRES",
+          "PM2.5_lag_48",
+          "dew_point_depression",
+          "PM2.5_roll_min_12"
+        ],
+        "test_mae": 37.001,
+        "test_rmse": 62.118,
+        "test_r2": 0.6447,
+        "training_time_sec": 7.341,
+        "mean_per_sample_latency_ms": 0.016787,
+        "throughput_samples_per_sec": 59569.36,
+        "test_matrix_ram_mb": 7.78
+      },
+      "comparison": {
+        "feature_reduction_count": 23,
+        "feature_reduction_pct": 48.9,
+        "delta_mae": 0.209,
+        "delta_rmse": -0.506,
+        "delta_r2": 0.0058,
+        "training_speedup_factor": 1.97,
+        "throughput_gain_pct": 25.9,
+        "ram_savings_pct": 47.3
+      },
+      "group_benchmarks_validation": [
+        {
+          "group_name": "temporal_baseline",
+          "n_features": 8,
+          "val_mae": 51.209,
+          "val_rmse": 65.501,
+          "val_r2": -0.1022,
+          "fit_time_sec": 1.174
+        },
+        {
+          "group_name": "historical_pollutants",
+          "n_features": 14,
+          "val_mae": 25.537,
+          "val_rmse": 41.679,
+          "val_r2": 0.5537,
+          "fit_time_sec": 3.313
+        },
+        {
+          "group_name": "lag_features",
+          "n_features": 20,
+          "val_mae": 25.161,
+          "val_rmse": 41.248,
+          "val_r2": 0.5629,
+          "fit_time_sec": 4.97
+        },
+        {
+          "group_name": "rolling_features",
+          "n_features": 36,
+          "val_mae": 25.124,
+          "val_rmse": 40.986,
+          "val_r2": 0.5684,
+          "fit_time_sec": 7.029
+        },
+        {
+          "group_name": "meteorological_features",
+          "n_features": 25,
+          "val_mae": 23.71,
+          "val_rmse": 39.891,
+          "val_r2": 0.5912,
+          "fit_time_sec": 6.389
+        },
+        {
+          "group_name": "combined_all",
+          "n_features": 47,
+          "val_mae": 23.672,
+          "val_rmse": 39.776,
+          "val_r2": 0.5935,
+          "fit_time_sec": 10.724
+        }
+      ],
+      "subset_size_benchmarks_validation": [
+        {
+          "k_features": 10,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "wd_cos",
+            "wind_v",
+            "is_heating_season",
+            "WSPM",
+            "PM10",
+            "hour_cos",
+            "TEMP"
+          ],
+          "val_mae": 24.42,
+          "val_rmse": 41.303,
+          "val_r2": 0.5617,
+          "fit_time_sec": 4.421
+        },
+        {
+          "k_features": 16,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "wd_cos",
+            "wind_v",
+            "is_heating_season",
+            "WSPM",
+            "PM10",
+            "hour_cos",
+            "TEMP",
+            "PM2.5_roll_max_24",
+            "month_cos",
+            "PM2.5_roll_std_24",
+            "month_sin",
+            "has_rain",
+            "RAIN"
+          ],
+          "val_mae": 24.211,
+          "val_rmse": 40.686,
+          "val_r2": 0.5747,
+          "fit_time_sec": 5.909
+        },
+        {
+          "k_features": 24,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "wd_cos",
+            "wind_v",
+            "is_heating_season",
+            "WSPM",
+            "PM10",
+            "hour_cos",
+            "TEMP",
+            "PM2.5_roll_max_24",
+            "month_cos",
+            "PM2.5_roll_std_24",
+            "month_sin",
+            "has_rain",
+            "RAIN",
+            "hour_sin",
+            "DEWP",
+            "PM2.5_roll_max_12",
+            "PM2.5_roll_mean_24",
+            "PRES",
+            "PM2.5_lag_48",
+            "dew_point_depression",
+            "PM2.5_roll_min_12"
+          ],
+          "val_mae": 23.98,
+          "val_rmse": 40.142,
+          "val_r2": 0.586,
+          "fit_time_sec": 7.192
+        },
+        {
+          "k_features": 32,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_min_3",
+            "PM2.5_roll_mean_3",
+            "wd_cos",
+            "wind_v",
+            "is_heating_season",
+            "WSPM",
+            "PM10",
+            "hour_cos",
+            "TEMP",
+            "PM2.5_roll_max_24",
+            "month_cos",
+            "PM2.5_roll_std_24",
+            "month_sin",
+            "has_rain",
+            "RAIN",
+            "hour_sin",
+            "DEWP",
+            "PM2.5_roll_max_12",
+            "PM2.5_roll_mean_24",
+            "PRES",
+            "PM2.5_lag_48",
+            "dew_point_depression",
+            "PM2.5_roll_min_12",
+            "day_of_week",
+            "wind_u",
+            "CO",
+            "PM2.5_roll_max_3",
+            "PM2.5_lag_12",
+            "PM2.5_roll_min_24",
+            "SO2",
+            "PM2.5_roll_min_6"
+          ],
+          "val_mae": 23.791,
+          "val_rmse": 39.81,
+          "val_r2": 0.5928,
+          "fit_time_sec": 9.302
+        }
+      ],
+      "top_10_features_by_gain": [
+        {
+          "feature": "PM2.5",
+          "gain": 11876227.0
+        },
+        {
+          "feature": "PM2.5_roll_min_3",
+          "gain": 4884386.0
+        },
+        {
+          "feature": "PM2.5_roll_mean_3",
+          "gain": 4799911.5
+        },
+        {
+          "feature": "wd_cos",
+          "gain": 387070.21875
+        },
+        {
+          "feature": "wind_v",
+          "gain": 375780.84375
+        },
+        {
+          "feature": "is_heating_season",
+          "gain": 344693.875
+        },
+        {
+          "feature": "WSPM",
+          "gain": 304073.0625
+        },
+        {
+          "feature": "PM10",
+          "gain": 298967.75
+        },
+        {
+          "feature": "hour_cos",
+          "gain": 275207.53125
+        },
+        {
+          "feature": "TEMP",
+          "gain": 253078.3125
+        }
+      ],
+      "redundant_collinear_pairs": [
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_lag_1",
+          "correlation": 0.9613
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.975
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9931
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9263
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9242
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9597
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9778
+        },
+        {
+          "feat1": "PM2.5_roll_mean_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9723
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.9252
+        },
+        {
+          "feat1": "PM2.5_lag_6",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.949
+        }
+      ]
+    },
+    "h24": {
+      "horizon_hours": 24,
+      "baseline_47_features": {
+        "n_features": 47,
+        "test_mae": 67.09,
+        "test_rmse": 93.628,
+        "test_r2": 0.1941,
+        "training_time_sec": 7.726,
+        "mean_per_sample_latency_ms": 0.057584,
+        "throughput_samples_per_sec": 17365.8,
+        "test_matrix_ram_mb": 14.68
+      },
+      "optimized_compact_features": {
+        "n_features": 24,
+        "selected_features": [
+          "PM2.5",
+          "PM2.5_roll_mean_3",
+          "PM2.5_roll_min_3",
+          "PRES",
+          "PM2.5_roll_std_12",
+          "month_sin",
+          "NO2",
+          "wind_v",
+          "day_of_week",
+          "PM2.5_roll_max_24",
+          "is_heating_season",
+          "month_cos",
+          "PM10",
+          "PM2.5_lag_48",
+          "PM2.5_roll_max_12",
+          "DEWP",
+          "PM2.5_roll_std_24",
+          "dew_point_depression",
+          "PM2.5_roll_min_24",
+          "PM2.5_roll_std_6",
+          "PM2.5_roll_min_12",
+          "TEMP",
+          "SO2",
+          "PM2.5_roll_max_6"
+        ],
+        "test_mae": 67.493,
+        "test_rmse": 93.484,
+        "test_r2": 0.1965,
+        "training_time_sec": 4.423,
+        "mean_per_sample_latency_ms": 0.040277,
+        "throughput_samples_per_sec": 24828.35,
+        "test_matrix_ram_mb": 7.74
+      },
+      "comparison": {
+        "feature_reduction_count": 23,
+        "feature_reduction_pct": 48.9,
+        "delta_mae": 0.403,
+        "delta_rmse": -0.144,
+        "delta_r2": 0.0024,
+        "training_speedup_factor": 1.75,
+        "throughput_gain_pct": 43.0,
+        "ram_savings_pct": 47.3
+      },
+      "group_benchmarks_validation": [
+        {
+          "group_name": "temporal_baseline",
+          "n_features": 8,
+          "val_mae": 50.872,
+          "val_rmse": 64.795,
+          "val_r2": -0.1061,
+          "fit_time_sec": 1.162
+        },
+        {
+          "group_name": "historical_pollutants",
+          "n_features": 14,
+          "val_mae": 42.462,
+          "val_rmse": 57.608,
+          "val_r2": 0.1256,
+          "fit_time_sec": 2.59
+        },
+        {
+          "group_name": "lag_features",
+          "n_features": 20,
+          "val_mae": 42.27,
+          "val_rmse": 57.497,
+          "val_r2": 0.129,
+          "fit_time_sec": 3.544
+        },
+        {
+          "group_name": "rolling_features",
+          "n_features": 36,
+          "val_mae": 42.196,
+          "val_rmse": 57.195,
+          "val_r2": 0.1382,
+          "fit_time_sec": 5.168
+        },
+        {
+          "group_name": "meteorological_features",
+          "n_features": 25,
+          "val_mae": 41.603,
+          "val_rmse": 57.505,
+          "val_r2": 0.1288,
+          "fit_time_sec": 3.62
+        },
+        {
+          "group_name": "combined_all",
+          "n_features": 47,
+          "val_mae": 41.477,
+          "val_rmse": 57.291,
+          "val_r2": 0.1353,
+          "fit_time_sec": 6.949
+        }
+      ],
+      "subset_size_benchmarks_validation": [
+        {
+          "k_features": 10,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_mean_3",
+            "PM2.5_roll_min_3",
+            "PRES",
+            "PM2.5_roll_std_12",
+            "month_sin",
+            "NO2",
+            "wind_v",
+            "day_of_week",
+            "PM2.5_roll_max_24"
+          ],
+          "val_mae": 42.316,
+          "val_rmse": 57.88,
+          "val_r2": 0.1174,
+          "fit_time_sec": 3.994
+        },
+        {
+          "k_features": 16,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_mean_3",
+            "PM2.5_roll_min_3",
+            "PRES",
+            "PM2.5_roll_std_12",
+            "month_sin",
+            "NO2",
+            "wind_v",
+            "day_of_week",
+            "PM2.5_roll_max_24",
+            "is_heating_season",
+            "month_cos",
+            "PM10",
+            "PM2.5_lag_48",
+            "PM2.5_roll_max_12",
+            "DEWP"
+          ],
+          "val_mae": 42.517,
+          "val_rmse": 57.917,
+          "val_r2": 0.1163,
+          "fit_time_sec": 3.656
+        },
+        {
+          "k_features": 24,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_mean_3",
+            "PM2.5_roll_min_3",
+            "PRES",
+            "PM2.5_roll_std_12",
+            "month_sin",
+            "NO2",
+            "wind_v",
+            "day_of_week",
+            "PM2.5_roll_max_24",
+            "is_heating_season",
+            "month_cos",
+            "PM10",
+            "PM2.5_lag_48",
+            "PM2.5_roll_max_12",
+            "DEWP",
+            "PM2.5_roll_std_24",
+            "dew_point_depression",
+            "PM2.5_roll_min_24",
+            "PM2.5_roll_std_6",
+            "PM2.5_roll_min_12",
+            "TEMP",
+            "SO2",
+            "PM2.5_roll_max_6"
+          ],
+          "val_mae": 42.457,
+          "val_rmse": 57.678,
+          "val_r2": 0.1235,
+          "fit_time_sec": 4.329
+        },
+        {
+          "k_features": 32,
+          "features": [
+            "PM2.5",
+            "PM2.5_roll_mean_3",
+            "PM2.5_roll_min_3",
+            "PRES",
+            "PM2.5_roll_std_12",
+            "month_sin",
+            "NO2",
+            "wind_v",
+            "day_of_week",
+            "PM2.5_roll_max_24",
+            "is_heating_season",
+            "month_cos",
+            "PM10",
+            "PM2.5_lag_48",
+            "PM2.5_roll_max_12",
+            "DEWP",
+            "PM2.5_roll_std_24",
+            "dew_point_depression",
+            "PM2.5_roll_min_24",
+            "PM2.5_roll_std_6",
+            "PM2.5_roll_min_12",
+            "TEMP",
+            "SO2",
+            "PM2.5_roll_max_6",
+            "PM2.5_roll_mean_24",
+            "WSPM",
+            "PM2.5_lag_24",
+            "RAIN",
+            "PM2.5_roll_max_3",
+            "O3",
+            "PM2.5_lag_12",
+            "is_weekend"
+          ],
+          "val_mae": 41.753,
+          "val_rmse": 57.652,
+          "val_r2": 0.1243,
+          "fit_time_sec": 7.197
+        }
+      ],
+      "top_10_features_by_gain": [
+        {
+          "feature": "PM2.5",
+          "gain": 10308948.0
+        },
+        {
+          "feature": "PM2.5_roll_mean_3",
+          "gain": 3702565.5
+        },
+        {
+          "feature": "PM2.5_roll_min_3",
+          "gain": 2882825.25
+        },
+        {
+          "feature": "PRES",
+          "gain": 1255134.375
+        },
+        {
+          "feature": "PM2.5_roll_std_12",
+          "gain": 1003976.5625
+        },
+        {
+          "feature": "month_sin",
+          "gain": 875818.875
+        },
+        {
+          "feature": "NO2",
+          "gain": 848112.625
+        },
+        {
+          "feature": "wind_v",
+          "gain": 829988.0625
+        },
+        {
+          "feature": "day_of_week",
+          "gain": 718007.875
+        },
+        {
+          "feature": "PM2.5_roll_max_24",
+          "gain": 716565.25
+        }
+      ],
+      "redundant_collinear_pairs": [
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_lag_1",
+          "correlation": 0.9613
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9751
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.993
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_3",
+          "correlation": 0.9264
+        },
+        {
+          "feat1": "PM2.5",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9245
+        },
+        {
+          "feat1": "PM2.5_lag_1",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9598
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9777
+        },
+        {
+          "feat1": "PM2.5_roll_mean_3",
+          "feat2": "PM2.5_roll_mean_6",
+          "correlation": 0.9724
+        },
+        {
+          "feat1": "PM2.5_lag_3",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.9256
+        },
+        {
+          "feat1": "PM2.5_lag_6",
+          "feat2": "PM2.5_roll_mean_12",
+          "correlation": 0.9493
+        }
+      ]
+    }
+  }
+}

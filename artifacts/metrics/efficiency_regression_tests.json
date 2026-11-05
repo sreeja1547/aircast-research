@@ -1,0 +1,115 @@
+{
+  "experiment": "Phase 11 Stage 9: Regression Verification",
+  "timestamp": "2026-11-05T15:47:11Z",
+  "test_suite": {
+    "total_tests": 52,
+    "passed_tests": 52,
+    "failed_tests": 0,
+    "pass_rate_pct": 100.0,
+    "runtime_sec": 23.27
+  },
+  "numerical_equivalence": {
+    "xgboost_h1": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "correlation": 1.0,
+      "is_numerically_identical": true
+    },
+    "xgboost_h6": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "correlation": 0.9999999999999998,
+      "is_numerically_identical": true
+    },
+    "xgboost_h24": {
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "correlation": 0.9999999999999999,
+      "is_numerically_identical": true
+    }
+  },
+  "station_generalization": {
+    "station_count": 12,
+    "station_breakdown": {
+      "Aotizhongxin": {
+        "n_samples": 3571,
+        "mae": 11.477,
+        "rmse": 22.524,
+        "r2": 0.9538
+      },
+      "Changping": {
+        "n_samples": 3575,
+        "mae": 11.615,
+        "rmse": 21.283,
+        "r2": 0.9448
+      },
+      "Dingling": {
+        "n_samples": 3454,
+        "mae": 9.792,
+        "rmse": 19.477,
+        "r2": 0.9436
+      },
+      "Dongsi": {
+        "n_samples": 3520,
+        "mae": 13.182,
+        "rmse": 26.685,
+        "r2": 0.9462
+      },
+      "Guanyuan": {
+        "n_samples": 3528,
+        "mae": 12.431,
+        "rmse": 23.777,
+        "r2": 0.9497
+      },
+      "Gucheng": {
+        "n_samples": 3558,
+        "mae": 11.888,
+        "rmse": 24.842,
+        "r2": 0.9518
+      },
+      "Huairou": {
+        "n_samples": 3577,
+        "mae": 9.549,
+        "rmse": 20.819,
+        "r2": 0.9407
+      },
+      "Nongzhanguan": {
+        "n_samples": 3539,
+        "mae": 11.983,
+        "rmse": 24.268,
+        "r2": 0.9523
+      },
+      "Shunyi": {
+        "n_samples": 3540,
+        "mae": 11.51,
+        "rmse": 22.959,
+        "r2": 0.9503
+      },
+      "Tiantan": {
+        "n_samples": 3567,
+        "mae": 11.599,
+        "rmse": 22.179,
+        "r2": 0.9561
+      },
+      "Wanliu": {
+        "n_samples": 3565,
+        "mae": 10.721,
+        "rmse": 21.422,
+        "r2": 0.9562
+      },
+      "Wanshouxigong": {
+        "n_samples": 3560,
+        "mae": 13.106,
+        "rmse": 28.248,
+        "r2": 0.9412
+      }
+    },
+    "mean_station_mae": 11.571
+  },
+  "bounds_compliance": {
+    "single_sample_latency_budget_ms": 75.0,
+    "batch_throughput_floor_samples_per_sec": 1000.0,
+    "model_size_cap_mb": 5.0,
+    "all_budgets_met": true
+  }
+}

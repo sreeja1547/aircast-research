@@ -1,0 +1,145 @@
+{
+  "experiment": "Phase 11 Stage 8: API Serving Performance",
+  "timestamp": "2026-11-05T15:41:42Z",
+  "endpoints": {
+    "health": {
+      "endpoint": "/health",
+      "n_requests": 100,
+      "mean_latency_ms": 10.158,
+      "p50_latency_ms": 7.747,
+      "p95_latency_ms": 29.724,
+      "p99_latency_ms": 34.681,
+      "min_latency_ms": 2.111,
+      "max_latency_ms": 35.937
+    },
+    "model_info": {
+      "endpoint": "/model-info",
+      "n_requests": 100,
+      "mean_latency_ms": 13.725,
+      "p50_latency_ms": 10.422,
+      "p95_latency_ms": 28.394,
+      "p99_latency_ms": 34.648,
+      "min_latency_ms": 4.481,
+      "max_latency_ms": 42.917
+    },
+    "predict_single": {
+      "endpoint": "/predict",
+      "n_requests": 100,
+      "mean_latency_ms": 71.858,
+      "p50_latency_ms": 70.159,
+      "p95_latency_ms": 99.657,
+      "p99_latency_ms": 101.01,
+      "min_latency_ms": 25.688,
+      "max_latency_ms": 101.64
+    }
+  },
+  "concurrency_scaling": [
+    {
+      "concurrent_workers": 1,
+      "total_requests": 50,
+      "wall_clock_time_sec": 3.651,
+      "throughput_req_per_sec": 13.7,
+      "mean_latency_ms": 72.873,
+      "p50_latency_ms": 70.087,
+      "p95_latency_ms": 99.87,
+      "p99_latency_ms": 101.561
+    },
+    {
+      "concurrent_workers": 5,
+      "total_requests": 50,
+      "wall_clock_time_sec": 3.798,
+      "throughput_req_per_sec": 13.2,
+      "mean_latency_ms": 368.35,
+      "p50_latency_ms": 425.513,
+      "p95_latency_ms": 488.039,
+      "p99_latency_ms": 497.115
+    },
+    {
+      "concurrent_workers": 10,
+      "total_requests": 50,
+      "wall_clock_time_sec": 3.305,
+      "throughput_req_per_sec": 15.1,
+      "mean_latency_ms": 624.279,
+      "p50_latency_ms": 700.089,
+      "p95_latency_ms": 939.382,
+      "p99_latency_ms": 956.596
+    },
+    {
+      "concurrent_workers": 25,
+      "total_requests": 50,
+      "wall_clock_time_sec": 3.534,
+      "throughput_req_per_sec": 14.1,
+      "mean_latency_ms": 1471.183,
+      "p50_latency_ms": 1366.395,
+      "p95_latency_ms": 2247.59,
+      "p99_latency_ms": 2438.817
+    }
+  ],
+  "batch_scaling": [
+    {
+      "endpoint": "/predict/batch",
+      "n_requests": 20,
+      "mean_latency_ms": 78.292,
+      "p50_latency_ms": 81.581,
+      "p95_latency_ms": 105.074,
+      "p99_latency_ms": 105.181,
+      "min_latency_ms": 28.861,
+      "max_latency_ms": 105.208,
+      "batch_size": 10,
+      "per_sample_latency_ms": 7.8292,
+      "throughput_samples_per_sec": 127.7
+    },
+    {
+      "endpoint": "/predict/batch",
+      "n_requests": 20,
+      "mean_latency_ms": 83.025,
+      "p50_latency_ms": 83.882,
+      "p95_latency_ms": 112.556,
+      "p99_latency_ms": 117.212,
+      "min_latency_ms": 36.113,
+      "max_latency_ms": 118.375,
+      "batch_size": 50,
+      "per_sample_latency_ms": 1.6605,
+      "throughput_samples_per_sec": 602.2
+    },
+    {
+      "endpoint": "/predict/batch",
+      "n_requests": 20,
+      "mean_latency_ms": 92.642,
+      "p50_latency_ms": 99.351,
+      "p95_latency_ms": 141.833,
+      "p99_latency_ms": 144.974,
+      "min_latency_ms": 37.091,
+      "max_latency_ms": 145.76,
+      "batch_size": 100,
+      "per_sample_latency_ms": 0.9264,
+      "throughput_samples_per_sec": 1079.4
+    },
+    {
+      "endpoint": "/predict/batch",
+      "n_requests": 20,
+      "mean_latency_ms": 107.781,
+      "p50_latency_ms": 116.012,
+      "p95_latency_ms": 150.784,
+      "p99_latency_ms": 151.444,
+      "min_latency_ms": 52.688,
+      "max_latency_ms": 151.609,
+      "batch_size": 250,
+      "per_sample_latency_ms": 0.4311,
+      "throughput_samples_per_sec": 2319.5
+    },
+    {
+      "endpoint": "/predict/batch",
+      "n_requests": 20,
+      "mean_latency_ms": 127.84,
+      "p50_latency_ms": 123.903,
+      "p95_latency_ms": 164.017,
+      "p99_latency_ms": 166.469,
+      "min_latency_ms": 78.22,
+      "max_latency_ms": 167.082,
+      "batch_size": 500,
+      "per_sample_latency_ms": 0.2557,
+      "throughput_samples_per_sec": 3911.1
+    }
+  ]
+}

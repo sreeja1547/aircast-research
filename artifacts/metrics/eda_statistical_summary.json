@@ -1,0 +1,561 @@
+{
+  "dataset_total_records": 420768,
+  "pollutant_statistics": {
+    "PM2.5": {
+      "mean": 79.79,
+      "std": 80.82,
+      "median": 55.0,
+      "iqr": 91.0,
+      "min": 2.0,
+      "max": 999.0,
+      "skewness": 2.014,
+      "kurtosis": 5.965,
+      "jarque_bera_stat": 889338.1,
+      "jarque_bera_pval": 0.0
+    },
+    "PM10": {
+      "mean": 104.6,
+      "std": 91.77,
+      "median": 82.0,
+      "iqr": 109.0,
+      "min": 2.0,
+      "max": 999.0,
+      "skewness": 1.886,
+      "kurtosis": 6.186,
+      "jarque_bera_stat": 906081.5,
+      "jarque_bera_pval": 0.0
+    },
+    "SO2": {
+      "mean": 15.83,
+      "std": 21.65,
+      "median": 7.0,
+      "iqr": 17.0,
+      "min": 0.29,
+      "max": 500.0,
+      "skewness": 3.009,
+      "kurtosis": 14.188,
+      "jarque_bera_stat": 4074887.8,
+      "jarque_bera_pval": 0.0
+    },
+    "NO2": {
+      "mean": 50.64,
+      "std": 35.13,
+      "median": 43.0,
+      "iqr": 48.0,
+      "min": 1.03,
+      "max": 290.0,
+      "skewness": 1.05,
+      "kurtosis": 1.204,
+      "jarque_bera_stat": 99772.2,
+      "jarque_bera_pval": 0.0
+    },
+    "CO": {
+      "mean": 1230.77,
+      "std": 1160.18,
+      "median": 900.0,
+      "iqr": 1000.0,
+      "min": 100.0,
+      "max": 10000.0,
+      "skewness": 2.57,
+      "kurtosis": 9.319,
+      "jarque_bera_stat": 1888141.4,
+      "jarque_bera_pval": 0.0
+    },
+    "O3": {
+      "mean": 57.37,
+      "std": 56.66,
+      "median": 45.0,
+      "iqr": 71.0,
+      "min": 0.21,
+      "max": 1071.0,
+      "skewness": 1.66,
+      "kurtosis": 6.264,
+      "jarque_bera_stat": 853390.7,
+      "jarque_bera_pval": 0.0
+    }
+  },
+  "temporal_statistics": {
+    "heating_season_mean_pm25": 94.88,
+    "non_heating_season_mean_pm25": 69.05,
+    "heating_ratio": 1.37,
+    "weekday_mean_pm25": 78.08,
+    "weekend_mean_pm25": 84.04
+  },
+  "spatial_statistics": {
+    "Dingling": {
+      "mean": 65.99,
+      "std": 72.27,
+      "median": 41.0,
+      "iqr": 79.0
+    },
+    "Changping": {
+      "mean": 71.1,
+      "std": 72.33,
+      "median": 46.0,
+      "iqr": 82.0
+    },
+    "Huairou": {
+      "mean": 69.63,
+      "std": 71.22,
+      "median": 47.0,
+      "iqr": 81.0
+    },
+    "Shunyi": {
+      "mean": 79.49,
+      "std": 81.23,
+      "median": 55.0,
+      "iqr": 93.0
+    },
+    "Aotizhongxin": {
+      "mean": 82.77,
+      "std": 82.14,
+      "median": 58.0,
+      "iqr": 92.0
+    },
+    "Nongzhanguan": {
+      "mean": 84.84,
+      "std": 86.23,
+      "median": 59.0,
+      "iqr": 94.0
+    },
+    "Tiantan": {
+      "mean": 82.16,
+      "std": 80.92,
+      "median": 59.0,
+      "iqr": 91.0
+    },
+    "Guanyuan": {
+      "mean": 82.93,
+      "std": 80.93,
+      "median": 59.0,
+      "iqr": 92.0
+    },
+    "Wanliu": {
+      "mean": 83.37,
+      "std": 81.91,
+      "median": 59.0,
+      "iqr": 93.0
+    },
+    "Gucheng": {
+      "mean": 83.85,
+      "std": 82.8,
+      "median": 60.0,
+      "iqr": 91.75
+    },
+    "Wanshouxigong": {
+      "mean": 85.02,
+      "std": 85.98,
+      "median": 60.0,
+      "iqr": 93.0
+    },
+    "Dongsi": {
+      "mean": 86.19,
+      "std": 86.58,
+      "median": 61.0,
+      "iqr": 97.0
+    }
+  },
+  "meteorological_statistics": {},
+  "correlation_matrices": {
+    "pearson": {
+      "PM2.5": {
+        "PM2.5": 1.0,
+        "PM10": 0.884,
+        "SO2": 0.482,
+        "NO2": 0.667,
+        "CO": 0.79,
+        "O3": -0.15,
+        "TEMP": -0.131,
+        "PRES": 0.019,
+        "DEWP": 0.115,
+        "RAIN": -0.014,
+        "WSPM": -0.272,
+        "dew_point_depression": -0.391
+      },
+      "PM10": {
+        "PM2.5": 0.884,
+        "PM10": 1.0,
+        "SO2": 0.463,
+        "NO2": 0.652,
+        "CO": 0.702,
+        "O3": -0.111,
+        "TEMP": -0.096,
+        "PRES": -0.018,
+        "DEWP": 0.07,
+        "RAIN": -0.027,
+        "WSPM": -0.184,
+        "dew_point_depression": -0.262
+      },
+      "SO2": {
+        "PM2.5": 0.482,
+        "PM10": 0.463,
+        "SO2": 1.0,
+        "NO2": 0.499,
+        "CO": 0.536,
+        "O3": -0.165,
+        "TEMP": -0.322,
+        "PRES": 0.223,
+        "DEWP": -0.267,
+        "RAIN": -0.04,
+        "WSPM": -0.109,
+        "dew_point_depression": 0.0
+      },
+      "NO2": {
+        "PM2.5": 0.667,
+        "PM10": 0.652,
+        "SO2": 0.499,
+        "NO2": 1.0,
+        "CO": 0.705,
+        "O3": -0.472,
+        "TEMP": -0.278,
+        "PRES": 0.174,
+        "DEWP": -0.032,
+        "RAIN": -0.044,
+        "WSPM": -0.4,
+        "dew_point_depression": -0.348
+      },
+      "CO": {
+        "PM2.5": 0.79,
+        "PM10": 0.702,
+        "SO2": 0.536,
+        "NO2": 0.705,
+        "CO": 1.0,
+        "O3": -0.313,
+        "TEMP": -0.326,
+        "PRES": 0.188,
+        "DEWP": -0.057,
+        "RAIN": -0.013,
+        "WSPM": -0.298,
+        "dew_point_depression": -0.372
+      },
+      "O3": {
+        "PM2.5": -0.15,
+        "PM10": -0.111,
+        "SO2": -0.165,
+        "NO2": -0.472,
+        "CO": -0.313,
+        "O3": 1.0,
+        "TEMP": 0.595,
+        "PRES": -0.446,
+        "DEWP": 0.312,
+        "RAIN": 0.023,
+        "WSPM": 0.296,
+        "dew_point_depression": 0.315
+      },
+      "TEMP": {
+        "PM2.5": -0.131,
+        "PM10": -0.096,
+        "SO2": -0.322,
+        "NO2": -0.278,
+        "CO": -0.326,
+        "O3": 0.595,
+        "TEMP": 1.0,
+        "PRES": -0.813,
+        "DEWP": 0.82,
+        "RAIN": 0.038,
+        "WSPM": 0.033,
+        "dew_point_depression": 0.016
+      },
+      "PRES": {
+        "PM2.5": 0.019,
+        "PM10": -0.018,
+        "SO2": 0.223,
+        "NO2": 0.174,
+        "CO": 0.188,
+        "O3": -0.446,
+        "TEMP": -0.813,
+        "PRES": 1.0,
+        "DEWP": -0.75,
+        "RAIN": -0.061,
+        "WSPM": 0.065,
+        "dew_point_depression": 0.133
+      },
+      "DEWP": {
+        "PM2.5": 0.115,
+        "PM10": 0.07,
+        "SO2": -0.267,
+        "NO2": -0.032,
+        "CO": -0.057,
+        "O3": 0.312,
+        "TEMP": 0.82,
+        "PRES": -0.75,
+        "DEWP": 1.0,
+        "RAIN": 0.086,
+        "WSPM": -0.297,
+        "dew_point_depression": -0.559
+      },
+      "RAIN": {
+        "PM2.5": -0.014,
+        "PM10": -0.027,
+        "SO2": -0.04,
+        "NO2": -0.044,
+        "CO": -0.013,
+        "O3": 0.023,
+        "TEMP": 0.038,
+        "PRES": -0.061,
+        "DEWP": 0.086,
+        "RAIN": 1.0,
+        "WSPM": 0.021,
+        "dew_point_depression": -0.096
+      },
+      "WSPM": {
+        "PM2.5": -0.272,
+        "PM10": -0.184,
+        "SO2": -0.109,
+        "NO2": -0.4,
+        "CO": -0.298,
+        "O3": 0.296,
+        "TEMP": 0.033,
+        "PRES": 0.065,
+        "DEWP": -0.297,
+        "RAIN": 0.021,
+        "WSPM": 1.0,
+        "dew_point_depression": 0.566
+      },
+      "dew_point_depression": {
+        "PM2.5": -0.391,
+        "PM10": -0.262,
+        "SO2": 0.0,
+        "NO2": -0.348,
+        "CO": -0.372,
+        "O3": 0.315,
+        "TEMP": 0.016,
+        "PRES": 0.133,
+        "DEWP": -0.559,
+        "RAIN": -0.096,
+        "WSPM": 0.566,
+        "dew_point_depression": 1.0
+      }
+    },
+    "spearman": {
+      "PM2.5": {
+        "PM2.5": 1.0,
+        "PM10": 0.891,
+        "SO2": 0.5,
+        "NO2": 0.658,
+        "CO": 0.837,
+        "O3": -0.254,
+        "TEMP": -0.024,
+        "PRES": -0.07,
+        "DEWP": 0.241,
+        "RAIN": -0.02,
+        "WSPM": -0.329,
+        "dew_point_depression": -0.459
+      },
+      "PM10": {
+        "PM2.5": 0.891,
+        "PM10": 1.0,
+        "SO2": 0.498,
+        "NO2": 0.643,
+        "CO": 0.732,
+        "O3": -0.212,
+        "TEMP": -0.018,
+        "PRES": -0.077,
+        "DEWP": 0.15,
+        "RAIN": -0.08,
+        "WSPM": -0.251,
+        "dew_point_depression": -0.297
+      },
+      "SO2": {
+        "PM2.5": 0.5,
+        "PM10": 0.498,
+        "SO2": 1.0,
+        "NO2": 0.527,
+        "CO": 0.565,
+        "O3": -0.213,
+        "TEMP": -0.36,
+        "PRES": 0.291,
+        "DEWP": -0.342,
+        "RAIN": -0.151,
+        "WSPM": -0.066,
+        "dew_point_depression": 0.111
+      },
+      "NO2": {
+        "PM2.5": 0.658,
+        "PM10": 0.643,
+        "SO2": 0.527,
+        "NO2": 1.0,
+        "CO": 0.741,
+        "O3": -0.614,
+        "TEMP": -0.27,
+        "PRES": 0.184,
+        "DEWP": -0.018,
+        "RAIN": -0.069,
+        "WSPM": -0.441,
+        "dew_point_depression": -0.358
+      },
+      "CO": {
+        "PM2.5": 0.837,
+        "PM10": 0.732,
+        "SO2": 0.565,
+        "NO2": 0.741,
+        "CO": 1.0,
+        "O3": -0.45,
+        "TEMP": -0.222,
+        "PRES": 0.117,
+        "DEWP": 0.093,
+        "RAIN": 0.009,
+        "WSPM": -0.389,
+        "dew_point_depression": -0.477
+      },
+      "O3": {
+        "PM2.5": -0.254,
+        "PM10": -0.212,
+        "SO2": -0.213,
+        "NO2": -0.614,
+        "CO": -0.45,
+        "O3": 1.0,
+        "TEMP": 0.582,
+        "PRES": -0.438,
+        "DEWP": 0.247,
+        "RAIN": -0.01,
+        "WSPM": 0.427,
+        "dew_point_depression": 0.426
+      },
+      "TEMP": {
+        "PM2.5": -0.024,
+        "PM10": -0.018,
+        "SO2": -0.36,
+        "NO2": -0.27,
+        "CO": -0.222,
+        "O3": 0.582,
+        "TEMP": 1.0,
+        "PRES": -0.819,
+        "DEWP": 0.817,
+        "RAIN": 0.039,
+        "WSPM": 0.102,
+        "dew_point_depression": 0.003
+      },
+      "PRES": {
+        "PM2.5": -0.07,
+        "PM10": -0.077,
+        "SO2": 0.291,
+        "NO2": 0.184,
+        "CO": 0.117,
+        "O3": -0.438,
+        "TEMP": -0.819,
+        "PRES": 1.0,
+        "DEWP": -0.757,
+        "RAIN": -0.081,
+        "WSPM": 0.036,
+        "dew_point_depression": 0.15
+      },
+      "DEWP": {
+        "PM2.5": 0.241,
+        "PM10": 0.15,
+        "SO2": -0.342,
+        "NO2": -0.018,
+        "CO": 0.093,
+        "O3": 0.247,
+        "TEMP": 0.817,
+        "PRES": -0.757,
+        "DEWP": 1.0,
+        "RAIN": 0.177,
+        "WSPM": -0.237,
+        "dew_point_depression": -0.558
+      },
+      "RAIN": {
+        "PM2.5": -0.02,
+        "PM10": -0.08,
+        "SO2": -0.151,
+        "NO2": -0.069,
+        "CO": 0.009,
+        "O3": -0.01,
+        "TEMP": 0.039,
+        "PRES": -0.081,
+        "DEWP": 0.177,
+        "RAIN": 1.0,
+        "WSPM": -0.023,
+        "dew_point_depression": -0.278
+      },
+      "WSPM": {
+        "PM2.5": -0.329,
+        "PM10": -0.251,
+        "SO2": -0.066,
+        "NO2": -0.441,
+        "CO": -0.389,
+        "O3": 0.427,
+        "TEMP": 0.102,
+        "PRES": 0.036,
+        "DEWP": -0.237,
+        "RAIN": -0.023,
+        "WSPM": 1.0,
+        "dew_point_depression": 0.568
+      },
+      "dew_point_depression": {
+        "PM2.5": -0.459,
+        "PM10": -0.297,
+        "SO2": 0.111,
+        "NO2": -0.358,
+        "CO": -0.477,
+        "O3": 0.426,
+        "TEMP": 0.003,
+        "PRES": 0.15,
+        "DEWP": -0.558,
+        "RAIN": -0.278,
+        "WSPM": 0.568,
+        "dew_point_depression": 1.0
+      }
+    }
+  },
+  "missingness_statistics": {
+    "pm25_total_missing_records": 8739,
+    "pm25_pct_missing": 2.0769,
+    "streak_length_median": 1.0,
+    "streak_length_p90": 4.0,
+    "streak_length_max": 343,
+    "pct_streaks_le_3h": 87.2
+  },
+  "pm_ratio_discrepancy": {
+    "valid_simultaneous_pairs_denominator": 411813,
+    "count_pm25_gt_pm10": 21312,
+    "percentage_of_simultaneous_pairs": 5.175164,
+    "mean_discrepancy": 24.72,
+    "median_discrepancy": 19.0,
+    "p95_discrepancy": 66.0,
+    "max_discrepancy": 591.0,
+    "station_breakdown": {
+      "Aotizhongxin": 1183,
+      "Changping": 1684,
+      "Dingling": 2949,
+      "Dongsi": 2156,
+      "Guanyuan": 1369,
+      "Gucheng": 1591,
+      "Huairou": 1485,
+      "Nongzhanguan": 1850,
+      "Shunyi": 1884,
+      "Tiantan": 1620,
+      "Wanliu": 1902,
+      "Wanshouxigong": 1639
+    }
+  },
+  "extreme_pollution_statistics": {
+    "epa_category_breakdown": {
+      "Good (0-12)": {
+        "count": 62775,
+        "pct": 15.24
+      },
+      "Moderate (12.1-35.4)": {
+        "count": 91096,
+        "pct": 22.11
+      },
+      "Unhealthy Sensitive (35.5-55.4)": {
+        "count": 53248,
+        "pct": 12.92
+      },
+      "Unhealthy (55.5-150.4)": {
+        "count": 142240,
+        "pct": 34.52
+      },
+      "Very Unhealthy (150.5-250.4)": {
+        "count": 44234,
+        "pct": 10.74
+      },
+      "Hazardous (>250.4)": {
+        "count": 18436,
+        "pct": 4.47
+      }
+    },
+    "records_gt_500": 933
+  }
+}

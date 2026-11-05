@@ -1,0 +1,587 @@
+{
+  "experiment": "Phase 11 Final Scientific and Performance Reconciliation",
+  "audit_version": "2.0.0-final-release",
+  "timestamp": "2026-11-05T21:56:51.519044",
+  "hardware_environment": {
+    "processor": "Intel(R) Core(TM) i7-13700H (14 cores / 20 threads)",
+    "os": "Windows 11 Home (x64)",
+    "ram_installed_gb": 16.0,
+    "python_version": "3.13.5",
+    "acceleration_mode": "CPU-based measured acceleration (no GPU acceleration)",
+    "cuda_available": false,
+    "gpu_memory_used_mb": 0.0
+  },
+  "verified_storage_reconciliation": {
+    "total_disk_artifacts_count": 29,
+    "total_disk_artifacts_mb": 113.2051,
+    "baseline_random_forest_suite_mb": 100.6686,
+    "baseline_xgboost_suite_mb": 2.8079,
+    "recommended_pareto_suite": {
+      "h1_model": {
+        "artifact": "xgboost_h1.joblib",
+        "variant": "XGBoost_Baseline (180 trees, depth 7, lr 0.05)",
+        "size_mb": 1.1577
+      },
+      "h6_model": {
+        "artifact": "xgboost_pruned_h6.joblib",
+        "variant": "XGBoost_Pruned (90 trees, depth 6, lr 0.08)",
+        "size_mb": 0.4328
+      },
+      "h24_model": {
+        "artifact": "xgboost_fast_h24.joblib",
+        "variant": "XGBoost_Fast (50 trees, depth 5, lr 0.12)",
+        "size_mb": 0.1352
+      },
+      "total_suite_mb": 1.7257
+    },
+    "storage_reductions": {
+      "vs_baseline_random_forest_suite": {
+        "reduction_pct": 98.29,
+        "factor_reduction": 58.33
+      },
+      "vs_baseline_xgboost_suite": {
+        "reduction_pct": 38.54,
+        "factor_reduction": 1.63
+      },
+      "vs_entire_model_archive": {
+        "reduction_pct": 98.48,
+        "factor_reduction": 65.6
+      }
+    },
+    "lossless_joblib_compression_ratios": {
+      "random_forest_level3": 3.13,
+      "xgboost_level3": 2.91,
+      "hist_gradient_boosting_level3": 2.41,
+      "lstm_level3": 1.1
+    }
+  },
+  "verified_ram_reconciliation": {
+    "dataframe_downcasting": {
+      "float64_ram_mb": 227.38,
+      "float32_ram_mb": 121.45,
+      "savings_pct": 46.59,
+      "factor_reduction": 1.87
+    },
+    "feature_matrix_ram_by_horizon": {
+      "h1": {
+        "baseline_47_feats_mb": 14.77,
+        "compact_16_feats_mb": 5.36,
+        "savings_pct": 63.7
+      },
+      "h6": {
+        "baseline_47_feats_mb": 14.75,
+        "compact_24_feats_mb": 7.78,
+        "savings_pct": 47.3
+      },
+      "h24": {
+        "baseline_47_feats_mb": 14.68,
+        "compact_24_feats_mb": 7.74,
+        "savings_pct": 47.3
+      }
+    },
+    "memory_stability": {
+      "net_growth_mb": 2.24,
+      "is_memory_stable": true
+    }
+  },
+  "verified_latency_and_throughput": {
+    "single_sample_inference": {
+      "xgboost": {
+        "baseline_pandas_ms": 35.597,
+        "preallocated_buffer_ms": 4.3282,
+        "speedup_factor": 8.22
+      },
+      "ridge": {
+        "baseline_pandas_ms": 9.9325,
+        "preallocated_buffer_ms": 0.1471,
+        "speedup_factor": 67.52
+      },
+      "lstm": {
+        "baseline_pandas_ms": 12.5609,
+        "preallocated_buffer_ms": 1.4903,
+        "speedup_factor": 8.43
+      }
+    },
+    "batch_throughput_samples_per_sec": {
+      "xgboost_bs1": 286.6,
+      "xgboost_peak_bs1024": 188688.3,
+      "ridge_peak_bs1024": 4335492.7,
+      "throughput_gain_factor": 6.63
+    },
+    "vectorization_acceleration": {
+      "feature_extraction_speedup": 84.7,
+      "vectorized_groupby_duration_sec": 0.0496,
+      "iterative_loop_duration_sec": 4.201
+    }
+  },
+  "verified_predictive_performance": {
+    "h1": {
+      "baseline_rf_mae": 11.5238,
+      "baseline_rf_rmse": 23.0782,
+      "baseline_xgb_mae": 11.5723,
+      "baseline_xgb_rmse": 23.3344,
+      "selected_xgb_mae": 11.5723,
+      "selected_xgb_rmse": 23.3344,
+      "selected_xgb_r2": 0.9499,
+      "delta_mae_vs_rf": 0.0485,
+      "delta_mae_vs_xgb": 0.0,
+      "sample_count": 42554,
+      "feature_group": "combined_all",
+      "provenance": "Evaluated on holdout test set (2016-09-01 to 2017-02-28) using artifacts/models/xgboost_h1.joblib"
+    },
+    "h6": {
+      "baseline_xgb_mae": 36.9541,
+      "baseline_xgb_rmse": 62.5712,
+      "selected_xgb_pruned_mae": 37.035,
+      "selected_xgb_pruned_rmse": 62.6263,
+      "selected_xgb_pruned_r2": 0.6389,
+      "delta_mae": 0.0809,
+      "delta_rmse": 0.0551,
+      "sample_count": 42494,
+      "feature_group": "combined_all",
+      "provenance": "Evaluated on holdout test set (2016-09-01 to 2017-02-28) using artifacts/models/xgboost_pruned_h6.joblib (42,554 - 60 station horizon boundary rows)"
+    },
+    "h24": {
+      "baseline_rf_mae": 68.8332,
+      "baseline_rf_rmse": 96.6436,
+      "baseline_xgb_mae": 67.2555,
+      "baseline_xgb_rmse": 93.4117,
+      "selected_xgb_fast_mae": 66.0738,
+      "selected_xgb_fast_rmse": 92.5722,
+      "selected_xgb_fast_r2": 0.2121,
+      "delta_mae_vs_rf": -2.7594,
+      "delta_mae_vs_xgb": -1.1817,
+      "pct_accuracy_gain_vs_xgb": 1.76,
+      "sample_count": 42278,
+      "feature_group": "combined_all",
+      "provenance": "Evaluated on holdout test set (2016-09-01 to 2017-02-28) using artifacts/models/xgboost_fast_h24.joblib (42,554 - 276 station horizon boundary rows)"
+    }
+  },
+  "resolved_discrepancies_and_inconsistencies": {
+    "discrepancy_1_storage": "Total archive storage on disk (112.64 MB) encompasses 27 model and calibrator files across 7 benchmark architectures. The reported 1.72 MB figure is the physical footprint of the 3-model Pareto deployment suite (xgboost_h1 1.158 MB + xgboost_pruned_h6 0.433 MB + xgboost_fast_h24 0.135 MB = 1.726 MB). Comparing 100.67 MB (baseline RF suite) to 1.72 MB yields a 98.29% reduction (58.3x), while comparing uniform XGBoost baseline (2.81 MB) to 1.72 MB yields a 38.54% reduction (1.63x).",
+    "discrepancy_2_random_forest_compression": "Algorithmic structural tree pruning (reducing trees to 20 and depth to 8) reduced RF from 100.67 MB to 1.87 MB (53.8x reduction). Lossless file compression (joblib compress=3) reduced the unpruned baseline RF from 24.59 MB to 7.86 MB (3.13x). These are two distinct orthogonal mechanisms that must not be conflated.",
+    "discrepancy_3_baseline_mae_consistency": "Experiment 1 benchmarking and Stage 1 Efficiency baselines exhibit a 100.0% exact match across all 21 model-horizon pairs down to 4 decimal places. Minor variations in Stage 2 feature pruning reports (delta <= 0.16 MAE) stemmed from refitting models during ablation experiments without early stopping checkpoints. Stage 10 report compared the best overall baseline at each horizon (RF at h1, XGB at h6/h24) against the selected Pareto suite.",
+    "discrepancy_4_evaluation_samples_and_leakage": "Feature selection and ranking were performed strictly on the validation set (35,462 samples) with zero test set leakage. The test split (42,554 samples per horizon) was evaluated exclusively for final unbiased performance estimation.",
+    "discrepancy_5_horizon_24_model_selection": "Both Linear Regression (MAE 66.794, size 0.003 MB) and XGBoost_Fast (MAE 66.074, size 0.135 MB) are Pareto-optimal for 24h forecasting. XGBoost_Fast was selected for the final recommended suite because it delivers superior predictive accuracy (delta MAE = -1.181 vs baseline XGBoost) and supports calibrated normalized conformal uncertainty prediction.",
+    "discrepancy_6_rmse_consistency_reconciliation": "A discrepancy between intermediate audit tables (reporting 23.11, 63.02, 91.80) and the Phase 11 verified metrics (23.3344, 62.6263, 92.5722) was resolved via recalculation from identical y_true and y_pred test arrays. The 23.11, 63.02, and 91.80 values arose from transcription errors conflating alternative baselines (HistGBDT RMSE 23.12, LOSO persistence MAE 63.03, and batch latency 91.80 ms). The exact reproducible test RMSE metrics for the recommended suite (xgboost_h1, xgboost_pruned_h6, xgboost_fast_h24) are 23.3344 (+1h), 62.6263 (+6h), and 92.5722 (+24h), with MAE of 11.5723, 37.0350, 66.0738 and R2 of 0.9499, 0.6389, 0.2121."
+  },
+  "api_serving_verification": {
+    "test_endpoints_verified": {
+      "h1": {
+        "baseline_model": "xgboost_h1",
+        "baseline_pred": 61.77,
+        "baseline_interval": [
+          44.65,
+          78.89
+        ],
+        "recommended_model": "xgboost_h1",
+        "recommended_pred": 61.77,
+        "recommended_interval": [
+          44.65,
+          78.89
+        ],
+        "calibrated": true,
+        "interval_method": "calibrated_normalized_conformal",
+        "single_sample_latency_ms": 7.5764
+      },
+      "h6": {
+        "baseline_model": "xgboost_h6",
+        "baseline_pred": 70.34,
+        "baseline_interval": [
+          20.12,
+          120.55
+        ],
+        "recommended_model": "xgboost_pruned_h6",
+        "recommended_pred": 77.41,
+        "recommended_interval": [
+          23.06,
+          131.75
+        ],
+        "calibrated": true,
+        "interval_method": "calibrated_normalized_conformal",
+        "single_sample_latency_ms": 10.4403
+      },
+      "h24": {
+        "baseline_model": "xgboost_h24",
+        "baseline_pred": 52.84,
+        "baseline_interval": [
+          0.79,
+          104.88
+        ],
+        "recommended_model": "xgboost_fast_h24",
+        "recommended_pred": 56.31,
+        "recommended_interval": [
+          1.27,
+          111.36
+        ],
+        "calibrated": true,
+        "interval_method": "calibrated_normalized_conformal",
+        "single_sample_latency_ms": 47.4637
+      }
+    },
+    "pareto_alias_supported": true,
+    "conformal_calibration_active": true
+  },
+  "regression_and_safety_summary": {
+    "total_unit_tests": 52,
+    "passed_unit_tests": 52,
+    "failed_unit_tests": 0,
+    "pass_rate_pct": 100.0,
+    "numerical_equivalence_verified": true,
+    "bounds_compliance_verified": true
+  },
+  "conformal_coverage_audit": {
+    "nominal_confidence_target": 0.9,
+    "pooled_empirical_coverage": 84.72,
+    "total_evaluated_test_samples": 127326,
+    "historical_91_4_percent_source": "The 91.4% figure originated in Phase 7 (research/uncertainty_and_explainability.md) from a single-horizon static split conformal predictor with a uniform fixed margin of 56.20 ug/m3 evaluated on 42,278 test samples (38,642 covered). It did not represent horizon-specific normalized conformal coverage across all lead times.",
+    "horizon_breakdown": {
+      "h1": {
+        "calibrator_artifact": "conformal_calibrator_h1.joblib",
+        "method": "normalized_adaptive_conformal",
+        "overall_empirical_coverage": 89.07,
+        "coverage_gap_pct": -0.93,
+        "mean_interval_width": 44.88,
+        "median_interval_width": 35.54,
+        "test_samples": 42554,
+        "severe_pollution_tier_coverage": {
+          "good_0_to_35": {
+            "coverage": 92.53,
+            "mean_width": 20.82,
+            "samples": 15818
+          },
+          "moderate_35_to_75": {
+            "coverage": 85.8,
+            "mean_width": 33.17,
+            "samples": 7322
+          },
+          "unhealthy_sensitive_75_to_115": {
+            "coverage": 87.29,
+            "mean_width": 44.1,
+            "samples": 5436
+          },
+          "unhealthy_115_to_150": {
+            "coverage": 86.83,
+            "mean_width": 54.72,
+            "samples": 3584
+          },
+          "very_unhealthy_150_to_250": {
+            "coverage": 88.61,
+            "mean_width": 72.18,
+            "samples": 6718
+          },
+          "hazardous_severe_above_250": {
+            "coverage": 86.34,
+            "mean_width": 113.39,
+            "samples": 3676
+          }
+        }
+      },
+      "h6": {
+        "calibrator_artifact": "conformal_calibrator_h6.joblib",
+        "method": "normalized_adaptive_conformal",
+        "overall_empirical_coverage": 85.26,
+        "coverage_gap_pct": -4.74,
+        "mean_interval_width": 131.29,
+        "median_interval_width": 111.77,
+        "test_samples": 42494,
+        "severe_pollution_tier_coverage": {
+          "good_0_to_35": {
+            "coverage": 82.93,
+            "mean_width": 60.71,
+            "samples": 15818
+          },
+          "moderate_35_to_75": {
+            "coverage": 89.25,
+            "mean_width": 100.58,
+            "samples": 7322
+          },
+          "unhealthy_sensitive_75_to_115": {
+            "coverage": 91.81,
+            "mean_width": 131.34,
+            "samples": 5436
+          },
+          "unhealthy_115_to_150": {
+            "coverage": 88.91,
+            "mean_width": 163.03,
+            "samples": 3580
+          },
+          "very_unhealthy_150_to_250": {
+            "coverage": 87.87,
+            "mean_width": 219.99,
+            "samples": 6662
+          },
+          "hazardous_severe_above_250": {
+            "coverage": 69.4,
+            "mean_width": 304.46,
+            "samples": 3676
+          }
+        }
+      },
+      "h24": {
+        "calibrator_artifact": "conformal_calibrator_h24.joblib",
+        "method": "normalized_adaptive_conformal",
+        "overall_empirical_coverage": 79.81,
+        "coverage_gap_pct": -10.19,
+        "mean_interval_width": 181.15,
+        "median_interval_width": 174.62,
+        "test_samples": 42278,
+        "severe_pollution_tier_coverage": {
+          "good_0_to_35": {
+            "coverage": 79.97,
+            "mean_width": 158.96,
+            "samples": 15818
+          },
+          "moderate_35_to_75": {
+            "coverage": 98.98,
+            "mean_width": 147.14,
+            "samples": 7322
+          },
+          "unhealthy_sensitive_75_to_115": {
+            "coverage": 92.82,
+            "mean_width": 165.57,
+            "samples": 5435
+          },
+          "unhealthy_115_to_150": {
+            "coverage": 87.48,
+            "mean_width": 193.29,
+            "samples": 3554
+          },
+          "very_unhealthy_150_to_250": {
+            "coverage": 71.95,
+            "mean_width": 228.81,
+            "samples": 6477
+          },
+          "hazardous_severe_above_250": {
+            "coverage": 28.05,
+            "mean_width": 271.82,
+            "samples": 3672
+          }
+        }
+      }
+    },
+    "scientific_interpretation": "Conformal coverage under non-stationary atmospheric time series degrades from 89.1% at +1h to 79.8% at +24h. Under finite-sample non-exchangeability caused by seasonal winter inversion regimes, empirical coverage on extreme events (>250 ug/m3) drops to 28.05% at 24 hours. The framework does not guarantee 90% coverage on unseen regimes."
+  },
+  "api_latency_reconciliation": {
+    "budget_target_ms": 15.0,
+    "budget_status_summary": "UNMET for end-to-end REST API single-record serving (P95 is 43-44 ms); MET for direct C++ NumPy array inference (4.33 ms).",
+    "horizons": {
+      "h1": {
+        "model": "xgboost_h1.joblib (180 trees, depth 7)",
+        "cold_warmup_latency_ms": 73.91,
+        "steady_state_mean_ms": 28.05,
+        "steady_state_median_ms": 35.98,
+        "steady_state_p95_ms": 44.13,
+        "steady_state_p99_ms": 57.86,
+        "breakdown": {
+          "feature_prep_ms": 3.54,
+          "model_inference_ms": 24.49,
+          "conformal_calculation_ms": 0.02
+        },
+        "meets_15ms_budget": false
+      },
+      "h6": {
+        "model": "xgboost_pruned_h6.joblib (90 trees, depth 6)",
+        "cold_warmup_latency_ms": 149.2,
+        "steady_state_mean_ms": 35.04,
+        "steady_state_median_ms": 38.0,
+        "steady_state_p95_ms": 43.36,
+        "steady_state_p99_ms": 66.7,
+        "breakdown": {
+          "feature_prep_ms": 4.45,
+          "model_inference_ms": 30.56,
+          "conformal_calculation_ms": 0.02
+        },
+        "meets_15ms_budget": false
+      },
+      "h24": {
+        "model": "xgboost_fast_h24.joblib (50 trees, depth 5)",
+        "cold_warmup_latency_ms": 143.29,
+        "steady_state_mean_ms": 24.72,
+        "steady_state_median_ms": 13.84,
+        "steady_state_p95_ms": 43.32,
+        "steady_state_p99_ms": 48.43,
+        "breakdown": {
+          "feature_prep_ms": 3.16,
+          "model_inference_ms": 21.54,
+          "conformal_calculation_ms": 0.02
+        },
+        "meets_15ms_budget": false
+      }
+    },
+    "source_of_delay": "84-87% of single-record API latency stems from XGBoost C++ kernel inference on a single 1-row Pandas DataFrame (21-30 ms), while feature dictionary parsing accounts for 12-16% (3-4.5 ms). Conformal margin arithmetic takes < 0.02 ms. Cold warmup calls take 74-149 ms due to lazy model unpickling and OpenMP thread pool allocation."
+  },
+  "numerical_equivalence_audit": {
+    "same_model_buffer_vs_pandas": {
+      "h1": {
+        "max_diff": 0.0,
+        "mean_diff": 0.0,
+        "numerically_identical": true
+      },
+      "h6": {
+        "max_diff": 0.0,
+        "mean_diff": 0.0,
+        "numerically_identical": true
+      },
+      "h24": {
+        "max_diff": 0.0,
+        "mean_diff": 0.0,
+        "numerically_identical": true
+      },
+      "conclusion": "Vectorized buffer inference on the SAME model artifact produces exact 0.0 bit-level numerical equivalence."
+    },
+    "cross_model_comparison_baseline_vs_recommended": {
+      "h1": {
+        "baseline_artifact": "xgboost_h1.joblib (180 trees)",
+        "optimized_artifact": "xgboost_h1.joblib (180 trees)",
+        "max_diff": 0.0,
+        "mean_diff": 0.0,
+        "delta_mae": 0.0,
+        "is_structurally_identical": true
+      },
+      "h6": {
+        "baseline_artifact": "xgboost_h6.joblib (180 trees, depth 7)",
+        "optimized_artifact": "xgboost_pruned_h6.joblib (90 trees, depth 6)",
+        "max_diff": 89.4592,
+        "mean_diff": 4.938,
+        "baseline_mae": 36.9541,
+        "optimized_mae": 37.035,
+        "delta_mae": 0.0809,
+        "is_structurally_identical": false
+      },
+      "h24": {
+        "baseline_artifact": "xgboost_h24.joblib (180 trees, depth 7)",
+        "optimized_artifact": "xgboost_fast_h24.joblib (50 trees, depth 5)",
+        "max_diff": 103.4706,
+        "mean_diff": 9.1131,
+        "baseline_mae": 67.2555,
+        "optimized_mae": 66.0738,
+        "delta_mae": -1.1817,
+        "is_structurally_identical": false
+      },
+      "conclusion": "Recommended optimized models for +6h and +24h are pruned architectural variants, NOT numerically identical to baselines."
+    }
+  },
+  "spatial_generalization_audit": {
+    "experiment": "Experiment 7: 12-Fold Leave-One-Station-Out",
+    "architecture": "XGBoost (Histogram Gradient Boosting)",
+    "horizon_hours": 24,
+    "n_stations": 12,
+    "macro_averaged_mae": 46.33,
+    "macro_averaged_mae_std": 1.65,
+    "macro_averaged_rmse": 64.48,
+    "macro_averaged_r2": 0.355,
+    "total_evaluated_samples": 411165,
+    "methodological_caveat": "Held-out stations retain access to their own local historical telemetry (autoregressive lags and weather) observed up to time t. This evaluates domain transfer to a new instrumented monitoring site, NOT prediction at unmonitored or uninstrumented geographic coordinates.",
+    "folds": [
+      {
+        "fold": 1,
+        "held_out_station": "Aotizhongxin",
+        "domain": "Urban Core",
+        "samples": 34067,
+        "mae": 45.85,
+        "rmse": 63.61,
+        "r2": 0.4009
+      },
+      {
+        "fold": 2,
+        "held_out_station": "Changping",
+        "domain": "Suburban",
+        "samples": 34218,
+        "mae": 43.83,
+        "rmse": 59.9,
+        "r2": 0.3148
+      },
+      {
+        "fold": 3,
+        "held_out_station": "Dingling",
+        "domain": "Regional Background",
+        "samples": 34213,
+        "mae": 44.15,
+        "rmse": 60.08,
+        "r2": 0.3098
+      },
+      {
+        "fold": 4,
+        "held_out_station": "Dongsi",
+        "domain": "Urban Core",
+        "samples": 34242,
+        "mae": 48.03,
+        "rmse": 67.32,
+        "r2": 0.396
+      },
+      {
+        "fold": 5,
+        "held_out_station": "Guanyuan",
+        "domain": "Urban Core",
+        "samples": 34376,
+        "mae": 46.24,
+        "rmse": 63.8,
+        "r2": 0.3791
+      },
+      {
+        "fold": 6,
+        "held_out_station": "Gucheng",
+        "domain": "Industrial Corridor",
+        "samples": 34346,
+        "mae": 46.97,
+        "rmse": 67.24,
+        "r2": 0.3413
+      },
+      {
+        "fold": 7,
+        "held_out_station": "Huairou",
+        "domain": "Suburban",
+        "samples": 34039,
+        "mae": 43.45,
+        "rmse": 59.3,
+        "r2": 0.3075
+      },
+      {
+        "fold": 8,
+        "held_out_station": "Nongzhanguan",
+        "domain": "Urban Core",
+        "samples": 34364,
+        "mae": 47.85,
+        "rmse": 67.1,
+        "r2": 0.3951
+      },
+      {
+        "fold": 9,
+        "held_out_station": "Shunyi",
+        "domain": "Suburban",
+        "samples": 34079,
+        "mae": 47.45,
+        "rmse": 66.56,
+        "r2": 0.3293
+      },
+      {
+        "fold": 10,
+        "held_out_station": "Tiantan",
+        "domain": "Urban Core",
+        "samples": 34315,
+        "mae": 46.27,
+        "rmse": 64.26,
+        "r2": 0.3701
+      },
+      {
+        "fold": 11,
+        "held_out_station": "Wanliu",
+        "domain": "Urban Core",
+        "samples": 34610,
+        "mae": 47.1,
+        "rmse": 65.34,
+        "r2": 0.3642
+      },
+      {
+        "fold": 12,
+        "held_out_station": "Wanshouxigong",
+        "domain": "Urban Core",
+        "samples": 34296,
+        "mae": 48.72,
+        "rmse": 69.24,
+        "r2": 0.3522
+      }
+    ]
+  }
+}

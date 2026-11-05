@@ -1,0 +1,134 @@
+{
+  "experiment": "Task 4: Improved Sensor Robustness & Stress Testing",
+  "horizon_hours": 24,
+  "clean_baseline": {
+    "mae": 66.5956,
+    "rmse": 92.6649,
+    "r2": 0.2106,
+    "mape": 327.7752,
+    "smape": 77.6515,
+    "pearson_r": 0.4598,
+    "sample_count": 42278,
+    "extreme_count": 10231,
+    "extreme_mae": 117.8325,
+    "extreme_rmse": 148.8801,
+    "normal_count": 32047,
+    "normal_mae": 50.2383,
+    "normal_rmse": 65.2062
+  },
+  "raw_sensor_noise_multi_seed": {
+    "noise_5pct": {
+      "noise_ratio": 0.05,
+      "mean_mae": 66.6715,
+      "std_mae": 0.0162,
+      "mean_rmse": 92.7376,
+      "mean_r2": 0.2093,
+      "mean_pct_degradation": 0.11,
+      "seeds_evaluated": [
+        42,
+        123,
+        999
+      ]
+    },
+    "noise_15pct": {
+      "noise_ratio": 0.15,
+      "mean_mae": 66.9763,
+      "std_mae": 0.0348,
+      "mean_rmse": 93.0032,
+      "mean_r2": 0.2048,
+      "mean_pct_degradation": 0.57,
+      "seeds_evaluated": [
+        42,
+        123,
+        999
+      ]
+    },
+    "noise_25pct": {
+      "noise_ratio": 0.25,
+      "mean_mae": 67.4896,
+      "std_mae": 0.0728,
+      "mean_rmse": 93.5322,
+      "mean_r2": 0.1957,
+      "mean_pct_degradation": 1.34,
+      "seeds_evaluated": [
+        42,
+        123,
+        999
+      ]
+    }
+  },
+  "hardware_outage_scenarios": [
+    {
+      "scenario": "No Outage (Baseline)",
+      "dropped_features_count": 0,
+      "mae": 66.5956,
+      "rmse": 92.6649,
+      "r2": 0.2106,
+      "delta_mae": 0.0,
+      "pct_degradation": 0.0
+    },
+    {
+      "scenario": "CO Sensor Failure",
+      "dropped_features_count": 1,
+      "mae": 66.581,
+      "rmse": 92.4347,
+      "r2": 0.2145,
+      "delta_mae": -0.0146,
+      "pct_degradation": -0.02
+    },
+    {
+      "scenario": "SO2 + NO2 Precursor Failure",
+      "dropped_features_count": 2,
+      "mae": 66.9114,
+      "rmse": 92.389,
+      "r2": 0.2153,
+      "delta_mae": 0.3158,
+      "pct_degradation": 0.47
+    },
+    {
+      "scenario": "Complete Precursor Gas Failure (SO2, NO2, CO, O3)",
+      "dropped_features_count": 4,
+      "mae": 66.9004,
+      "rmse": 92.1418,
+      "r2": 0.2194,
+      "delta_mae": 0.3048,
+      "pct_degradation": 0.46
+    },
+    {
+      "scenario": "Wind Anemometer Suite Failure (WSPM, wind_u, wind_v, wd)",
+      "dropped_features_count": 5,
+      "mae": 68.6563,
+      "rmse": 93.5496,
+      "r2": 0.1954,
+      "delta_mae": 2.0607,
+      "pct_degradation": 3.09
+    },
+    {
+      "scenario": "Particulate Sensor Disconnection (PM2.5, PM10, Lags, Rolling)",
+      "dropped_features_count": 24,
+      "mae": 72.2766,
+      "rmse": 99.1836,
+      "r2": 0.0956,
+      "delta_mae": 5.681,
+      "pct_degradation": 8.53
+    }
+  ],
+  "random_packet_loss_dropouts": [
+    {
+      "dropout_rate": 0.1,
+      "mae": 67.3524,
+      "rmse": 93.3143,
+      "r2": 0.1995,
+      "delta_mae": 0.7568,
+      "pct_degradation": 1.14
+    },
+    {
+      "dropout_rate": 0.3,
+      "mae": 69.2343,
+      "rmse": 95.5748,
+      "r2": 0.1602,
+      "delta_mae": 2.6387,
+      "pct_degradation": 3.96
+    }
+  ]
+}
