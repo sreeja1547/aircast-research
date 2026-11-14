@@ -1,12 +1,36 @@
 """Unit tests for the AirCast Research FastAPI application.
+
+Verifies strict 47-feature schema validation, rejection of partial/empty/malformed payloads,
+calibrated conformal intervals, and batch prediction semantics.
 """
 
 from fastapi.testclient import TestClient
 import pytest
 
 from api.main import app
+from src.features.registry import get_feature_group
 
 client = TestClient(app)
+
+
+def get_valid_47_features(pm25: float = 75.0) -> dict:
+    """Construct a complete, schema-compliant 47-feature payload."""
+    all_cols = get_feature_group("combined_all")
+    feats = {col: 10.0 for col in all_cols}
+    feats["PM2.5"] = pm25
+    feats["PM10"] = pm25 * 1.4
+    feats["TEMP"] = 15.0
+    feats["DEWP"] = 5.0
+    feats["dew_point_depression"] = 10.0
+    feats["PRES"] = 1013.25
+    feats["RAIN"] = 0.0
+    feats["has_rain"] = 0.0
+    feats["WSPM"] = 2.0
+    feats["wd_sin"] = 0.0
+    feats["wd_cos"] = 1.0
+    feats["wind_u"] = 0.0
+    feats["wind_v"] = -2.0
+    return feats
 
 
 def test_health_endpoint():
@@ -27,7 +51,7 @@ def test_model_info_endpoint():
     data = response.json()
     assert "active_models" in data
     assert data["feature_count"] == 47
-    assert data["default_model"] == "xgboost"
+    assert data["default_model"] in ("recommended", "xgboost")
 
 
 def test_features_endpoint():
@@ -45,17 +69,12 @@ def test_metrics_endpoint():
     assert response.status_code == 200
 
 
-def test_predict_single_endpoint():
-    """Verify single prediction with heuristic fallback for uncalibrated model."""
+def test_predict_single_endpoint_valid_47():
+    """Verify single prediction with heuristic fallback for uncalibrated persistence."""
     sample_payload = {
         "horizon_hours": 24,
         "model_name": "persistence",
-        "features": {
-            "PM2.5": 78.5,
-            "PM10": 110.0,
-            "TEMP": 15.0,
-            "WSPM": 2.5,
-        },
+        "features": get_valid_47_features(78.5),
         "compute_interval": True,
         "nominal_coverage": 0.90,
     }
@@ -67,7 +86,6 @@ def test_predict_single_endpoint():
     assert data["lower_bound"] is not None
     assert data["upper_bound"] >= data["lower_bound"]
     assert data["inference_latency_ms"] > 0.0
-    # Baseline model does not have calibrated conformal artifacts; must be marked heuristic
     assert data["is_calibrated"] is False
     assert data["interval_method"] == "heuristic_fallback"
 
@@ -78,14 +96,7 @@ def test_predict_single_calibrated_conformal():
         sample_payload = {
             "horizon_hours": h,
             "model_name": "xgboost",
-            "features": {
-                "PM2.5": 95.0,
-                "PM10": 140.0,
-                "TEMP": 8.0,
-                "PRES": 1018.0,
-                "DEWP": -4.0,
-                "WSPM": 1.8,
-            },
+            "features": get_valid_47_features(95.0),
             "compute_interval": True,
             "nominal_coverage": 0.90,
         }
@@ -105,7 +116,7 @@ def test_predict_no_intervals():
     payload = {
         "horizon_hours": 1,
         "model_name": "xgboost",
-        "features": {"PM2.5": 50.0},
+        "features": get_valid_47_features(50.0),
         "compute_interval": False,
     }
     response = client.post("/predict", json=payload)
@@ -117,18 +128,63 @@ def test_predict_no_intervals():
     assert data["is_calibrated"] is False
 
 
-def test_predict_batch_endpoint():
-    """Verify batch prediction endpoint with heuristic fallback for persistence."""
-    batch_payload = {
+def test_predict_partial_features_rejected_422():
+    """Verify that partial payloads missing required features are rejected with HTTP 422."""
+    partial_payload = {
         "horizon_hours": 1,
-        "model_name": "persistence",
+        "model_name": "xgboost",
+        "features": {"PM2.5": 50.0, "TEMP": 15.0},  # Missing 45 features
+    }
+    response = client.post("/predict", json=partial_payload)
+    assert response.status_code == 422
+    err_text = str(response.json())
+    assert "Missing required feature columns" in err_text
+
+
+def test_predict_empty_features_rejected_422():
+    """Verify that empty feature payload is rejected with HTTP 422."""
+    empty_payload = {
+        "horizon_hours": 1,
+        "model_name": "xgboost",
+        "features": {},
+    }
+    response = client.post("/predict", json=empty_payload)
+    assert response.status_code == 422
+
+
+def test_predict_malformed_payload_rejected_422():
+    """Verify that malformed data types and invalid horizons are rejected with HTTP 422."""
+    # Invalid horizon > 24
+    payload_bad_h = {
+        "horizon_hours": 48,
+        "model_name": "xgboost",
+        "features": get_valid_47_features(),
+    }
+    response = client.post("/predict", json=payload_bad_h)
+    assert response.status_code == 422
+
+    # Malformed feature type
+    payload_bad_type = {
+        "horizon_hours": 1,
+        "model_name": "xgboost",
+        "features": {"PM2.5": "invalid_string"},
+    }
+    response = client.post("/predict", json=payload_bad_type)
+    assert response.status_code == 422
+
+
+def test_predict_batch_endpoint_valid_47():
+    """Verify batch prediction with complete 47-feature samples."""
+    batch_payload = {
+        "horizon_hours": 6,
+        "model_name": "xgboost",
         "samples": [
-            {"PM2.5": 45.0, "WSPM": 3.0},
-            {"PM2.5": 120.0, "WSPM": 1.0},
-            {"PM2.5": 210.0, "WSPM": 0.5},
+            get_valid_47_features(30.0),
+            get_valid_47_features(120.0),
+            get_valid_47_features(220.0),
         ],
         "compute_intervals": True,
-        "nominal_coverage": 0.95,
+        "nominal_coverage": 0.90,
     }
     response = client.post("/predict/batch", json=batch_payload)
     assert response.status_code == 200
@@ -137,28 +193,76 @@ def test_predict_batch_endpoint():
     assert len(data["predictions"]) == 3
     assert len(data["lower_bounds"]) == 3
     assert len(data["upper_bounds"]) == 3
-    assert data["is_calibrated"] is False
-    assert data["interval_method"] == "heuristic_fallback"
-
-
-def test_predict_batch_calibrated_conformal():
-    """Verify batch prediction with calibrated conformal intervals."""
-    batch_payload = {
-        "horizon_hours": 6,
-        "model_name": "xgboost",
-        "samples": [
-            {"PM2.5": 30.0, "WSPM": 4.0},
-            {"PM2.5": 180.0, "WSPM": 0.8},
-        ],
-        "compute_intervals": True,
-        "nominal_coverage": 0.90,
-    }
-    response = client.post("/predict/batch", json=batch_payload)
-    assert response.status_code == 200
-    data = response.json()
-    assert data["sample_count"] == 2
-    assert len(data["predictions"]) == 2
     assert data["is_calibrated"] is True
     assert data["interval_method"] == "calibrated_normalized_conformal"
-    assert data["lower_bounds"][0] <= data["upper_bounds"][0]
-    assert data["lower_bounds"][1] <= data["upper_bounds"][1]
+
+
+def test_predict_batch_partial_samples_rejected_422():
+    """Verify that batch requests containing partial samples are rejected with HTTP 422."""
+    batch_partial = {
+        "horizon_hours": 1,
+        "model_name": "xgboost",
+        "samples": [
+            get_valid_47_features(50.0),
+            {"PM2.5": 80.0},  # Partial sample
+        ],
+    }
+    response = client.post("/predict/batch", json=batch_partial)
+    assert response.status_code == 422
+    err_text = str(response.json())
+    assert "missing required feature columns" in err_text.lower()
+
+
+def test_predict_batch_empty_samples_rejected_422():
+    """Verify that empty samples list in batch request is rejected with HTTP 422."""
+    batch_empty = {
+        "horizon_hours": 1,
+        "model_name": "xgboost",
+        "samples": [],
+    }
+    response = client.post("/predict/batch", json=batch_empty)
+    assert response.status_code == 422
+
+
+def test_clean_clone_recommended_models_load_without_dummy():
+    """Verify all 3 recommended deployment artifacts load and non-existent artifacts fail explicitly."""
+    from api.services import AirCastInferenceService
+    svc = AirCastInferenceService()
+
+    # The 3 deployment models must load successfully
+    m1 = svc.get_model("recommended", 1)
+    m6 = svc.get_model("recommended", 6)
+    m24 = svc.get_model("recommended", 24)
+    assert m1 is not None
+    assert m6 is not None
+    assert m24 is not None
+
+    # Requesting an untracked/missing artifact must raise FileNotFoundError (never silent dummy train)
+    with pytest.raises(FileNotFoundError):
+        svc.get_model("untracked_architecture", 1)
+
+
+def test_predict_invalid_horizon_rejected_422():
+    """Verify unsupported horizons like 12 or 48 are rejected with HTTP 422."""
+    payload = {
+        "horizon_hours": 12,
+        "model_name": "recommended",
+        "features": get_valid_47_features(50.0),
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+
+
+def test_predict_non_finite_features_rejected_422():
+    """Verify that NaN or infinite feature values are rejected with HTTP 422."""
+    valid_features = get_valid_47_features(50.0)
+    # Pass "NaN" string which Pydantic converts to float('nan'), then our validator catches
+    valid_features["PM2.5"] = "NaN"
+    payload = {
+        "horizon_hours": 24,
+        "model_name": "recommended",
+        "features": valid_features,
+    }
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 422
+    assert "non-finite" in response.text.lower()

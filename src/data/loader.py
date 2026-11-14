@@ -66,11 +66,27 @@ def load_station_data(station_name: str, raw_dir: str = DEFAULT_RAW_DIR) -> pd.D
     df["datetime"] = pd.to_datetime(df[["year", "month", "day", "hour"]])
     df = df.sort_values("datetime").reset_index(drop=True)
 
-    # Verify monotonicity and uniqueness of timestamps
+    # Verify monotonicity, uniqueness, and strict continuous 1-hour frequency
     if not df["datetime"].is_monotonic_increasing:
         raise ValueError(f"Timestamps for {station_name} are not monotonically increasing.")
     if df["datetime"].duplicated().any():
         raise ValueError(f"Duplicate timestamps found in {station_name}.")
+
+    expected_hours = pd.date_range(start=df["datetime"].min(), end=df["datetime"].max(), freq="1h")
+    if len(df) != len(expected_hours):
+        missing_count = len(expected_hours) - len(df)
+        raise ValueError(
+            f"Hourly timestamp continuity violation in {station_name}: expected {len(expected_hours)} continuous "
+            f"hourly steps from {expected_hours[0]} to {expected_hours[-1]}, but found {len(df)} records "
+            f"({missing_count} missing hours)."
+        )
+    diffs = df["datetime"].diff().dropna()
+    expected_step = pd.Timedelta(hours=1)
+    if not (diffs == expected_step).all():
+        irregular_steps = diffs[diffs != expected_step]
+        raise ValueError(
+            f"Irregular time step detected in {station_name}: found non-1-hour deltas: {irregular_steps.unique()}"
+        )
 
     return df
 

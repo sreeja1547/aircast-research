@@ -1,0 +1,141 @@
+{
+  "experiment": "Leave-One-Station-Out Raw Data Preprocessing Isolation Audit (Protocol A vs Protocol B)",
+  "description": "Empirical audit comparing global pooled causal imputation (Protocol A) against strictly isolated training-station imputation (Protocol B) directly on raw, un-imputed PRSA telemetry CSVs.",
+  "model": "Ridge Regression (alpha=100.0, random_state=42)",
+  "evaluation_task": "Future-Hour PM2.5 Forecasting Task",
+  "forecasting_horizon_hours": 24,
+  "target_column": "target_h24 (PM2.5 concentration t+24 hours into the future, strictly raw un-imputed)",
+  "feature_target_relationship": "Features X(t) incorporate only observations up to prediction time <= t (instantaneous pollutants, meteorology, 1h-48h autoregressive lags, 3h-24h rolling statistics, and cyclical flags). The ground-truth target is PM2.5(t+24) shifted strictly within station. Zero target leakage.",
+  "dataset_source": "PRSA_Data_20130301-20170228 (12 Raw Station CSVs)",
+  "study_period": "2013-03-01 00:00:00 to 2017-02-28 23:00:00 (4 Full Years)",
+  "sample_accounting": {
+    "total_raw_telemetry_rows": 420768,
+    "eligible_rows_after_warmup_and_boundary": 419904,
+    "per_station_eligible_rows": 34992,
+    "warmup_exclusion_hours": 48,
+    "boundary_truncation_hours": 24,
+    "missing_future_target_rows": 8739,
+    "total_evaluated_observations": 411165
+  },
+  "preprocessing_protocols": {
+    "protocol_a": "Pooled/Global Imputation: StationAwareCausalImputer fitted once across all 12 stations' raw data.",
+    "protocol_b": "Strictly Isolated Imputation: StationAwareCausalImputer fitted exclusively on 11 training stations per fold, isolating the held-out test station."
+  },
+  "macro_summary": {
+    "protocol_a_macro_mae": 50.7365,
+    "protocol_b_macro_mae": 50.7372,
+    "macro_delta_mae": 0.0007,
+    "pct_macro_mae_difference": 0.0014,
+    "total_differing_feature_cells_across_folds": 73886
+  },
+  "folds": [
+    {
+      "station": "Aotizhongxin",
+      "test_samples": 34067,
+      "differing_feature_cells": 6315,
+      "protocol_a_mae": 52.85,
+      "protocol_b_mae": 52.8477,
+      "delta_mae": -0.0023,
+      "pct_mae_diff": 0.0044
+    },
+    {
+      "station": "Changping",
+      "test_samples": 34218,
+      "differing_feature_cells": 23862,
+      "protocol_a_mae": 46.2894,
+      "protocol_b_mae": 46.2902,
+      "delta_mae": 0.0008,
+      "pct_mae_diff": 0.0017
+    },
+    {
+      "station": "Dingling",
+      "test_samples": 34213,
+      "differing_feature_cells": 1187,
+      "protocol_a_mae": 45.6976,
+      "protocol_b_mae": 45.7038,
+      "delta_mae": 0.0062,
+      "pct_mae_diff": 0.0136
+    },
+    {
+      "station": "Dongsi",
+      "test_samples": 34242,
+      "differing_feature_cells": 2982,
+      "protocol_a_mae": 54.3747,
+      "protocol_b_mae": 54.3763,
+      "delta_mae": 0.0016,
+      "pct_mae_diff": 0.0029
+    },
+    {
+      "station": "Guanyuan",
+      "test_samples": 34376,
+      "differing_feature_cells": 93,
+      "protocol_a_mae": 51.1878,
+      "protocol_b_mae": 51.1884,
+      "delta_mae": 0.0006,
+      "pct_mae_diff": 0.0012
+    },
+    {
+      "station": "Gucheng",
+      "test_samples": 34346,
+      "differing_feature_cells": 0,
+      "protocol_a_mae": 51.0462,
+      "protocol_b_mae": 51.0462,
+      "delta_mae": 0.0,
+      "pct_mae_diff": 0.0
+    },
+    {
+      "station": "Huairou",
+      "test_samples": 34039,
+      "differing_feature_cells": 37089,
+      "protocol_a_mae": 45.4384,
+      "protocol_b_mae": 45.4382,
+      "delta_mae": -0.0002,
+      "pct_mae_diff": 0.0004
+    },
+    {
+      "station": "Nongzhanguan",
+      "test_samples": 34364,
+      "differing_feature_cells": 0,
+      "protocol_a_mae": 54.0396,
+      "protocol_b_mae": 54.0396,
+      "delta_mae": 0.0,
+      "pct_mae_diff": 0.0
+    },
+    {
+      "station": "Shunyi",
+      "test_samples": 34079,
+      "differing_feature_cells": 1429,
+      "protocol_a_mae": 51.6878,
+      "protocol_b_mae": 51.6937,
+      "delta_mae": 0.0059,
+      "pct_mae_diff": 0.0114
+    },
+    {
+      "station": "Tiantan",
+      "test_samples": 34315,
+      "differing_feature_cells": 42,
+      "protocol_a_mae": 51.2511,
+      "protocol_b_mae": 51.2515,
+      "delta_mae": 0.0004,
+      "pct_mae_diff": 0.0008
+    },
+    {
+      "station": "Wanliu",
+      "test_samples": 34610,
+      "differing_feature_cells": 788,
+      "protocol_a_mae": 51.8292,
+      "protocol_b_mae": 51.8245,
+      "delta_mae": -0.0047,
+      "pct_mae_diff": 0.0091
+    },
+    {
+      "station": "Wanshouxigong",
+      "test_samples": 34296,
+      "differing_feature_cells": 99,
+      "protocol_a_mae": 53.1458,
+      "protocol_b_mae": 53.1469,
+      "delta_mae": 0.0011,
+      "pct_mae_diff": 0.0021
+    }
+  ]
+}

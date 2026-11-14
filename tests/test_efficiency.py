@@ -101,5 +101,5 @@ def test_numerical_prediction_fidelity():
 def test_conformal_calibrator_cached(inference_service):
     """Assert conformal calibrator loads successfully and reports calibrated status."""
     calibrator = inference_service.get_conformal_calibrator(1)
-    if calibrator is not None:
-        assert calibrator.is_calibrated is True
+    assert calibrator is not None, "Conformal calibrator artifact for h=1 must exist and load successfully."
+    assert calibrator.is_calibrated is True

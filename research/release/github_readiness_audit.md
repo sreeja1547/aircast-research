@@ -19,7 +19,7 @@ This audit assesses the readiness of **AirCast Research** for publication as a c
 - **Model & Dataset Loading Paths:** **PASS (100% Relative)** (No hardcoded paths in any `.py` source file; clean relative resolution).
 - **Repository Size & File Limits:** **PASS** (Total size 193.26 MB; largest file 41.86 MB; zero files exceed GitHub's 50 MB / 100 MB thresholds).
 - **Configuration & Dependency Declarations:** **ATTENTION REQUIRED** (Missing `.gitignore` and `requirements.txt`).
-- **Markdown Cross-Linking:** **ATTENTION REQUIRED** (Local `file:///c:/Users/Dell/...` absolute URLs exist in `README.md` and research reports; must be converted to relative Markdown links).
+- **Markdown Cross-Linking:** **RESOLVED** (Local absolute URLs converted to clean repository-relative Markdown links).
 - **Superfluous Files in Root:** **ATTENTION REQUIRED** (Unrelated stock price CSVs, extraneous JPG image, and legacy Phase 1 audit scripts present in root directory).
 
 ---
@@ -88,8 +88,8 @@ The following reproducible workflow was verified to execute cleanly from the pro
 ### 1. Environment Setup
 ```bash
 # 1. Clone repository
-git clone https://github.com/aircast-research/aircast.git
-cd aircast
+git clone https://github.com/sreeja1547/aircast-research.git
+cd aircast-research
 
 # 2. Create isolated virtual environment
 python -m venv venv

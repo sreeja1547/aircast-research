@@ -365,8 +365,14 @@ class XGBoostForecaster(BaseForecaster):
             dmat = xgb.DMatrix(X_valid, feature_names=self.feature_names)
 
         booster = self.model.get_booster()
-        # Native TreeSHAP computation
-        contribs = booster.predict(dmat, pred_contribs=True)
+        # Native TreeSHAP computation with exact tree iteration alignment
+        best_iteration = getattr(self.model, "best_iteration", None)
+        if best_iteration is not None:
+            contribs = booster.predict(
+                dmat, pred_contribs=True, iteration_range=(0, int(best_iteration) + 1)
+            )
+        else:
+            contribs = booster.predict(dmat, pred_contribs=True)
 
         # In XGBoost, last column of pred_contribs is the base expected value
         shap_vals = contribs[:, :-1]

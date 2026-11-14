@@ -4,7 +4,7 @@
 **Date:** November 2026  
 **Status:** Step 2 Cleanup Executed, Verified, and Checked — STOPPED Prior to Remote Repository Initialization  
 **Primary Tested Runtime:** Python 3.13.5 on Windows 11 Home x64  
-**Backup Location:** `C:\Users\Dell\.gemini\antigravity\brain\19556efc-88fd-4fd7-ab89-229d036a68e7\scratch\cleanup_backup\`
+**Backup Location:** Local storage archive directory (`cleanup_backup/`)
 
 ---
 
@@ -95,7 +95,7 @@ Created with tested, bounded dependency declarations:
 ## 5. Documentation Link Sanitization
 
 - Scanned all 33 markdown documentation files across the workspace.
-- **52 absolute Windows URLs** (`file:///c:/Users/Dell/Downloads/beijing+multi+site+air+quality+data/...`) were identified and converted to clean repository-relative Markdown links.
+- **52 absolute Windows URLs** (`file:///...`) were identified and converted to clean repository-relative Markdown links.
 - Verified that **26 out of 26 links in `README.md`** resolve to actual, existing files on disk.
 - Zero local `file:///` links remain active in any document.
 

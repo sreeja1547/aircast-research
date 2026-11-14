@@ -1,0 +1,113 @@
+{
+  "1": {
+    "Random Forest": {
+      "val_mae": 8.418,
+      "val_rmse": 16.661,
+      "val_r2": 0.9291
+    },
+    "XGBoost": {
+      "val_mae": 8.388,
+      "val_rmse": 17.022,
+      "val_r2": 0.926
+    },
+    "Ridge": {
+      "val_mae": 9.005,
+      "val_rmse": 16.776,
+      "val_r2": 0.9281
+    },
+    "Linear Regression": {
+      "val_mae": 9.003,
+      "val_rmse": 16.774,
+      "val_r2": 0.9281
+    },
+    "Hist Gradient Boosting": {
+      "val_mae": 8.469,
+      "val_rmse": 17.096,
+      "val_r2": 0.9253
+    },
+    "Persistence": {
+      "val_mae": 8.942,
+      "val_rmse": 17.702,
+      "val_r2": 0.92
+    },
+    "LSTM": {
+      "val_mae": 8.389,
+      "val_rmse": 16.386,
+      "val_r2": 0.9314
+    }
+  },
+  "6": {
+    "Random Forest": {
+      "val_mae": 24.403,
+      "val_rmse": 41.062,
+      "val_r2": 0.5668
+    },
+    "XGBoost": {
+      "val_mae": 23.765,
+      "val_rmse": 39.733,
+      "val_r2": 0.5944
+    },
+    "Ridge": {
+      "val_mae": 25.891,
+      "val_rmse": 42.548,
+      "val_r2": 0.5349
+    },
+    "Linear Regression": {
+      "val_mae": 25.893,
+      "val_rmse": 42.55,
+      "val_r2": 0.5349
+    },
+    "Hist Gradient Boosting": {
+      "val_mae": 23.66,
+      "val_rmse": 39.642,
+      "val_r2": 0.5963
+    },
+    "Persistence": {
+      "val_mae": 26.166,
+      "val_rmse": 47.515,
+      "val_r2": 0.42
+    },
+    "LSTM": {
+      "val_mae": 23.881,
+      "val_rmse": 40.072,
+      "val_r2": 0.5875
+    }
+  },
+  "24": {
+    "Random Forest": {
+      "val_mae": 42.365,
+      "val_rmse": 59.33,
+      "val_r2": 0.0726
+    },
+    "XGBoost": {
+      "val_mae": 41.928,
+      "val_rmse": 57.478,
+      "val_r2": 0.1296
+    },
+    "Ridge": {
+      "val_mae": 43.942,
+      "val_rmse": 60.102,
+      "val_r2": 0.0483
+    },
+    "Linear Regression": {
+      "val_mae": 43.947,
+      "val_rmse": 60.111,
+      "val_r2": 0.048
+    },
+    "Hist Gradient Boosting": {
+      "val_mae": 41.84,
+      "val_rmse": 58.297,
+      "val_r2": 0.1046
+    },
+    "Persistence": {
+      "val_mae": 44.463,
+      "val_rmse": 70.034,
+      "val_r2": -0.2922
+    },
+    "LSTM": {
+      "val_mae": 42.431,
+      "val_rmse": 58.693,
+      "val_r2": 0.0924
+    }
+  }
+}

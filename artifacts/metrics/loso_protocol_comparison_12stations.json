@@ -1,0 +1,265 @@
+{
+  "experiment": "Leave-One-Station-Out Preprocessing Isolation (Protocol A vs Protocol B)",
+  "status": "CORRECTED_BENCHMARK",
+  "historical_audit_note": "Supersedes earlier uncorrected metric of 50.9314 ug/m3 (which evaluated 8,739 observations with shifted imputed target values over N=419,904). This corrected artifact enforces strict ground-truth target preservation, evaluating exclusively the genuine N=411,165 ground-truth observations.",
+  "horizon_hours": 24,
+  "study_period": "2013-03-01 to 2017-02-28 (Full 4-Year Study Period)",
+  "total_evaluation_samples": 411165,
+  "protocol_a_macro": {
+    "mean_mae": 50.7363,
+    "mean_rmse": 70.8011,
+    "mean_r2": 0.224
+  },
+  "protocol_b_macro": {
+    "mean_mae": 50.7363,
+    "mean_rmse": 70.8011,
+    "mean_r2": 0.224
+  },
+  "macro_delta": {
+    "mae": 0.0,
+    "rmse": 0.0,
+    "r2": 0.0
+  },
+  "folds": [
+    {
+      "station": "Aotizhongxin",
+      "test_samples": 34067,
+      "protocol_a": {
+        "mae": 52.8515,
+        "rmse": 72.4348,
+        "r2": 0.2231
+      },
+      "protocol_b": {
+        "mae": 52.8515,
+        "rmse": 72.4348,
+        "r2": 0.2231
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Changping",
+      "test_samples": 34218,
+      "protocol_a": {
+        "mae": 46.2894,
+        "rmse": 64.4448,
+        "r2": 0.207
+      },
+      "protocol_b": {
+        "mae": 46.2894,
+        "rmse": 64.4448,
+        "r2": 0.207
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Dingling",
+      "test_samples": 34213,
+      "protocol_a": {
+        "mae": 45.6971,
+        "rmse": 64.459,
+        "r2": 0.2054
+      },
+      "protocol_b": {
+        "mae": 45.6971,
+        "rmse": 64.459,
+        "r2": 0.2054
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Dongsi",
+      "test_samples": 34242,
+      "protocol_a": {
+        "mae": 54.3742,
+        "rmse": 75.9833,
+        "r2": 0.2305
+      },
+      "protocol_b": {
+        "mae": 54.3742,
+        "rmse": 75.9833,
+        "r2": 0.2305
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Guanyuan",
+      "test_samples": 34376,
+      "protocol_a": {
+        "mae": 51.1875,
+        "rmse": 70.8128,
+        "r2": 0.2352
+      },
+      "protocol_b": {
+        "mae": 51.1875,
+        "rmse": 70.8128,
+        "r2": 0.2352
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Gucheng",
+      "test_samples": 34346,
+      "protocol_a": {
+        "mae": 51.0462,
+        "rmse": 72.1958,
+        "r2": 0.2405
+      },
+      "protocol_b": {
+        "mae": 51.0462,
+        "rmse": 72.1958,
+        "r2": 0.2405
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Huairou",
+      "test_samples": 34039,
+      "protocol_a": {
+        "mae": 45.4376,
+        "rmse": 63.9128,
+        "r2": 0.1957
+      },
+      "protocol_b": {
+        "mae": 45.4376,
+        "rmse": 63.9128,
+        "r2": 0.1957
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Nongzhanguan",
+      "test_samples": 34364,
+      "protocol_a": {
+        "mae": 54.0395,
+        "rmse": 75.316,
+        "r2": 0.2378
+      },
+      "protocol_b": {
+        "mae": 54.0395,
+        "rmse": 75.316,
+        "r2": 0.2378
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Shunyi",
+      "test_samples": 34079,
+      "protocol_a": {
+        "mae": 51.6869,
+        "rmse": 72.1653,
+        "r2": 0.2116
+      },
+      "protocol_b": {
+        "mae": 51.6869,
+        "rmse": 72.1653,
+        "r2": 0.2116
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Tiantan",
+      "test_samples": 34315,
+      "protocol_a": {
+        "mae": 51.2505,
+        "rmse": 71.157,
+        "r2": 0.2276
+      },
+      "protocol_b": {
+        "mae": 51.2505,
+        "rmse": 71.157,
+        "r2": 0.2276
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Wanliu",
+      "test_samples": 34610,
+      "protocol_a": {
+        "mae": 51.8307,
+        "rmse": 71.5048,
+        "r2": 0.2386
+      },
+      "protocol_b": {
+        "mae": 51.8307,
+        "rmse": 71.5048,
+        "r2": 0.2386
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    },
+    {
+      "station": "Wanshouxigong",
+      "test_samples": 34296,
+      "protocol_a": {
+        "mae": 53.1451,
+        "rmse": 75.2273,
+        "r2": 0.2352
+      },
+      "protocol_b": {
+        "mae": 53.1451,
+        "rmse": 75.2273,
+        "r2": 0.2352
+      },
+      "delta": {
+        "mae": 0.0,
+        "rmse": 0.0,
+        "r2": 0.0,
+        "pct_mae_diff": 0.0
+      }
+    }
+  ]
+}

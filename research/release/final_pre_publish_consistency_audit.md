@@ -38,7 +38,7 @@
   $$s_i = \frac{|y_i - \hat{y}_i|}{\sigma(x_i)}, \quad \text{where } \sigma(x_i) = \beta_0 + \beta_1 \hat{y}_i$$
   Scaling parameters: $\beta_0 = 5.0$, $\beta_1 \in [0.0892, 0.2140]$.
 - **Calibration Partition:** Forward temporal split spanning April 15, 2016 – September 30, 2016 ($N \approx 42,500$ samples per horizon).
-- **Test Partition:** Forward temporal holdout test partition spanning October 1, 2016 – February 28, 2017 ($N = 42,554$ for $+1\text{h}$; $N = 42,494$ for $+6\text{h}$; $N = 42,278$ for $+24\text{h}$).
+- **Test Partition:** Forward temporal holdout test partition spanning October 2, 2016 – February 28, 2017 ($N = 42,554$ for $+1\text{h}$; $N = 42,494$ for $+6\text{h}$; $N = 42,278$ for $+24\text{h}$, with October 1, 2016 purged as the 24-hour embargo buffer).
 - **Severe Non-Exchangeability Breakdown:**
   During severe winter heating episodes ($> 250\ \mu\text{g}/\text{m}^3$), residual variance surges due to nocturnal thermal inversions and stagnant boundary layers. Coverage contracts to:
   - $+1\text{h}$: $86.34\%$ ($N = 3,676$)

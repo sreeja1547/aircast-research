@@ -117,11 +117,19 @@ class ConformalPredictor:
         default_coverage: float = 0.90,
         method: str = "standard",
         sigma_min: float = 5.0,
+        model_artifact_name: Optional[str] = None,
+        model_artifact_hash: Optional[str] = None,
+        calibration_split_name: Optional[str] = None,
     ) -> None:
         self.base_model = base_model
         self.default_coverage = default_coverage
         self.method = method.lower().strip()
         self.sigma_min = sigma_min
+        self.model_artifact_name = model_artifact_name
+        self.model_artifact_hash = model_artifact_hash
+        self.calibration_split_name = calibration_split_name
+        self.n_calibration_samples: Optional[int] = None
+        self.n_dispersion_samples: Optional[int] = None
         self.calibration_scores_: Optional[np.ndarray] = None
         self.is_calibrated: bool = False
         self.quantiles_: Dict[float, float] = {}
@@ -132,21 +140,46 @@ class ConformalPredictor:
         self,
         X_cal: Union[pd.DataFrame, np.ndarray],
         y_cal: Union[pd.Series, np.ndarray],
+        X_disp: Optional[Union[pd.DataFrame, np.ndarray]] = None,
+        y_disp: Optional[Union[pd.Series, np.ndarray]] = None,
+        model_artifact_name: Optional[str] = None,
+        model_artifact_hash: Optional[str] = None,
+        calibration_split_name: Optional[str] = None,
     ) -> "ConformalPredictor":
-        """Compute non-conformity scores on held-out calibration partition."""
+        """Compute non-conformity scores on held-out calibration partition.
+
+        If X_disp and y_disp are provided and method is 'normalized', dispersion
+        parameters (beta_0, beta_1) are estimated strictly on (X_disp, y_disp),
+        ensuring disjoint split-conformal calibration from (X_cal, y_cal).
+        """
+        if model_artifact_name is not None:
+            self.model_artifact_name = model_artifact_name
+        if model_artifact_hash is not None:
+            self.model_artifact_hash = model_artifact_hash
+        if calibration_split_name is not None:
+            self.calibration_split_name = calibration_split_name
+
         y_c = np.asarray(y_cal, dtype=np.float64).ravel()
         point_preds = self.base_model.predict(X_cal)
         raw_residuals = np.abs(y_c - point_preds)
 
         if self.method == "normalized":
-            # Estimate difficulty / dispersion function on calibration split:
-            # sigma(y_hat) = max(sigma_min, beta_0 + beta_1 * y_hat)
-            p_mean = float(np.mean(point_preds))
-            r_mean = float(np.mean(raw_residuals))
-            p_var = float(np.var(point_preds))
+            # If disjoint dispersion partition provided, fit dispersion on it
+            if X_disp is not None and y_disp is not None:
+                y_d = np.asarray(y_disp, dtype=np.float64).ravel()
+                p_disp = self.base_model.predict(X_disp)
+                r_disp = np.abs(y_d - p_disp)
+                self.n_dispersion_samples = len(y_d)
+                fit_p, fit_r = p_disp, r_disp
+            else:
+                self.n_dispersion_samples = len(y_c)
+                fit_p, fit_r = point_preds, raw_residuals
+
+            p_mean = float(np.mean(fit_p))
+            r_mean = float(np.mean(fit_r))
+            p_var = float(np.var(fit_p))
             if p_var > 1e-6:
-                # OLS slope beta_1 = Cov(p, r) / Var(p)
-                cov_pr = float(np.cov(point_preds, raw_residuals)[0, 1])
+                cov_pr = float(np.cov(fit_p, fit_r)[0, 1])
                 beta_1 = max(0.01, cov_pr / p_var)
                 beta_0 = max(self.sigma_min, r_mean - beta_1 * p_mean)
             else:
@@ -157,9 +190,9 @@ class ConformalPredictor:
             sigma_cal = np.maximum(self.sigma_min, beta_0 + beta_1 * point_preds)
             self.calibration_scores_ = raw_residuals / sigma_cal
         else:
-            # Standard absolute residual non-conformity score
             self.calibration_scores_ = raw_residuals
 
+        self.n_calibration_samples = len(y_c)
         self.is_calibrated = True
 
         # Precompute quantiles for standard confidence levels

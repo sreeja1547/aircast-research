@@ -277,88 +277,217 @@ with tabs[7]:
 
 
 # -----------------------------------------------------------------------------
-# TAB 9: INTERACTIVE LIVE INFERENCE
+# TAB 9: INTERACTIVE SCENARIO SIMULATOR & MULTI-HORIZON FORECASTER
 # -----------------------------------------------------------------------------
 with tabs[8]:
-    st.header("9. Interactive Multi-Horizon Air Quality Forecaster")
-    st.markdown("Test the trained models interactively with live telemetry controls.")
+    st.header("9. Interactive Scenario Simulator & Multi-Horizon Forecaster")
+    st.markdown("Test the trained models interactively with live telemetry controls or authentic historical test episodes.")
 
-    col_in1, col_in2, col_in3 = st.columns(3)
+    mode = st.radio(
+        "Operating Mode",
+        ["Synthetic Scenario Simulator (What-If Analysis)", "Replay Historical Test Episode (Genuine Feature Vectors)"],
+        horizontal=True,
+    )
 
-    with col_in1:
-        st.subheader("Current Pollutant Telemetry")
-        input_pm25 = st.slider("Current PM2.5 (ug/m^3)", 5.0, 500.0, 75.0, 1.0)
-        input_pm10 = st.slider("Current PM10 (ug/m^3)", 10.0, 600.0, 120.0, 1.0)
-        input_so2 = st.slider("Current SO2 (ug/m^3)", 1.0, 150.0, 20.0, 1.0)
-        input_no2 = st.slider("Current NO2 (ug/m^3)", 5.0, 200.0, 45.0, 1.0)
+    feature_dict = None
 
-    with col_in2:
-        st.subheader("Meteorological Conditions")
-        input_temp = st.slider("Temperature (deg C)", -15.0, 40.0, 15.0, 0.5)
-        input_dewp = st.slider("Dew Point (deg C)", -25.0, 30.0, 5.0, 0.5)
-        input_wspm = st.slider("Wind Speed (m/s)", 0.1, 12.0, 2.0, 0.1)
-        input_wd = st.selectbox("Wind Direction", ["N", "NE", "E", "SE", "S", "SW", "W", "NW"])
+    if mode == "Replay Historical Test Episode (Genuine Feature Vectors)":
+        st.info("💡 **Historical Replay Mode**: Loads genuine 47-feature vectors directly from the holdout test partition cache, preserving authentic lag histories and rolling statistics without heuristic synthesis.")
 
-    with col_in3:
-        st.subheader("Forecasting Parameters")
-        chosen_horizon = st.selectbox("Forecast Horizon Lead Time", [1, 6, 24], index=2)
-        chosen_model = st.selectbox("Forecaster Architecture", ["xgboost", "hist_gradient_boosting", "ridge", "persistence"])
-        confidence_level = st.slider("Confidence Interval Level", 0.80, 0.95, 0.90, 0.05)
+        preset_episodes = {
+            "Severe Winter Smog (Tiantan, 2016-10-02 21:00)": ("2016-10-02 21:00:00", "Tiantan"),
+            "Extreme Inversion Event (Dongsi, 2017-01-01 18:00)": ("2017-01-01 18:00:00", "Dongsi"),
+            "Moderate Urban Episode (Aotizhongxin, 2016-11-20 09:00)": ("2016-11-20 09:00:00", "Aotizhongxin"),
+            "Clean Post-Frontal Day (Huairou, 2016-10-15 12:00)": ("2016-10-15 12:00:00", "Huairou"),
+        }
+        selected_ep_name = st.selectbox("Select Test Episode", list(preset_episodes.keys()))
+        selected_dt, selected_station = preset_episodes[selected_ep_name]
 
-        run_forecast = st.button("🚀 Compute Multi-Horizon Forecast", type="primary")
+        try:
+            from src.features.registry import get_feature_group
+            cache_file = Path("data/processed/forecasting_features_cache.parquet")
+            if cache_file.exists():
+                df_cache = pd.read_parquet(cache_file)
+                match = df_cache[(df_cache["datetime"] == selected_dt) & (df_cache["station"] == selected_station)]
+                if not match.empty:
+                    cols_47 = get_feature_group("combined_all")
+                    feature_dict = {col: float(match[col].iloc[0]) for col in cols_47}
+                    st.success(f"Loaded genuine record for {selected_station} at {selected_dt}. Ground-truth observed PM2.5: **{feature_dict['PM2.5']:.1f} µg/m³** | Temperature: **{feature_dict['TEMP']:.1f} °C** | Wind Speed: **{feature_dict['WSPM']:.1f} m/s**")
+                else:
+                    st.warning("Selected episode timestamp not found in cache. Switching to default values.")
+        except Exception as e:
+            st.error(f"Could not load episode from parquet cache: {e}")
 
-    if run_forecast:
-        st.markdown("---")
-        st.subheader(f"Forecast Result: Horizon +{chosen_horizon} Hour(s)")
+    else:
+        st.warning(
+            "⚠️ **Scenario Simulation Notice**: When adjusting individual meteorological or pollutant sliders in simulation mode, "
+            "historical lag and rolling statistics are synthesized to reflect realistic steady-state conditions for exploratory "
+            "what-if scenario testing. For historical test episode verification, choose 'Replay Historical Test Episode' above."
+        )
 
-        # Compute point prediction heuristic
-        if chosen_model == "persistence":
-            point_pred = input_pm25
-        else:
-            # Dispersion and secondary heuristic
-            wind_dispersion = max(0.4, 1.0 - 0.08 * (input_wspm - 1.5))
-            temp_inversion_factor = 1.15 if input_temp < 5.0 else 0.95
-            dew_depression = max(0.0, input_temp - input_dewp)
-            humidity_factor = 1.10 if dew_depression < 4.0 else 0.90
+        col_in1, col_in2, col_in3 = st.columns(3)
 
-            if chosen_horizon == 1:
-                point_pred = input_pm25 * 0.95 * wind_dispersion + 3.0
-            elif chosen_horizon == 6:
-                point_pred = input_pm25 * 0.70 * wind_dispersion * temp_inversion_factor + 0.1 * input_pm10 + 8.0
-            else:
-                point_pred = input_pm25 * 0.50 * wind_dispersion * humidity_factor * temp_inversion_factor + 0.15 * input_pm10 + 15.0
+        with col_in1:
+            st.subheader("Current Pollutant Telemetry")
+            input_pm25 = st.slider("Current PM2.5 (ug/m^3)", 5.0, 500.0, 75.0, 1.0)
+            input_pm10 = st.slider("Current PM10 (ug/m^3)", 10.0, 600.0, 120.0, 1.0)
+            input_so2 = st.slider("Current SO2 (ug/m^3)", 1.0, 150.0, 20.0, 1.0)
+            input_no2 = st.slider("Current NO2 (ug/m^3)", 5.0, 200.0, 45.0, 1.0)
+            input_co = st.slider("Current CO (ug/m^3)", 100.0, 5000.0, 1000.0, 50.0)
+            input_o3 = st.slider("Current O3 (ug/m^3)", 1.0, 300.0, 50.0, 1.0)
 
-        point_pred = max(0.0, round(point_pred, 1))
+        with col_in2:
+            st.subheader("Meteorological Conditions")
+            input_temp = st.slider("Temperature (deg C)", -15.0, 40.0, 15.0, 0.5)
+            input_dewp = st.slider("Dew Point (deg C)", -25.0, 30.0, 5.0, 0.5)
+            input_pres = st.slider("Pressure (hPa)", 980.0, 1040.0, 1013.25, 0.5)
+            input_rain = st.slider("Rainfall (mm)", 0.0, 50.0, 0.0, 0.5)
+            input_wspm = st.slider("Wind Speed (m/s)", 0.1, 12.0, 2.0, 0.1)
+            # Full 16-compass wind directions from meteorological schema
+            wind_dirs_16 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+            input_wd = st.selectbox("Wind Direction", wind_dirs_16, index=0)
 
-        # Margin for interval
-        margin_map = {1: 15.0, 6: 35.0, 24: 55.0}
-        margin = margin_map[chosen_horizon] * (1.96 if confidence_level > 0.90 else 1.645) / 1.645
-        lower_bound = max(0.0, round(point_pred - margin, 1))
-        upper_bound = round(point_pred + margin, 1)
+        with col_in3:
+            st.subheader("Temporal & Station Parameters")
+            input_station = st.selectbox("Monitoring Station", [
+                "Aotizhongxin", "Changping", "Dingling", "Dongsi", "Guanyuan", "Gucheng",
+                "Huairou", "Nongzhanguan", "Shunyi", "Tiantan", "Wanliu", "Wanshouxigong"
+            ])
+            days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+            input_dow = st.selectbox("Day of Week", days_of_week, index=2)
+            input_hour = st.slider("Hour of Day", 0, 23, 12, 1)
+            input_month = st.slider("Month", 1, 12, 11, 1)
 
-        res_col1, res_col2, res_col3 = st.columns(3)
-        res_col1.metric("Predicted PM2.5", f"{point_pred} ug/m^3", f"Lead Time: +{chosen_horizon}h")
-        res_col2.metric("Conformal Lower Bound", f"{lower_bound} ug/m^3", f"{int(confidence_level*100)}% Confidence")
-        res_col3.metric("Conformal Upper Bound", f"{upper_bound} ug/m^3", f"Width: {upper_bound - lower_bound:.1f}")
+        from src.preprocessing.transformers import WIND_DIR_DEGREE_MAP
+        theta_deg = WIND_DIR_DEGREE_MAP.get(input_wd, 0.0)
+        theta_rad = np.radians(theta_deg)
+        wd_sin = float(np.sin(theta_rad))
+        wd_cos = float(np.cos(theta_rad))
+        wind_u = float(-input_wspm * np.sin(theta_rad))
+        wind_v = float(-input_wspm * np.cos(theta_rad))
 
-        # Air quality categorization
-        if point_pred <= 35:
-            aq_cat = "Good (Grade I)"
-            color = "green"
-        elif point_pred <= 75:
-            aq_cat = "Moderate (Grade II)"
-            color = "blue"
-        elif point_pred <= 115:
-            aq_cat = "Lightly Polluted (Grade III)"
-            color = "orange"
-        elif point_pred <= 150:
-            aq_cat = "Moderately Polluted (Grade IV)"
-            color = "darkorange"
-        elif point_pred <= 250:
-            aq_cat = "Heavily Polluted (Grade V)"
-            color = "red"
-        else:
-            aq_cat = "Severely Hazardous (Grade VI)"
-            color = "purple"
+        hour_rad = 2.0 * np.pi * input_hour / 24.0
+        month_rad = 2.0 * np.pi * (input_month - 1) / 12.0
+        stations_sorted = [
+            "Aotizhongxin", "Changping", "Dingling", "Dongsi", "Guanyuan", "Gucheng",
+            "Huairou", "Nongzhanguan", "Shunyi", "Tiantan", "Wanliu", "Wanshouxigong"
+        ]
+        station_idx = float(stations_sorted.index(input_station))
+        dow_idx = float(days_of_week.index(input_dow))
+        curr_pm25 = float(input_pm25)
 
-        st.info(f"**Predicted Air Quality Tier:** {aq_cat} (based on GB 3095-2012 / HJ 633-2012 breakpoints)")
+        feature_dict = {
+            # Temporal baseline (8)
+            "hour_sin": float(np.sin(hour_rad)),
+            "hour_cos": float(np.cos(hour_rad)),
+            "month_sin": float(np.sin(month_rad)),
+            "month_cos": float(np.cos(month_rad)),
+            "day_of_week": dow_idx,
+            "is_weekend": 1.0 if dow_idx >= 5.0 else 0.0,
+            "is_heating_season": 1.0 if input_month in [11, 12, 1, 2, 3] else 0.0,
+            "station": station_idx,
+            # Pollutants (6)
+            "PM2.5": curr_pm25,
+            "PM10": float(input_pm10),
+            "SO2": float(input_so2),
+            "NO2": float(input_no2),
+            "CO": float(input_co),
+            "O3": float(input_o3),
+            # Meteorology (11)
+            "TEMP": float(input_temp),
+            "PRES": float(input_pres),
+            "DEWP": float(input_dewp),
+            "RAIN": float(input_rain),
+            "has_rain": 1.0 if input_rain > 0.0 else 0.0,
+            "WSPM": float(input_wspm),
+            "dew_point_depression": float(input_temp - input_dewp),
+            "wd_sin": wd_sin,
+            "wd_cos": wd_cos,
+            "wind_u": wind_u,
+            "wind_v": wind_v,
+            # Lag features (6)
+            "PM2.5_lag_1": curr_pm25,
+            "PM2.5_lag_3": curr_pm25,
+            "PM2.5_lag_6": curr_pm25,
+            "PM2.5_lag_12": curr_pm25,
+            "PM2.5_lag_24": curr_pm25,
+            "PM2.5_lag_48": curr_pm25,
+            # Rolling stats (16)
+            "PM2.5_roll_mean_3": curr_pm25,
+            "PM2.5_roll_mean_6": curr_pm25,
+            "PM2.5_roll_mean_12": curr_pm25,
+            "PM2.5_roll_mean_24": curr_pm25,
+            "PM2.5_roll_std_3": 0.0,
+            "PM2.5_roll_std_6": 0.0,
+            "PM2.5_roll_std_12": 0.0,
+            "PM2.5_roll_std_24": 0.0,
+            "PM2.5_roll_min_3": curr_pm25,
+            "PM2.5_roll_min_6": curr_pm25,
+            "PM2.5_roll_min_12": curr_pm25,
+            "PM2.5_roll_min_24": curr_pm25,
+            "PM2.5_roll_max_3": curr_pm25,
+            "PM2.5_roll_max_6": curr_pm25,
+            "PM2.5_roll_max_12": curr_pm25,
+            "PM2.5_roll_max_24": curr_pm25,
+        }
+
+    st.markdown("---")
+    st.subheader("Model Configuration & Multi-Horizon Inference")
+    cfg_c1, cfg_c2, cfg_c3 = st.columns(3)
+    with cfg_c1:
+        chosen_model = st.selectbox(
+            "Forecaster Architecture",
+            ["recommended", "xgboost", "persistence"],
+            help="Select 'recommended' for optimal deployment models (XGBoost Baseline h1, Pruned h6, Fast h24).",
+        )
+    with cfg_c2:
+        confidence_level = st.slider("Conformal Confidence Level", 0.80, 0.95, 0.90, 0.05)
+    with cfg_c3:
+        st.write("")
+        st.write("")
+        run_forecast = st.button("🚀 Compute Multi-Horizon Forecast (+1h, +6h, +24h)", type="primary")
+
+    if run_forecast and feature_dict is not None:
+        try:
+            from api.services import AirCastInferenceService
+            inference_service = AirCastInferenceService()
+
+            st.markdown("### 📊 Simultaneous Multi-Horizon Forecasts")
+            horizons = [1, 6, 24]
+            cols = st.columns(3)
+
+            for idx, h in enumerate(horizons):
+                point_pred, lower_bound, upper_bound, lat_ms, interval_method, is_calibrated = inference_service.predict_single(
+                    features=feature_dict,
+                    horizon=h,
+                    model_name=chosen_model,
+                    compute_interval=True,
+                    nominal_coverage=confidence_level,
+                )
+
+                if point_pred <= 35:
+                    aq_cat, icon = "Good (Grade I)", "🟢"
+                elif point_pred <= 75:
+                    aq_cat, icon = "Moderate (Grade II)", "🟡"
+                elif point_pred <= 115:
+                    aq_cat, icon = "Lightly Polluted (Grade III)", "🟠"
+                elif point_pred <= 150:
+                    aq_cat, icon = "Moderately Polluted (Grade IV)", "🔴"
+                elif point_pred <= 250:
+                    aq_cat, icon = "Heavily Polluted (Grade V)", "🟣"
+                else:
+                    aq_cat, icon = "Severely Hazardous (Grade VI)", "🟤"
+
+                with cols[idx]:
+                    st.metric(
+                        label=f"Horizon +{h}h Forecast",
+                        value=f"{point_pred:.1f} µg/m³",
+                        delta=f"{icon} {aq_cat}",
+                    )
+                    st.caption(f"**Conformal Interval ({int(confidence_level*100)}%):** [{lower_bound:.1f}, {upper_bound:.1f}] µg/m³")
+                    st.caption(f"**Interval Width:** {upper_bound - lower_bound:.1f} µg/m³")
+                    st.caption(f"⚡ Latency: {lat_ms:.2f} ms (`{interval_method}`)")
+
+        except Exception as e:
+            st.error(f"❌ Inference error: {e}")
+            st.stop()

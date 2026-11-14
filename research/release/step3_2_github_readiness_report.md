@@ -81,7 +81,7 @@ This audit serves as the final technical gateway prior to Git initialization, lo
   - **Verdict:** Git LFS is **NOT REQUIRED**. A standard `git push` to GitHub will succeed without warnings or blocks.
 - **Security, Secrets, & Privacy Hygiene:**
   - Regex scans across all source files, documentation, and configuration files confirmed **zero credentials, API tokens, passwords, or cloud secrets**.
-  - Personal local paths (`file:///c:/Users/Dell/...`) were stripped from documentation and converted to clean repository-relative links.
+  - Personal local paths were stripped from documentation and converted to clean repository-relative links.
   - Temporary files, OS metadata (`Thumbs.db`), and bytecode directories (`__pycache__`, `.pytest_cache`) are excluded via `.gitignore`.
 
 ### 3.4 Verification of Production Artifacts & Automated Tests

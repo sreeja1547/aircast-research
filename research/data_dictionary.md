@@ -82,6 +82,6 @@
    - Only 1 record reaches exactly 999.0 for PM2.5, and 3 are $\ge 900.0$, forming a smooth continuum from 800 to 999 $\mu\text{g}/\text{m}^3$. They represent true environmental episodes and are preserved for extreme-event evaluation.
 
 5. **Strict Temporal Partitioning & Boundary Purge:**
-   - Chronological split: Training (2013-03-01 to 2015-12-31), Validation (2016-01-01 to 2016-09-30), Testing (2016-10-01 to 2017-02-28).
-   - A **24-hour boundary purge (embargo buffer)** is enforced between partitions so that targets up to $h=24$ hours cannot cross from training into validation, or validation into test.
+   - Chronological split: Training (2013-03-01 to 2015-12-31), Validation (2016-01-02 to 2016-09-30), Testing (2016-10-02 to 2017-02-28).
+   - A **24-hour boundary purge (embargo buffer)** is enforced between partitions (2016-01-01 and 2016-10-01 purged) so that targets up to $h=24$ hours cannot cross from training into validation, or validation into test.
    - All transformers, scalers, and imputers are fitted solely on the training partition.

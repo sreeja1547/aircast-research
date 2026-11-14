@@ -88,6 +88,8 @@ class ShapExplanationEngine:
         sns.barplot(
             x=mean_abs.values,
             y=mean_abs.index,
+            hue=mean_abs.index,
+            legend=False,
             ax=axes[0],
             palette="crest",
         )
@@ -108,6 +110,8 @@ class ShapExplanationEngine:
             data=df_dist,
             y="feature",
             x="shap_value",
+            hue="feature",
+            legend=False,
             ax=axes[1],
             palette="coolwarm",
             fliersize=2,

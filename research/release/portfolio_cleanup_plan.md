@@ -153,7 +153,7 @@ Upon receiving user confirmation, the cleanup will execute in the following exac
    - Remove redundant `PRSA2017_Data_20130301-20170228.zip` (retaining extracted CSVs).
    - Clean `__pycache__` and `.pytest_cache` directories.
 3. **Phase 3: Sanitize Markdown Documentation Links:**
-   - Replace local `file:///c:/Users/Dell/Downloads/...` links in `README.md` and `research/*.md` with clean GitHub-compatible relative paths (e.g. `[eda_report.md](research/eda_report.md)`).
+   - Replace local absolute file links in `README.md` and `research/*.md` with clean GitHub-compatible relative paths (e.g. `[eda_report.md](research/eda_report.md)`).
 4. **Phase 4: Verification of Clean State:**
    - Run `pytest tests/ -v` to ensure 100% test pass rate (52/52).
    - Test FastAPI and Streamlit startup.

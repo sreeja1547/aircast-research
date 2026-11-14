@@ -167,7 +167,7 @@ pytest tests/test_preprocessing.py
 ```
 ============================= test session starts =============================
 platform win32 -- Python 3.13.5, pytest-8.3.4, pluggy-1.5.0
-rootdir: C:\Users\Dell\Downloads\beijing+multi+site+air+quality+data
+rootdir: .
 plugins: anyio-4.11.0
 collected 7 items
 

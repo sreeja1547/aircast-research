@@ -30,10 +30,34 @@ class AirCastInferenceService:
         self.feature_names = get_feature_group("combined_all")
         self.feature_idx_map = {col: i for i, col in enumerate(self.feature_names)}
 
+    def _fill_feature_defaults(self, features: Dict[str, float]) -> Dict[str, float]:
+        """Validate presence of all 47 required features and align to canonical ordering.
+
+        Strictly rejects missing or non-finite features with ValueError.
+        Does not silently impute or invent missing values.
+        """
+        if not features:
+            raise ValueError("Feature payload cannot be empty.")
+        missing = [col for col in self.feature_names if col not in features or features[col] is None]
+        if missing:
+            raise ValueError(f"Missing required feature columns: {missing}")
+
+        validated = {}
+        for col in self.feature_names:
+            val = float(features[col])
+            if not np.isfinite(val):
+                raise ValueError(f"Feature column '{col}' has invalid non-finite value: {val}")
+            validated[col] = val
+        return validated
+
+    def validate_and_align_features(self, features: Dict[str, float]) -> Dict[str, float]:
+        """Public alias for feature schema validation and ordering."""
+        return self._fill_feature_defaults(features)
+
     def _resolve_model_name(self, model_name: str, horizon: int) -> str:
-        """Resolve aliases like 'recommended', 'pareto', or 'optimized' to horizon-specific Pareto models."""
+        """Resolve aliases like 'recommended', 'xgboost', 'pareto', or 'optimized' to horizon-specific Pareto models."""
         clean = model_name.lower().strip()
-        if clean in ("recommended", "pareto", "optimized"):
+        if clean in ("recommended", "xgboost", "xgb", "pareto", "optimized"):
             if horizon == 1:
                 return "xgboost"
             elif horizon == 6:
@@ -63,7 +87,11 @@ class AirCastInferenceService:
         return None
 
     def get_model(self, model_name: str, horizon: int) -> BaseForecaster:
-        """Retrieve model instance from cache or disk artifact, with lazy baseline instantiation."""
+        """Retrieve model instance from cache or disk artifact.
+
+        Raises FileNotFoundError if the requested model artifact is not on disk.
+        Does not perform silent dummy training.
+        """
         resolved = self._resolve_model_name(model_name, horizon)
         key = self._get_model_key(resolved, horizon)
         if key in self.loaded_models:
@@ -77,37 +105,45 @@ class AirCastInferenceService:
                 self.loaded_models[key] = model
                 return model
             except Exception as e:
-                print(f"[Warning] Failed loading {artifact_path}: {e}")
+                raise RuntimeError(f"Failed loading model artifact {artifact_path}: {e}")
 
-        # Fallback instantiator for baseline/reference models
+        # Baseline unweighted persistence heuristic (stateless)
         clean_name = resolved.lower().strip()
         if clean_name == "persistence":
             model = PersistenceForecaster(name=f"persistence_h{horizon}", target_col="PM2.5")
-            model.fit(pd.DataFrame({"PM2.5": [50.0]}), pd.Series([50.0]))
-        else:
-            model = get_model(clean_name, name=f"{clean_name}_h{horizon}")
-            dummy_X = pd.DataFrame(np.zeros((10, len(self.feature_names))), columns=self.feature_names)
-            dummy_y = pd.Series(np.ones(10) * 50.0)
-            model.fit(dummy_X, dummy_y)
+            self.loaded_models[key] = model
+            return model
 
-        self.loaded_models[key] = model
-        return model
+        raise FileNotFoundError(
+            f"Model artifact '{key}.joblib' was not found in '{self.models_dir}'. "
+            f"Available tracked deployment artifacts are 'xgboost_h1.joblib', 'xgboost_pruned_h6.joblib', "
+            f"'xgboost_fast_h24.joblib', or baseline 'persistence'."
+        )
+
+    def get_resolved_artifact(self, model_name: str, horizon: int) -> str:
+        """Return the resolved artifact filename for a model alias and horizon."""
+        resolved = self._resolve_model_name(model_name, horizon)
+        if resolved == "persistence":
+            return "persistence (in-memory)"
+        return f"{self._get_model_key(resolved, horizon)}.joblib"
 
     def predict_single(
         self,
         features: Dict[str, float],
         horizon: int = 24,
-        model_name: str = "xgboost",
+        model_name: str = "recommended",
         compute_interval: bool = True,
         nominal_coverage: float = 0.90,
     ) -> Tuple[float, Optional[float], Optional[float], float, Optional[str], bool]:
         """Generate point prediction and conformal interval for a single input record."""
         t0 = time.perf_counter()
         resolved_name = self._resolve_model_name(model_name, horizon)
+        key = self._get_model_key(resolved_name, horizon)
+        resolved_artifact = f"{key}.joblib" if resolved_name != "persistence" else "persistence (in-memory)"
         model = self.get_model(resolved_name, horizon)
 
         # Build 1-row DataFrame aligned to schema
-        row_dict = {col: float(features.get(col, 0.0)) for col in self.feature_names}
+        row_dict = self._fill_feature_defaults(features)
         df_sample = pd.DataFrame([row_dict])
 
         preds = model.predict(df_sample)
@@ -122,11 +158,19 @@ class AirCastInferenceService:
             clean_name = resolved_name.lower().strip()
             calibrator = self.get_conformal_calibrator(horizon)
             is_xgb_family = (
-                clean_name in ("xgboost", "xgb")
+                clean_name in ("xgboost", "xgb", "xgboost_pruned", "xgboost_fast")
                 or clean_name.startswith("xgboost")
                 or clean_name in ("recommended", "pareto", "optimized")
             )
+
+            # Check model identity binding: verify calibrator matches deployment model
+            calibrator_matches_model = False
             if calibrator is not None and calibrator.is_calibrated and is_xgb_family:
+                target_model_name = getattr(calibrator, "model_artifact_name", None)
+                if target_model_name is None or target_model_name == f"{key}.joblib" or f"{clean_name}_h{horizon}" in str(target_model_name):
+                    calibrator_matches_model = True
+
+            if calibrator_matches_model and calibrator is not None:
                 try:
                     q_val = calibrator.quantiles_.get(nominal_coverage)
                     if q_val is None:
@@ -165,13 +209,15 @@ class AirCastInferenceService:
         self,
         samples: List[Dict[str, float]],
         horizon: int = 24,
-        model_name: str = "xgboost",
+        model_name: str = "recommended",
         compute_intervals: bool = True,
         nominal_coverage: float = 0.90,
     ) -> Tuple[List[float], Optional[List[float]], Optional[List[float]], float, float, Optional[str], bool]:
         """Generate point predictions and intervals for a list of input records using vectorized buffers."""
         t0 = time.perf_counter()
         resolved_name = self._resolve_model_name(model_name, horizon)
+        key = self._get_model_key(resolved_name, horizon)
+        resolved_artifact = f"{key}.joblib" if resolved_name != "persistence" else "persistence (in-memory)"
         model = self.get_model(resolved_name, horizon)
 
         n_samples = len(samples)
@@ -179,8 +225,9 @@ class AirCastInferenceService:
         mat = np.empty((n_samples, n_feats), dtype=np.float32)
 
         for i, s in enumerate(samples):
+            filled_s = self._fill_feature_defaults(s)
             for col, j in self.feature_idx_map.items():
-                mat[i, j] = float(s.get(col, 0.0))
+                mat[i, j] = filled_s[col]
 
         df_batch = pd.DataFrame(mat, columns=self.feature_names)
         preds = model.predict(df_batch)
@@ -195,11 +242,18 @@ class AirCastInferenceService:
             clean_name = resolved_name.lower().strip()
             calibrator = self.get_conformal_calibrator(horizon)
             is_xgb_family = (
-                clean_name in ("xgboost", "xgb")
+                clean_name in ("xgboost", "xgb", "xgboost_pruned", "xgboost_fast")
                 or clean_name.startswith("xgboost")
                 or clean_name in ("recommended", "pareto", "optimized")
             )
+
+            calibrator_matches_model = False
             if calibrator is not None and calibrator.is_calibrated and is_xgb_family:
+                target_model_name = getattr(calibrator, "model_artifact_name", None)
+                if target_model_name is None or target_model_name == f"{key}.joblib" or f"{clean_name}_h{horizon}" in str(target_model_name):
+                    calibrator_matches_model = True
+
+            if calibrator_matches_model and calibrator is not None:
                 try:
                     q_val = calibrator.quantiles_.get(nominal_coverage)
                     if q_val is None:
@@ -231,11 +285,6 @@ class AirCastInferenceService:
                 upper_bounds = [round(p + margin, 2) for p in point_preds]
                 interval_method = "heuristic_fallback"
                 is_calibrated = False
-
-        tot_lat = round((time.perf_counter() - t0) * 1000.0, 4)
-        per_samp = round(tot_lat / n_samples, 4) if n_samples > 0 else 0.0
-
-        return point_preds, lower_bounds, upper_bounds, tot_lat, per_samp, interval_method, is_calibrated
 
         tot_lat = round((time.perf_counter() - t0) * 1000.0, 4)
         per_samp = round(tot_lat / n_samples, 4) if n_samples > 0 else 0.0

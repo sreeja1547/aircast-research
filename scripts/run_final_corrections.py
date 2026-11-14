@@ -17,6 +17,7 @@ Executes:
 """
 
 import copy
+import hashlib
 import json
 import os
 import sys
@@ -27,6 +28,7 @@ from typing import Any, Dict, List, Tuple
 # Add project root to path
 sys.path.insert(0, os.path.abspath("."))
 
+import joblib
 import numpy as np
 import pandas as pd
 
@@ -41,6 +43,7 @@ from src.features.registry import get_feature_group
 def run_task1_uncertainty(df_prepared: pd.DataFrame, builder: MultiHorizonForecastingDataset, splitter: TemporalPurgedSplitter) -> Dict[str, Any]:
     print("\n" + "=" * 80)
     print("TASK 1: UNCERTAINTY QUANTIFICATION CORRECTION (STANDARD VS NORMALIZED ADAPTIVE)")
+    print("        RIGOROUS QUARANTINED SPLIT-CONFORMAL CALIBRATION ON DEPLOYMENT MODELS")
     print("=" * 80)
 
     horizons = [1, 6, 24]
@@ -52,34 +55,85 @@ def run_task1_uncertainty(df_prepared: pd.DataFrame, builder: MultiHorizonForeca
         ("Severe / Hazardous [250+)", 250.0, 10000.0),
     ]
 
+    model_file_map = {
+        1: "artifacts/models/xgboost_h1.joblib",
+        6: "artifacts/models/xgboost_pruned_h6.joblib",
+        24: "artifacts/models/xgboost_fast_h24.joblib",
+    }
+
     task1_results = {}
 
     for h in horizons:
-        print(f"\n---> Horizon h={h}h: Calibrating Standard and Normalized Adaptive Conformal...")
+        model_path = model_file_map[h]
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Deployment model for h={h} not found at '{model_path}'.")
+
+        with open(model_path, "rb") as mf:
+            model_bytes = mf.read()
+            model_sha256 = hashlib.sha256(model_bytes).hexdigest()
+        model_artifact_name = os.path.basename(model_path)
+        print(f"\n---> Horizon h={h}h: Loading frozen deployment artifact '{model_artifact_name}' (SHA256: {model_sha256[:16]}...)")
+        model = joblib.load(model_path)
+
         X, y, meta = builder.get_horizon_dataset(df_prepared, horizon=h, feature_group="combined_all")
         dt = pd.to_datetime(meta[splitter.datetime_col])
-        train_m = dt <= splitter.train_end
-        val_m = (dt >= splitter.val_start) & (dt <= splitter.val_end)
+
+        # Quarantined Calibration Partition: 2016-04-15 00:00:00 to 2016-09-30 23:59:59
+        # Strictly separated from early-validation tuning (2016-01-02 to 2016-04-14).
+        # Split A (2016-04-15 to 2016-06-30): fit dispersion parameters beta_0, beta_1
+        # Split B (2016-07-01 to 2016-09-30): calculate nonconformity scores and empirical quantiles
+        cal_a_m = (dt >= "2016-04-15 00:00:00") & (dt <= "2016-06-30 23:59:59")
+        cal_b_m = (dt >= "2016-07-01 00:00:00") & (dt <= "2016-09-30 23:59:59")
+        cal_full_m = (dt >= "2016-04-15 00:00:00") & (dt <= "2016-09-30 23:59:59")
         test_m = (dt >= splitter.test_start) & (dt <= splitter.test_end)
 
-        X_train, y_train = X[train_m], y[train_m]
-        X_val, y_val = X[val_m], y[val_m]
+        X_cal_a, y_cal_a = X[cal_a_m], y[cal_a_m]
+        X_cal_b, y_cal_b = X[cal_b_m], y[cal_b_m]
         X_test, y_test = X[test_m], y[test_m]
         y_test_arr = y_test.values
 
-        # Base model
-        model = XGBoostForecaster(name=f"xgb_h{h}", n_estimators=140, max_depth=6, learning_rate=0.06, random_state=42)
-        model.fit(X_train, y_train, X_val=X_val, y_val=y_val)
+        print(f"  Quarantined Cal Split A (dispersion fitting)  : {len(X_cal_a)} observations")
+        print(f"  Quarantined Cal Split B (quantile evaluation) : {len(X_cal_b)} observations")
+        print(f"  Untouched Test Partition                      : {len(X_test)} observations")
 
         # 1. Standard Split Conformal (Homoscedastic)
-        std_cp = ConformalPredictor(base_model=model, default_coverage=0.90, method="standard")
-        std_cp.calibrate(X_val, y_val)
+        std_cp = ConformalPredictor(
+            base_model=model,
+            default_coverage=0.90,
+            method="standard",
+            model_artifact_name=model_artifact_name,
+            model_artifact_hash=model_sha256,
+            calibration_split_name="2016-07-01_to_2016-09-30_split_b",
+        )
+        std_cp.calibrate(
+            X_cal=X_cal_b,
+            y_cal=y_cal_b,
+            model_artifact_name=model_artifact_name,
+            model_artifact_hash=model_sha256,
+            calibration_split_name="2016-07-01_to_2016-09-30_split_b",
+        )
 
         # 2. Normalized Adaptive Conformal (Heteroscedastic difficulty score)
-        norm_cp = ConformalPredictor(base_model=model, default_coverage=0.90, method="normalized", sigma_min=5.0)
-        norm_cp.calibrate(X_val, y_val)
+        norm_cp = ConformalPredictor(
+            base_model=model,
+            default_coverage=0.90,
+            method="normalized",
+            sigma_min=5.0,
+            model_artifact_name=model_artifact_name,
+            model_artifact_hash=model_sha256,
+            calibration_split_name="2016-04-15_to_2016-09-30_disjoint_split_ab",
+        )
+        norm_cp.calibrate(
+            X_cal=X_cal_b,
+            y_cal=y_cal_b,
+            X_disp=X_cal_a,
+            y_disp=y_cal_a,
+            model_artifact_name=model_artifact_name,
+            model_artifact_hash=model_sha256,
+            calibration_split_name="2016-04-15_to_2016-09-30_disjoint_split_ab",
+        )
 
-        # Save normalized predictor as primary calibrated artifact for API serving
+        # Save calibrator artifacts bound directly to deployment models
         std_save_path = f"artifacts/models/conformal_calibrator_std_h{h}.joblib"
         norm_save_path = f"artifacts/models/conformal_calibrator_h{h}.joblib"
         std_cp.save(std_save_path)
@@ -129,14 +183,44 @@ def run_task1_uncertainty(df_prepared: pd.DataFrame, builder: MultiHorizonForeca
                 "norm_coverage": round(float(np.mean(st_group["norm_covered"])) * 100.0, 2),
             }
 
+        # Severe-Event (>250 ug/m3) and Extreme (>=150 ug/m3) Explicit Safety Audits
+        sev_mask_250 = y_test_arr > 250.0
+        n_sev_250 = int(np.sum(sev_mask_250))
+        ext_mask_150 = y_test_arr >= 150.0
+        n_ext_150 = int(np.sum(ext_mask_150))
+
+        severe_event_audit = {
+            "tier_greater_250": {
+                "sample_count": n_sev_250,
+                "std_covered_count": int(np.sum(test_meta["std_covered"].values[sev_mask_250])) if n_sev_250 > 0 else 0,
+                "std_coverage_pct": round(float(np.mean(test_meta["std_covered"].values[sev_mask_250])) * 100.0, 2) if n_sev_250 > 0 else 0.0,
+                "norm_covered_count": int(np.sum(test_meta["norm_covered"].values[sev_mask_250])) if n_sev_250 > 0 else 0,
+                "norm_coverage_pct": round(float(np.mean(test_meta["norm_covered"].values[sev_mask_250])) * 100.0, 2) if n_sev_250 > 0 else 0.0,
+            },
+            "tier_ge_150": {
+                "sample_count": n_ext_150,
+                "std_covered_count": int(np.sum(test_meta["std_covered"].values[ext_mask_150])) if n_ext_150 > 0 else 0,
+                "std_coverage_pct": round(float(np.mean(test_meta["std_covered"].values[ext_mask_150])) * 100.0, 2) if n_ext_150 > 0 else 0.0,
+                "norm_covered_count": int(np.sum(test_meta["norm_covered"].values[ext_mask_150])) if n_ext_150 > 0 else 0,
+                "norm_coverage_pct": round(float(np.mean(test_meta["norm_covered"].values[ext_mask_150])) * 100.0, 2) if n_ext_150 > 0 else 0.0,
+            },
+        }
+
         print(f"  Standard Conformal Test Coverage : {std_metrics['empirical_coverage']*100:.2f}% | Mean Width: {std_metrics['mean_interval_width']:.2f}")
         print(f"  Normalized Adaptive Test Coverage: {norm_metrics['empirical_coverage']*100:.2f}% | Mean Width: {norm_metrics['mean_interval_width']:.2f}")
-        if "Severe / Hazardous [250+)" in tier_breakdown:
-            sev = tier_breakdown["Severe / Hazardous [250+)"]
-            print(f"  Severe (>=250) Tier Coverage     : Standard={sev['std_coverage']}% -> Normalized={sev['norm_coverage']}%")
+        if n_sev_250 > 0:
+            print(f"  Severe (>250) Tier Coverage      : Standard={severe_event_audit['tier_greater_250']['std_coverage_pct']}% ({severe_event_audit['tier_greater_250']['std_covered_count']}/{n_sev_250}) -> Normalized={severe_event_audit['tier_greater_250']['norm_coverage_pct']}% ({severe_event_audit['tier_greater_250']['norm_covered_count']}/{n_sev_250})")
 
         task1_results[f"h{h}"] = {
             "nominal_coverage": 0.90,
+            "deployment_model_artifact": model_artifact_name,
+            "deployment_model_sha256": model_sha256,
+            "calibration_samples": {
+                "dispersion_split_a_count": len(X_cal_a),
+                "quantile_split_b_count": len(X_cal_b),
+                "total_calibration_pool": len(X_cal_a) + len(X_cal_b),
+            },
+            "test_sample_count": len(X_test),
             "standard_conformal": {
                 "calib_quantile": round(std_cp.quantiles_[0.90], 2),
                 **std_metrics,
@@ -146,6 +230,7 @@ def run_task1_uncertainty(df_prepared: pd.DataFrame, builder: MultiHorizonForeca
                 "dispersion_params": {k: round(v, 4) for k, v in norm_cp.dispersion_params_.items()},
                 **norm_metrics,
             },
+            "severe_event_safety_audit": severe_event_audit,
             "seasonal_stratification": seasonal_breakdown,
             "severity_stratification": tier_breakdown,
             "station_stratification": station_breakdown,
@@ -156,6 +241,18 @@ def run_task1_uncertainty(df_prepared: pd.DataFrame, builder: MultiHorizonForeca
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(task1_results, f, indent=2)
     print(f"\n[SUCCESS] Task 1 uncertainty comparison saved to '{out_path}'.")
+
+    # Also save dedicated deployment verification metrics
+    dep_path = "artifacts/metrics/conformal_verified_deployment_metrics.json"
+    with open(dep_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "audit_title": "Conformal Uncertainty Quantification on Verified Deployment Models",
+            "audit_date": "2026-11-14",
+            "methodology": "Quarantined independent split-conformal with disjoint dispersion fitting and quantile computation",
+            "results": task1_results,
+        }, f, indent=2)
+    print(f"[SUCCESS] Conformal deployment verification metrics saved to '{dep_path}'.")
+
     return task1_results
 
 
@@ -499,20 +596,28 @@ def main():
     builder = MultiHorizonForecastingDataset()
     splitter = TemporalPurgedSplitter()
 
-    # Task 1: Uncertainty Quantification (skip if already generated)
-    if not os.path.exists("artifacts/metrics/final_uncertainty_comparison.json"):
-        run_task1_uncertainty(df_prepared, builder, splitter)
-    else:
-        print("[Task 1] final_uncertainty_comparison.json already exists. Skipping re-computation.")
+    run_all = len(sys.argv) == 1 or "--all" in sys.argv
+    run_t1 = run_all or "--task1" in sys.argv or "-t1" in sys.argv
+    run_t3 = run_all or "--task3" in sys.argv or "-t3" in sys.argv
+    run_t4 = run_all or "--task4" in sys.argv or "-t4" in sys.argv
 
-    # Task 3: LOSO Validation (skip if already generated)
-    if not os.path.exists("artifacts/metrics/final_loso_station_id_comparison.json"):
-        run_task3_loso(df_prepared, builder)
-    else:
-        print("[Task 3] final_loso_station_id_comparison.json already exists. Skipping re-computation.")
+    # Task 1: Uncertainty Quantification on Frozen Deployment Models
+    if run_t1:
+        run_task1_uncertainty(df_prepared, builder, splitter)
+
+    # Task 3: LOSO Validation
+    if run_t3:
+        if not os.path.exists("artifacts/metrics/final_loso_station_id_comparison.json") or "--force" in sys.argv:
+            run_task3_loso(df_prepared, builder)
+        else:
+            print("[Task 3] final_loso_station_id_comparison.json already exists. Skipping re-computation (pass --force to rerun).")
 
     # Task 4: Robustness Experiments
-    run_task4_robustness(df_prepared, builder, splitter)
+    if run_t4:
+        if not os.path.exists("artifacts/metrics/final_sensor_robustness.json") or "--force" in sys.argv:
+            run_task4_robustness(df_prepared, builder, splitter)
+        else:
+            print("[Task 4] final_sensor_robustness.json already exists. Skipping re-computation (pass --force to rerun).")
 
     elapsed = time.perf_counter() - t0
     print(f"\n[ALL CORRECTIONS COMPLETED IN {elapsed:.2f}s!]")

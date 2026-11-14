@@ -55,14 +55,18 @@ def main():
         val_mask = (dt_series >= splitter.val_start) & (dt_series <= splitter.val_end)
         test_mask = (dt_series >= splitter.test_start) & (dt_series <= splitter.test_end)
 
-        # Fit model on training split
-        model = XGBoostForecaster(name=f"xgb_h{h}", n_estimators=120, max_depth=6, random_state=42)
-        model.fit(X[train_mask], y[train_mask])
-
-        # Calibrate strictly on validation partition
-        cp = ConformalPredictor(base_model=model, default_coverage=0.90)
-        cp.calibrate(X[val_mask], y[val_mask])
-        q_90 = cp.quantiles_[0.90]
+        calib_path = f"artifacts/models/conformal_calibrator_h{h}.joblib"
+        if os.path.exists(calib_path):
+            import joblib
+            cp = joblib.load(calib_path)
+            q_90 = cp.quantiles_[0.90]
+        else:
+            # Fallback fit
+            model = XGBoostForecaster(name=f"xgb_h{h}", n_estimators=120, max_depth=6, random_state=42)
+            model.fit(X[train_mask], y[train_mask])
+            cp = ConformalPredictor(base_model=model, default_coverage=0.90)
+            cp.calibrate(X[val_mask], y[val_mask])
+            q_90 = cp.quantiles_[0.90]
 
         # Evaluate on test partition
         test_preds = cp.predict_intervals(X[test_mask], coverage_level=0.90)

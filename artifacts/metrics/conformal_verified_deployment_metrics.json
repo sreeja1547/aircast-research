@@ -1,0 +1,481 @@
+{
+  "audit_title": "Conformal Uncertainty Quantification on Verified Deployment Models",
+  "audit_date": "2026-11-14",
+  "methodology": "Quarantined independent split-conformal with disjoint dispersion fitting and quantile computation",
+  "results": {
+    "h1": {
+      "nominal_coverage": 0.9,
+      "deployment_model_artifact": "xgboost_h1.joblib",
+      "deployment_model_sha256": "d1076b2aa4cc5723275cffca1971bcfa641a131fb1960777cfe3f2925f216595",
+      "calibration_samples": {
+        "dispersion_split_a_count": 21582,
+        "quantile_split_b_count": 25682,
+        "total_calibration_pool": 47264
+      },
+      "test_sample_count": 42554,
+      "standard_conformal": {
+        "calib_quantile": 15.56,
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.7991,
+        "coverage_error": -0.1009,
+        "mean_interval_width": 29.834,
+        "median_interval_width": 31.1292,
+        "mean_winkler_score": 117.8489,
+        "extreme_coverage": 0.5647,
+        "extreme_mean_width": 31.1288,
+        "sample_count": 42554,
+        "extreme_sample_count": 10477
+      },
+      "normalized_conformal": {
+        "calib_quantile": 1.4974,
+        "dispersion_params": {
+          "beta_0": 5.0,
+          "beta_1": 0.0814
+        },
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.8636,
+        "coverage_error": -0.0364,
+        "mean_interval_width": 38.9712,
+        "median_interval_width": 31.0653,
+        "mean_winkler_score": 94.0908,
+        "extreme_coverage": 0.8438,
+        "extreme_mean_width": 73.8362,
+        "sample_count": 42554,
+        "extreme_sample_count": 10477
+      },
+      "severe_event_safety_audit": {
+        "tier_greater_250": {
+          "sample_count": 3676,
+          "std_covered_count": 1553,
+          "std_coverage_pct": 42.25,
+          "norm_covered_count": 3002,
+          "norm_coverage_pct": 81.66
+        },
+        "tier_ge_150": {
+          "sample_count": 10477,
+          "std_covered_count": 5916,
+          "std_coverage_pct": 56.47,
+          "norm_covered_count": 8840,
+          "norm_coverage_pct": 84.38
+        }
+      },
+      "seasonal_stratification": {
+        "Non-Heating (Oct)": {
+          "sample_count": 8377,
+          "std_coverage": 87.44,
+          "norm_coverage": 90.87
+        },
+        "Heating Season (Nov-Feb)": {
+          "sample_count": 34177,
+          "std_coverage": 78.06,
+          "norm_coverage": 85.26
+        }
+      },
+      "severity_stratification": {
+        "Good to Moderate [0, 75)": {
+          "sample_count": 22991,
+          "std_coverage": 92.07,
+          "norm_coverage": 88.16
+        },
+        "USG [75, 115)": {
+          "sample_count": 5460,
+          "std_coverage": 79.38,
+          "norm_coverage": 84.38
+        },
+        "Unhealthy [115, 150)": {
+          "sample_count": 3626,
+          "std_coverage": 71.37,
+          "norm_coverage": 83.67
+        },
+        "Very Unhealthy [150, 250)": {
+          "sample_count": 6768,
+          "std_coverage": 64.17,
+          "norm_coverage": 85.8
+        },
+        "Severe / Hazardous [250+)": {
+          "sample_count": 3709,
+          "std_coverage": 42.41,
+          "norm_coverage": 81.77
+        }
+      },
+      "station_stratification": {
+        "Aotizhongxin": {
+          "sample_count": 3571,
+          "std_coverage": 79.67,
+          "norm_coverage": 86.45
+        },
+        "Changping": {
+          "sample_count": 3575,
+          "std_coverage": 79.16,
+          "norm_coverage": 83.64
+        },
+        "Dingling": {
+          "sample_count": 3454,
+          "std_coverage": 83.41,
+          "norm_coverage": 85.7
+        },
+        "Dongsi": {
+          "sample_count": 3520,
+          "std_coverage": 77.41,
+          "norm_coverage": 85.4
+        },
+        "Guanyuan": {
+          "sample_count": 3528,
+          "std_coverage": 78.43,
+          "norm_coverage": 84.64
+        },
+        "Gucheng": {
+          "sample_count": 3558,
+          "std_coverage": 79.23,
+          "norm_coverage": 87.07
+        },
+        "Huairou": {
+          "sample_count": 3577,
+          "std_coverage": 84.9,
+          "norm_coverage": 88.15
+        },
+        "Nongzhanguan": {
+          "sample_count": 3539,
+          "std_coverage": 78.55,
+          "norm_coverage": 87.12
+        },
+        "Shunyi": {
+          "sample_count": 3540,
+          "std_coverage": 80.08,
+          "norm_coverage": 86.92
+        },
+        "Tiantan": {
+          "sample_count": 3567,
+          "std_coverage": 79.2,
+          "norm_coverage": 86.68
+        },
+        "Wanliu": {
+          "sample_count": 3565,
+          "std_coverage": 82.08,
+          "norm_coverage": 88.95
+        },
+        "Wanshouxigong": {
+          "sample_count": 3560,
+          "std_coverage": 76.83,
+          "norm_coverage": 85.59
+        }
+      }
+    },
+    "h6": {
+      "nominal_coverage": 0.9,
+      "deployment_model_artifact": "xgboost_pruned_h6.joblib",
+      "deployment_model_sha256": "9a66bbf00512bd22025092e7cf64fe8f7f08938db8ad140d7c40b9255fc77225",
+      "calibration_samples": {
+        "dispersion_split_a_count": 21587,
+        "quantile_split_b_count": 25682,
+        "total_calibration_pool": 47269
+      },
+      "test_sample_count": 42494,
+      "standard_conformal": {
+        "calib_quantile": 47.71,
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.7545,
+        "coverage_error": -0.1455,
+        "mean_interval_width": 86.0866,
+        "median_interval_width": 95.417,
+        "mean_winkler_score": 360.9318,
+        "extreme_coverage": 0.4971,
+        "extreme_mean_width": 95.2404,
+        "sample_count": 42494,
+        "extreme_sample_count": 10421
+      },
+      "normalized_conformal": {
+        "calib_quantile": 1.7131,
+        "dispersion_params": {
+          "beta_0": 5.0,
+          "beta_1": 0.3112
+        },
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.8304,
+        "coverage_error": -0.0696,
+        "mean_interval_width": 120.2632,
+        "median_interval_width": 102.7113,
+        "mean_winkler_score": 261.4094,
+        "extreme_coverage": 0.7912,
+        "extreme_mean_width": 227.4108,
+        "sample_count": 42494,
+        "extreme_sample_count": 10421
+      },
+      "severe_event_safety_audit": {
+        "tier_greater_250": {
+          "sample_count": 3676,
+          "std_covered_count": 949,
+          "std_coverage_pct": 25.82,
+          "norm_covered_count": 2425,
+          "norm_coverage_pct": 65.97
+        },
+        "tier_ge_150": {
+          "sample_count": 10421,
+          "std_covered_count": 5180,
+          "std_coverage_pct": 49.71,
+          "norm_covered_count": 8245,
+          "norm_coverage_pct": 79.12
+        }
+      },
+      "seasonal_stratification": {
+        "Non-Heating (Oct)": {
+          "sample_count": 8377,
+          "std_coverage": 85.51,
+          "norm_coverage": 90.77
+        },
+        "Heating Season (Nov-Feb)": {
+          "sample_count": 34117,
+          "std_coverage": 72.98,
+          "norm_coverage": 81.15
+        }
+      },
+      "severity_stratification": {
+        "Good to Moderate [0, 75)": {
+          "sample_count": 22991,
+          "std_coverage": 84.62,
+          "norm_coverage": 82.51
+        },
+        "USG [75, 115)": {
+          "sample_count": 5460,
+          "std_coverage": 85.0,
+          "norm_coverage": 89.91
+        },
+        "Unhealthy [115, 150)": {
+          "sample_count": 3622,
+          "std_coverage": 76.92,
+          "norm_coverage": 87.36
+        },
+        "Very Unhealthy [150, 250)": {
+          "sample_count": 6712,
+          "std_coverage": 62.77,
+          "norm_coverage": 86.34
+        },
+        "Severe / Hazardous [250+)": {
+          "sample_count": 3709,
+          "std_coverage": 26.07,
+          "norm_coverage": 66.06
+        }
+      },
+      "station_stratification": {
+        "Aotizhongxin": {
+          "sample_count": 3566,
+          "std_coverage": 74.96,
+          "norm_coverage": 84.3
+        },
+        "Changping": {
+          "sample_count": 3570,
+          "std_coverage": 78.68,
+          "norm_coverage": 82.86
+        },
+        "Dingling": {
+          "sample_count": 3449,
+          "std_coverage": 81.88,
+          "norm_coverage": 84.05
+        },
+        "Dongsi": {
+          "sample_count": 3515,
+          "std_coverage": 71.07,
+          "norm_coverage": 81.68
+        },
+        "Guanyuan": {
+          "sample_count": 3523,
+          "std_coverage": 74.17,
+          "norm_coverage": 83.51
+        },
+        "Gucheng": {
+          "sample_count": 3553,
+          "std_coverage": 74.73,
+          "norm_coverage": 80.86
+        },
+        "Huairou": {
+          "sample_count": 3572,
+          "std_coverage": 81.16,
+          "norm_coverage": 84.74
+        },
+        "Nongzhanguan": {
+          "sample_count": 3534,
+          "std_coverage": 71.76,
+          "norm_coverage": 82.68
+        },
+        "Shunyi": {
+          "sample_count": 3535,
+          "std_coverage": 75.42,
+          "norm_coverage": 82.63
+        },
+        "Tiantan": {
+          "sample_count": 3562,
+          "std_coverage": 73.86,
+          "norm_coverage": 82.82
+        },
+        "Wanliu": {
+          "sample_count": 3560,
+          "std_coverage": 76.18,
+          "norm_coverage": 84.24
+        },
+        "Wanshouxigong": {
+          "sample_count": 3555,
+          "std_coverage": 71.65,
+          "norm_coverage": 82.17
+        }
+      }
+    },
+    "h24": {
+      "nominal_coverage": 0.9,
+      "deployment_model_artifact": "xgboost_fast_h24.joblib",
+      "deployment_model_sha256": "df0b5ec15cfe70cc6d225ce2434178366b338e893266813d3cd5e6b4d4525cc5",
+      "calibration_samples": {
+        "dispersion_split_a_count": 21592,
+        "quantile_split_b_count": 25684,
+        "total_calibration_pool": 47276
+      },
+      "test_sample_count": 42278,
+      "standard_conformal": {
+        "calib_quantile": 64.01,
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.6101,
+        "coverage_error": -0.2899,
+        "mean_interval_width": 122.7388,
+        "median_interval_width": 128.0114,
+        "mean_winkler_score": 602.0895,
+        "extreme_coverage": 0.3075,
+        "extreme_mean_width": 127.4932,
+        "sample_count": 42278,
+        "extreme_sample_count": 10231
+      },
+      "normalized_conformal": {
+        "calib_quantile": 1.792,
+        "dispersion_params": {
+          "beta_0": 8.5805,
+          "beta_1": 0.3773
+        },
+        "nominal_coverage": 0.9,
+        "empirical_coverage": 0.7017,
+        "coverage_error": -0.1983,
+        "mean_interval_width": 163.165,
+        "median_interval_width": 157.5341,
+        "mean_winkler_score": 417.0207,
+        "extreme_coverage": 0.5237,
+        "extreme_mean_width": 215.1066,
+        "sample_count": 42278,
+        "extreme_sample_count": 10231
+      },
+      "severe_event_safety_audit": {
+        "tier_greater_250": {
+          "sample_count": 3672,
+          "std_covered_count": 186,
+          "std_coverage_pct": 5.07,
+          "norm_covered_count": 874,
+          "norm_coverage_pct": 23.8
+        },
+        "tier_ge_150": {
+          "sample_count": 10231,
+          "std_covered_count": 3146,
+          "std_coverage_pct": 30.75,
+          "norm_covered_count": 5358,
+          "norm_coverage_pct": 52.37
+        }
+      },
+      "seasonal_stratification": {
+        "Non-Heating (Oct)": {
+          "sample_count": 8377,
+          "std_coverage": 75.99,
+          "norm_coverage": 85.48
+        },
+        "Heating Season (Nov-Feb)": {
+          "sample_count": 33901,
+          "std_coverage": 57.31,
+          "norm_coverage": 66.38
+        }
+      },
+      "severity_stratification": {
+        "Good to Moderate [0, 75)": {
+          "sample_count": 22991,
+          "std_coverage": 62.32,
+          "norm_coverage": 70.18
+        },
+        "USG [75, 115)": {
+          "sample_count": 5459,
+          "std_coverage": 95.27,
+          "norm_coverage": 92.14
+        },
+        "Unhealthy [115, 150)": {
+          "sample_count": 3597,
+          "std_coverage": 86.71,
+          "norm_coverage": 87.35
+        },
+        "Very Unhealthy [150, 250)": {
+          "sample_count": 6526,
+          "std_coverage": 45.28,
+          "norm_coverage": 68.53
+        },
+        "Severe / Hazardous [250+)": {
+          "sample_count": 3705,
+          "std_coverage": 5.16,
+          "norm_coverage": 23.91
+        }
+      },
+      "station_stratification": {
+        "Aotizhongxin": {
+          "sample_count": 3548,
+          "std_coverage": 59.33,
+          "norm_coverage": 70.52
+        },
+        "Changping": {
+          "sample_count": 3552,
+          "std_coverage": 66.33,
+          "norm_coverage": 74.61
+        },
+        "Dingling": {
+          "sample_count": 3431,
+          "std_coverage": 66.74,
+          "norm_coverage": 73.27
+        },
+        "Dongsi": {
+          "sample_count": 3497,
+          "std_coverage": 56.22,
+          "norm_coverage": 66.77
+        },
+        "Guanyuan": {
+          "sample_count": 3505,
+          "std_coverage": 59.46,
+          "norm_coverage": 70.21
+        },
+        "Gucheng": {
+          "sample_count": 3535,
+          "std_coverage": 60.03,
+          "norm_coverage": 68.94
+        },
+        "Huairou": {
+          "sample_count": 3554,
+          "std_coverage": 67.98,
+          "norm_coverage": 73.19
+        },
+        "Nongzhanguan": {
+          "sample_count": 3516,
+          "std_coverage": 57.65,
+          "norm_coverage": 67.38
+        },
+        "Shunyi": {
+          "sample_count": 3517,
+          "std_coverage": 62.95,
+          "norm_coverage": 69.8
+        },
+        "Tiantan": {
+          "sample_count": 3544,
+          "std_coverage": 58.72,
+          "norm_coverage": 68.51
+        },
+        "Wanliu": {
+          "sample_count": 3542,
+          "std_coverage": 60.02,
+          "norm_coverage": 70.44
+        },
+        "Wanshouxigong": {
+          "sample_count": 3537,
+          "std_coverage": 56.74,
+          "norm_coverage": 68.36
+        }
+      }
+    }
+  }
+}

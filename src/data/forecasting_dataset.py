@@ -56,20 +56,26 @@ class MultiHorizonForecastingDataset:
         df_work = raw_df.copy()
 
         # Step 1: Preserve RAW target column for ground truth target construction
-        # Targets MUST be derived from raw un-imputed measurements
+        # Targets MUST be derived strictly from raw un-imputed measurements.
+        # If raw_target_col already exists (e.g., when receiving an already-prepared feature cache),
+        # preserve it so that imputed model input features never overwrite ground-truth evaluation targets.
         raw_target_col = f"{self.target_col}_raw_unimputed"
-        df_work[raw_target_col] = df_work[self.target_col]
+        if raw_target_col not in df_work.columns:
+            df_work[raw_target_col] = df_work[self.target_col]
 
         # Step 2: Construct multi-horizon targets independently per station
-        station_dfs = []
-        for station, group in df_work.groupby(self.station_col, sort=False):
-            st_group = group.sort_values(self.datetime_col).copy()
-            for h in self.horizons:
-                # Shift backward by h steps: row at time t receives value from time t+h
-                st_group[f"target_h{h}"] = st_group[raw_target_col].shift(-h)
-            station_dfs.append(st_group)
-
-        df_work = pd.concat(station_dfs, ignore_index=True)
+        # If target columns are already present, preserve them to avoid redundant computation;
+        # otherwise, construct them strictly from the raw un-imputed ground-truth series.
+        existing_targets = [f"target_h{h}" for h in self.horizons]
+        if not all(col in df_work.columns for col in existing_targets):
+            station_dfs = []
+            for station, group in df_work.groupby(self.station_col, sort=False):
+                st_group = group.sort_values(self.datetime_col).copy()
+                for h in self.horizons:
+                    # Shift backward by h steps: row at time t receives value from time t+h
+                    st_group[f"target_h{h}"] = st_group[raw_target_col].shift(-h)
+                station_dfs.append(st_group)
+            df_work = pd.concat(station_dfs, ignore_index=True)
 
         # Step 3: Causally impute historical input features (never touches target_h*)
         if imputer is not None:

@@ -47,3 +47,33 @@ def test_shap_explanation_engine(tmp_path):
     engine.generate_summary_plot(df.iloc[:20], output_path=str(plot_file), top_k=3)
     assert plot_file.exists()
     assert plot_file.stat().st_size > 1000
+
+
+def test_shap_additive_efficiency_with_early_stopping():
+    """Verify TreeSHAP additive efficiency holds exactly when early stopping triggers."""
+    np.random.seed(42)
+    n = 200
+    df = pd.DataFrame({
+        "PM2.5": np.random.uniform(10.0, 150.0, n),
+        "WSPM": np.random.uniform(0.5, 6.0, n),
+        "TEMP": np.random.uniform(0.0, 30.0, n),
+    })
+    y = 0.8 * df["PM2.5"] - 4.0 * df["WSPM"] + np.random.normal(0, 3, n)
+
+    train_X, val_X = df.iloc[:150], df.iloc[150:]
+    train_y, val_y = y.iloc[:150], y.iloc[150:]
+
+    # Train model with early stopping
+    model = XGBoostForecaster(n_estimators=100, max_depth=3, early_stopping_rounds=5, random_state=42)
+    model.fit(train_X, train_y, X_val=val_X, y_val=val_y)
+
+    engine = ShapExplanationEngine(model)
+    res = engine.explain(val_X.iloc[:20])
+
+    shap_vals = res["shap_values"]
+    base_val = res["base_value"]
+
+    # Raw model predict must match sum of SHAP values + base_val to machine precision
+    raw_preds = model.model.predict(val_X.iloc[:20])
+    reconstructed = np.sum(shap_vals, axis=1) + base_val
+    np.testing.assert_allclose(raw_preds, reconstructed, rtol=1e-4)

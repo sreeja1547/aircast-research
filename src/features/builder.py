@@ -55,10 +55,15 @@ class StationAwareFeatureBuilder:
         df_out = df.copy()
 
         # 1. Cyclical temporal features
+        dt = pd.to_datetime(df_out[self.datetime_col])
+        if "hour" not in df_out.columns:
+            df_out["hour"] = dt.dt.hour
+        if "month" not in df_out.columns:
+            df_out["month"] = dt.dt.month
+
         df_out = self.cyclical_transformer.transform(df_out)
 
         # Additional temporal flags
-        dt = pd.to_datetime(df_out[self.datetime_col])
         df_out["day_of_week"] = dt.dt.dayofweek
         df_out["is_weekend"] = (dt.dt.dayofweek >= 5).astype(np.float32)
         df_out["is_heating_season"] = df_out["month"].isin([11, 12, 1, 2, 3]).astype(np.float32)

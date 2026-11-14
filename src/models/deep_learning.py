@@ -119,11 +119,13 @@ class TabularSequenceDataset(Dataset):
 
 
 class LSTMForecaster(BaseForecaster):
-    """Deep Learning LSTM Forecaster with early stopping and AdamW optimization.
+    """Deep Learning LSTM Forecaster serving as a single-step recurrent baseline (T=1).
 
-    Supports both tabular lag feature matrices and 3D sequence tensors. When
-    provided with tabular features, treats the feature vector as an instant sequence
-    or past lag trajectory.
+    When fed tabular feature matrices containing autoregressive lags and rolling statistics,
+    the recurrent cell operates across an effective sequence length of 1 (T=1), treating the
+    engineered tabular representation as an instantaneous input state at time t. This design
+    enables direct, apples-to-apples computational efficiency and accuracy benchmarking against
+    gradient-boosted tree and linear baselines operating on identical feature spaces.
 
     Parameters
     ----------

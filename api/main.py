@@ -31,11 +31,21 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Restrict CORS origins to local development hosts
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://localhost:8501",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8501",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "HEAD", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -55,30 +65,51 @@ def health_check():
 
 @app.get("/model-info", response_model=ModelCatalogResponse, tags=["Metadata"])
 def get_model_info():
-    """Return metadata about registered forecasting models and supported lead times."""
+    """Return metadata about verified production forecasting models and supported lead times."""
     horizons = [1, 6, 24]
-    model_names = ["xgboost", "hist_gradient_boosting", "ridge", "persistence", "random_forest", "lstm"]
-    active_models = []
-
+    active_models = [
+        ModelInfo(
+            model_name="recommended",
+            model_type="tree",
+            horizon_hours=1,
+            n_features=47,
+            is_loaded=(Path("artifacts/models/xgboost_h1.joblib").exists()),
+            artifact_file="xgboost_h1.joblib",
+        ),
+        ModelInfo(
+            model_name="recommended",
+            model_type="tree",
+            horizon_hours=6,
+            n_features=47,
+            is_loaded=(Path("artifacts/models/xgboost_pruned_h6.joblib").exists()),
+            artifact_file="xgboost_pruned_h6.joblib",
+        ),
+        ModelInfo(
+            model_name="recommended",
+            model_type="tree",
+            horizon_hours=24,
+            n_features=47,
+            is_loaded=(Path("artifacts/models/xgboost_fast_h24.joblib").exists()),
+            artifact_file="xgboost_fast_h24.joblib",
+        ),
+    ]
     for h in horizons:
-        for m in model_names:
-            key = f"{m}_h{h}"
-            artifact_exists = (Path("artifacts/models") / f"{key}.joblib").exists()
-            active_models.append(
-                ModelInfo(
-                    model_name=m,
-                    model_type="tree" if "boost" in m or "forest" in m else ("deep_learning" if m == "lstm" else "baseline"),
-                    horizon_hours=h,
-                    n_features=47,
-                    is_loaded=artifact_exists or key in service.loaded_models,
-                )
+        active_models.append(
+            ModelInfo(
+                model_name="persistence",
+                model_type="baseline",
+                horizon_hours=h,
+                n_features=47,
+                is_loaded=True,
+                artifact_file="none (in-memory heuristic)",
             )
+        )
 
     return {
         "active_models": active_models,
         "feature_count": 47,
         "supported_horizons": horizons,
-        "default_model": "xgboost",
+        "default_model": "recommended",
     }
 
 
@@ -112,13 +143,15 @@ def predict(req: PredictionRequest):
         point_pred, lb, ub, latency_ms, interval_method, is_calibrated = service.predict_single(
             features=req.features,
             horizon=req.horizon_hours,
-            model_name=req.model_name or "xgboost",
+            model_name=req.model_name or "recommended",
             compute_interval=req.compute_interval,
             nominal_coverage=req.nominal_coverage,
         )
+        resolved_artifact = service.get_resolved_artifact(req.model_name or "recommended", req.horizon_hours)
 
         return {
-            "model_name": req.model_name or "xgboost",
+            "model_name": req.model_name or "recommended",
+            "resolved_artifact": resolved_artifact,
             "horizon_hours": req.horizon_hours,
             "predicted_pm25_ug_m3": point_pred,
             "unit": "ug/m^3",
@@ -129,6 +162,18 @@ def predict(req: PredictionRequest):
             "is_calibrated": is_calibrated,
             "inference_latency_ms": latency_ms,
         }
+    except HTTPException:
+        raise
+    except FileNotFoundError as fnf:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(fnf),
+        )
+    except ValueError as ve:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(ve),
+        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -146,13 +191,15 @@ def predict_batch(req: BatchPredictionRequest):
         preds, lbs, ubs, tot_lat, per_samp, interval_method, is_calibrated = service.predict_batch(
             samples=req.samples,
             horizon=req.horizon_hours,
-            model_name=req.model_name or "xgboost",
+            model_name=req.model_name or "recommended",
             compute_intervals=req.compute_intervals,
             nominal_coverage=req.nominal_coverage,
         )
+        resolved_artifact = service.get_resolved_artifact(req.model_name or "recommended", req.horizon_hours)
 
         return {
-            "model_name": req.model_name or "xgboost",
+            "model_name": req.model_name or "recommended",
+            "resolved_artifact": resolved_artifact,
             "horizon_hours": req.horizon_hours,
             "sample_count": len(req.samples),
             "predictions": preds,
@@ -164,6 +211,18 @@ def predict_batch(req: BatchPredictionRequest):
             "total_latency_ms": tot_lat,
             "per_sample_latency_ms": per_samp,
         }
+    except HTTPException:
+        raise
+    except FileNotFoundError as fnf:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(fnf),
+        )
+    except ValueError as ve:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(ve),
+        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
