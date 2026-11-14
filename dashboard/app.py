@@ -73,6 +73,41 @@ def show_plot_safe(path: str, caption: str):
         st.info(f"Plot artifact not found at `{path}`. Run corresponding experiment script to generate.")
 
 
+# Helper to load and cache historical test episode records from parquet
+@st.cache_data(show_spinner=False)
+def load_historical_test_record_cached(cache_path: str, target_dt: str, target_station: str):
+    """Extract and cache a single 47-feature historical test record from parquet.
+
+    Applies columnar projection to load only required features, maps string station
+    identifiers to integer indices (0-11), and caches the dictionary to eliminate
+    repetitive 200MB+ DataFrame decompressions on Streamlit rerun.
+    """
+    if not os.path.exists(cache_path):
+        return None
+    try:
+        from src.features.registry import get_feature_group
+        cols_47 = get_feature_group("combined_all")
+        required_cols = list(set(["datetime", "station"] + cols_47))
+        df_sub = pd.read_parquet(cache_path, columns=required_cols)
+        match = df_sub[(df_sub["datetime"] == target_dt) & (df_sub["station"] == target_station)]
+        if match.empty:
+            return None
+
+        stations_sorted = [
+            "Aotizhongxin", "Changping", "Dingling", "Dongsi", "Guanyuan", "Gucheng",
+            "Huairou", "Nongzhanguan", "Shunyi", "Tiantan", "Wanliu", "Wanshouxigong"
+        ]
+        rec = {}
+        for col in cols_47:
+            if col == "station":
+                rec[col] = float(stations_sorted.index(str(match[col].iloc[0])))
+            else:
+                rec[col] = float(match[col].iloc[0])
+        return rec
+    except Exception:
+        return None
+
+
 # -----------------------------------------------------------------------------
 # TAB 1: OVERVIEW & SCIENTIFIC PROTOCOL
 # -----------------------------------------------------------------------------
@@ -191,8 +226,9 @@ with tabs[4]:
     st.markdown("""
     ### Lead-Time Error Growth
     As forecasting horizon $h$ increases from 1 to 24 hours:
-    - Persistence error grows dramatically ($R^2$ collapses from $0.94$ at 1h to $< 0.20$ at 24h).
-    - Machine learning models with meteorological physics and rolling trajectories maintain high skill ($R^2 \\approx 0.65$–$0.75$).
+    - **+1h Immediate Horizon ($R^2 = 0.9499$):** Autoregressive momentum and particulate mass inertia dominate short-term trajectories (XGBoost MAE $11.57\\ \\mu\\text{g}/\\text{m}^3$). Naive persistence achieves $R^2 = 0.9419$.
+    - **+6h Mesoscale Horizon ($R^2 = 0.6389$):** Boundary-layer diurnal decoupling and surface heating begin; regularized XGBoost retains high skill (MAE $37.04\\ \\mu\\text{g}/\\text{m}^3$), outperforming persistence ($R^2 = 0.5398$, MAE $39.56\\ \\mu\\text{g}/\\text{m}^3$).
+    - **+24h Synoptic Horizon ($R^2 = 0.2121$):** Autoregressive inertia decays completely and naive persistence collapses ($R^2 = -0.1806$, MAE $78.33\\ \\mu\\text{g}/\\text{m}^3$). Regularized shallow gradient boosting captures synoptic regional advection and secondary chemistry, achieving $R^2 = 0.2121$ and MAE $66.07\\ \\mu\\text{g}/\\text{m}^3$ (a $+12.25\\ \\mu\\text{g}/\\text{m}^3$ advantage over persistence).
 
     ### Seasonal Transition Analysis
     The Beijing basin experiences extreme seasonal distribution shifts between the winter heating season (stagnant inversion, intense emissions) and the warm rainy season (wet scavenging).
@@ -244,13 +280,24 @@ with tabs[6]:
     where conformal quantile $\\hat{q}_{\\alpha}$ is calibrated strictly on the purged validation partition.
     """)
 
-    cov_col1, cov_col2 = st.columns(2)
-    cov_col1.metric("Nominal Target Coverage", "90.0%", "Theoretical Bound: >= 90%")
-    cov_col2.metric("Empirical Test Coverage", "91.4%", "+1.4% Valid Coverage")
+    c_m0, c_m1, c_m2, c_m3, c_m4 = st.columns(5)
+    c_m0.metric("Nominal Target", "90.0%", "Theoretical Bound (1 - α)")
+    c_m1.metric("+1h Lead Time", "86.36%", "Mean Width: 38.97 µg/m³", delta_color="normal")
+    c_m2.metric("+6h Lead Time", "83.04%", "Mean Width: 120.26 µg/m³", delta_color="normal")
+    c_m3.metric("+24h Lead Time", "70.17%", "Mean Width: 163.17 µg/m³", delta_color="normal")
+    c_m4.metric("Pooled Overall", "79.88%", "N = 127,326 samples", delta_color="normal")
 
     st.markdown("""
-    - **Interval Sharpness:** Mean interval width of $\\approx 42\\ \\mu\\text{g}/\\text{m}^3$ at $h=6\\text{h}$, scaling to $\\approx 78\\ \\mu\\text{g}/\\text{m}^3$ at $h=24\\text{h}$.
-    - **Physical Boundary Enforcement:** Predictions strictly clamped at $0.0\\ \\mu\\text{g}/\\text{m}^3$, avoiding physically impossible negative concentrations.
+    ### Empirical Test Coverage & Interval Sharpness
+    - **Empirical Coverage Breakdown:** Across the complete 5-month winter test season, true empirical coverage reaches **86.36%** at $+1\\text{h}$ ($N=42,554$), **83.04%** at $+6\\text{h}$ ($N=42,494$), and **70.17%** at $+24\\text{h}$ ($N=42,278$), yielding a **pooled overall coverage of 79.88%** ($127,326$ evaluated predictions).
+    - **Locally-Adaptive Interval Sharpness:** Normalized conformal intervals scale adaptively with predicted particulate intensity: median interval width is $31.07\\ \\mu\\text{g}/\\text{m}^3$ at $+1\\text{h}$, $102.71\\ \\mu\\text{g}/\\text{m}^3$ at $+6\\text{h}$, and $157.53\\ \\mu\\text{g}/\\text{m}^3$ at $+24\\text{h}$.
+    - **Physical Boundary Enforcement:** Predictions are bounded at $0.0\\ \\mu\\text{g}/\\text{m}^3$, avoiding unphysical negative concentration intervals.
+
+    ### Distribution-Shift Limitations & Exchangeability Breakdown
+    - **Exchangeability Assumption:** Split conformal prediction guarantees finite-sample marginal coverage strictly under exchangeable data between calibration (summer/autumn 2016) and test (winter 2016–2017) regimes.
+    - **Severe Winter Inversions:** During Beijing's winter heating season (November–February), stagnant boundary layers trap extreme particulate episodes ($> 250\\ \\mu\\text{g}/\\text{m}^3$) with unprecedented variance not observed during summer/autumn calibration.
+    - **Empirical Impact:** This seasonal regime shift breaks exchangeability, causing $+24\\text{h}$ coverage to contract to **70.17%** overall and **23.80%** during extreme hazardous episodes ($> 250\\ \\mu\\text{g}/\\text{m}^3$).
+    - **Scientific Disclosure:** **Nominal 90% coverage is NOT guaranteed under severe non-stationary atmospheric distribution shifts.**
     """)
 
 
@@ -303,20 +350,12 @@ with tabs[8]:
         selected_ep_name = st.selectbox("Select Test Episode", list(preset_episodes.keys()))
         selected_dt, selected_station = preset_episodes[selected_ep_name]
 
-        try:
-            from src.features.registry import get_feature_group
-            cache_file = Path("data/processed/forecasting_features_cache.parquet")
-            if cache_file.exists():
-                df_cache = pd.read_parquet(cache_file)
-                match = df_cache[(df_cache["datetime"] == selected_dt) & (df_cache["station"] == selected_station)]
-                if not match.empty:
-                    cols_47 = get_feature_group("combined_all")
-                    feature_dict = {col: float(match[col].iloc[0]) for col in cols_47}
-                    st.success(f"Loaded genuine record for {selected_station} at {selected_dt}. Ground-truth observed PM2.5: **{feature_dict['PM2.5']:.1f} µg/m³** | Temperature: **{feature_dict['TEMP']:.1f} °C** | Wind Speed: **{feature_dict['WSPM']:.1f} m/s**")
-                else:
-                    st.warning("Selected episode timestamp not found in cache. Switching to default values.")
-        except Exception as e:
-            st.error(f"Could not load episode from parquet cache: {e}")
+        cache_file = "data/processed/forecasting_features_cache.parquet"
+        feature_dict = load_historical_test_record_cached(cache_file, selected_dt, selected_station)
+        if feature_dict is not None:
+            st.success(f"Loaded genuine record for {selected_station} at {selected_dt}. Ground-truth observed PM2.5: **{feature_dict['PM2.5']:.1f} µg/m³** | Temperature: **{feature_dict['TEMP']:.1f} °C** | Wind Speed: **{feature_dict['WSPM']:.1f} m/s**")
+        else:
+            st.warning("Selected episode timestamp not found in cache. Switching to default values.")
 
     else:
         st.warning(

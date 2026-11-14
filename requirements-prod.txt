@@ -1,0 +1,32 @@
+# ==============================================================================
+# AirCast Research — Production Deployment Dependencies
+#
+# Optimized for web serving and dashboard hosting (Render / Linux x86_64).
+# Omits heavy deep learning training dependencies (torch) and test frameworks (pytest).
+# Production inference uses native XGBoost C++ and scikit-learn.
+# ==============================================================================
+
+# Data Processing & Storage
+numpy>=1.24.0,<2.3.0
+pandas>=2.0.0,<3.1.0
+scipy>=1.10.0,<1.18.0
+pyarrow>=12.0.0
+joblib>=1.3.0
+
+# Machine Learning & Uncertainty Quantification (Inference Only)
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+
+# Serving & REST API
+fastapi>=0.100.0
+uvicorn>=0.22.0
+pydantic>=2.0.0
+httpx>=0.24.0
+
+# Visualization & Interactive Dashboard
+streamlit>=1.28.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# System Telemetry & Process Health
+psutil>=5.9.0

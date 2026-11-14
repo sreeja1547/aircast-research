@@ -9,14 +9,9 @@ import numpy as np
 import pandas as pd
 
 from src.features.registry import get_feature_group
-from src.models import (
-    BaseForecaster,
-    HistGradientBoostingForecaster,
-    PersistenceForecaster,
-    RidgeForecaster,
-    XGBoostForecaster,
-    get_model,
-)
+from src.models.base import BaseForecaster
+from src.models.baselines import PersistenceForecaster
+from src.models.trees import XGBoostForecaster
 from src.uncertainty.conformal import ConformalPredictor
 
 

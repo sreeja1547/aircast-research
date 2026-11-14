@@ -7,7 +7,7 @@
 [![XGBoost 3.4](https://img.shields.io/badge/XGBoost-3.4.1-green.svg)](https://xgboost.readthedocs.io/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.45-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![Unit Tests](https://img.shields.io/badge/pytest-64%2F64%20passed-brightgreen.svg)](tests/)
+[![Unit Tests](https://img.shields.io/badge/pytest-66%2F66%20passed-brightgreen.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-sreeja1547%2Faircast--research-181717.svg?logo=github&logoColor=white)](https://github.com/sreeja1547/aircast-research)
 
@@ -68,7 +68,7 @@ A multi-objective Pareto review of MAE, inference latency, artifact size, and ov
 | **Uncertainty Quantification** | Split Conformal | Custom | Normalized adaptive prediction intervals scaled by local conditional dispersion |
 | **REST API Engine** | FastAPI / Uvicorn | 0.115.8 / 0.34.0 | Asynchronous REST serving with Pydantic v2 input validation |
 | **Research Dashboard** | Streamlit | 1.45.1 | Multi-panel interactive browser interface for model inspection and scenario testing |
-| **Test Automation** | Pytest | 8.3.4 | 64 automated regression, methodology, API, and validation unit tests across 10 test modules |
+| **Test Automation** | Pytest | 8.3.4 | 66 automated regression, methodology, API, and validation unit tests across 10 test modules |
 
 ---
 
@@ -449,10 +449,10 @@ curl -X POST "http://localhost:8000/predict" \
        }
      }'
 ```
-*(Note on Feature Schema, Validation & Defaults: The complete production schema defines 47 features across temporal cycles, criteria pollutants, autoregressive lags, rolling statistical aggregates, and surface meteorology; `station` is categorical and encoded as an integer index from 0 to 11, e.g. `9.0` for Tiantan.
+*(Note on Feature Schema, Validation & Strict Enforcement: The complete production schema defines 47 features across temporal cycles, criteria pollutants, autoregressive lags, rolling statistical aggregates, and surface meteorology; `station` is categorical and encoded as an integer index from 0 to 11, e.g. `9.0` for Tiantan.
 - **Strict Validation Rules:** Forecasting horizons must be strictly in `{1, 6, 24}` (unsupported horizons return `HTTP 422`). All numerical features must be finite numbers (`NaN` or `Inf` return `HTTP 422`). Batch inference (`/predict/batch`) strictly enforces complete 47-feature payloads for every sample in the batch.
 - **Artifact Protection:** Requesting an un-instantiated or missing model artifact returns `HTTP 404 Not Found` with explicit failure details; the API never silent-fits dummy surrogate models.
-- **Single-Sample Defaults:** Single prediction payloads permit partial inputs by defaulting omitted historical features to `0.0`. However, zero-filled historical lags and rolling aggregates distort physical mass-conservation inputs. Supplying all 47 features—or computing them upstream via `StationAwareFeatureBuilder`—is strongly recommended for operational fidelity).*
+- **Strict 47-Feature Requirement:** Both single prediction (`/predict`) and batch prediction (`/predict/batch`) strictly enforce all 47 required features without silent zero-defaults. Missing or non-finite features trigger immediate rejection (`HTTP 422 Unprocessable Entity`). Zero-filling omitted historical lags or rolling aggregates is strictly prevented to avoid distorting physical atmospheric state inputs; complete 47-feature vectors should be prepared upstream via `StationAwareFeatureBuilder` or telemetry pipelines).*
 
 #### Example JSON Response:
 ```json
@@ -522,32 +522,33 @@ If you wish to re-generate the feature cache from raw telemetry:
 python scripts/prepare_processed_data.py
 ```
 
-### 3. Automated Pytest Suite Execution (64 Unit Tests)
+### 3. Automated Pytest Suite Execution (66 Unit Tests)
 ```bash
 pytest tests/ -v
 ```
 *Expected Output:*
 ```text
-======================= 64 passed, 4 warnings in 23.37s =======================
+======================= 66 passed, 4 warnings in 28.50s =======================
 ```
 
 ### 4. Programmatic Model Usage (Python)
 ```python
 from api.services import AirCastInferenceService
+from src.features.registry import get_feature_group
 
 # High-Performance Serving via AirCastInferenceService
 service = AirCastInferenceService(models_dir="artifacts/models")
+
+# Complete 47-feature mapping required by API schema (see Section 13 for full schema)
+sample_47_features = {col: 10.0 for col in get_feature_group("combined_all")}
+sample_47_features.update({
+    "PM2.5": 95.0, "PM10": 140.0, "TEMP": 10.0, "WSPM": 2.0, "wind_u": 0.5, "wind_v": 1.1, "station": 9.0
+})
+
 pred, lower, upper, latency, method, is_cal = service.predict_single(
     horizon=24,
     model_name="recommended",
-    features={
-        "PM2.5": 95.0,
-        "PM10": 140.0,
-        "TEMP": 10.0,
-        "WSPM": 2.0,
-        "wind_u": 0.5,
-        "wind_v": 1.1,
-    }
+    features=sample_47_features,
 )
 print(f"24h PM2.5 Forecast: {pred:.2f} ug/m3 | Conformal Interval: [{lower:.2f}, {upper:.2f}] (Method: {method})")
 ```
@@ -576,7 +577,7 @@ aircast-research/
 ├── api/                           # FastAPI serving engine, Pydantic schemas, services
 ├── dashboard/                     # Streamlit 9-panel research dashboard
 ├── research/                      # Complete technical reports (Phases 1-11, audits, release docs)
-├── tests/                         # Pytest test suite (64 tests across 10 modules)
+├── tests/                         # Pytest test suite (66 tests across 10 modules)
 ├── .gitignore                     # Git tracking exclusions
 ├── requirements.txt               # Bounded dependency specifications
 ├── LICENSE                        # MIT License

@@ -1,0 +1,47 @@
+# ==============================================================================
+# AirCast Research — Render Deployment Blueprint
+#
+# Production configuration for multi-horizon air quality forecasting services:
+# 1. aircast-api: FastAPI REST API for point predictions and conformal intervals
+# 2. aircast-dashboard: Interactive Streamlit scientific research interface
+#
+# Operational Notes:
+# - Both services run from the repository root (CWD), preserving relative paths
+#   to artifacts/models/, artifacts/metrics/, and data/processed/.
+# - Services install requirements-prod.txt, omitting heavy PyTorch (~800MB)
+#   and test frameworks, keeping container builds fast and lean.
+# - Dynamic port binding is enforced via $PORT (Render standard).
+# - Starter tier (512MB RAM) is sufficient for aircast-api; aircast-dashboard
+#   is recommended on Starter (512MB) or Standard (1GB) when handling concurrent users.
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # Service 1: FastAPI Inference & Conformal Prediction Engine
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: aircast-api
+    runtime: python
+    region: oregon
+    plan: starter
+    branch: main
+    buildCommand: pip install --upgrade pip && pip install -r requirements-prod.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT --workers 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+  # ----------------------------------------------------------------------------
+  # Service 2: Interactive Streamlit Research & Historical Replay Dashboard
+  # ----------------------------------------------------------------------------
+  - type: web
+    name: aircast-dashboard
+    runtime: python
+    region: oregon
+    plan: starter
+    branch: main
+    buildCommand: pip install --upgrade pip && pip install -r requirements-prod.txt
+    startCommand: streamlit run dashboard/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true --browser.gatherUsageStats false
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
