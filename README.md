@@ -12,6 +12,22 @@
 [![GitHub Repository](https://img.shields.io/badge/GitHub-sreeja1547%2Faircast--research-181717.svg?logo=github&logoColor=white)](https://github.com/sreeja1547/aircast-research)
 
 ---
+## Live Deployment
+
+**Live API:** https://aircast-research.onrender.com
+
+**Interactive API Documentation:** https://aircast-research.onrender.com/docs
+
+**Health Check:** https://aircast-research.onrender.com/health
+
+The deployed FastAPI service supports:
+- Multi-horizon PM2.5 forecasting (+1h, +6h, +24h).
+- XGBoost-based inference.
+- Calibrated normalized conformal prediction intervals.
+- Single and batch prediction endpoints.
+- Model metadata, feature registry, and benchmarking metrics.
+
+**Deployment verification:** Successfully tested API health, model loading, and a 24-hour prediction with a calibrated prediction interval.
 
 ## 1. Project Title & Overview
 
@@ -600,6 +616,7 @@ aircast-research/
   *(All 23 baseline models remain preserved locally on disk in `artifacts/models/` and are documented in benchmark JSON files, but excluded from Git via `.gitignore` to maintain a compact $45.9\text{ MB}$ repository footprint without Git LFS).*
 
 ---
+
 
 ## 17. Complete Research Documentation Index
 
