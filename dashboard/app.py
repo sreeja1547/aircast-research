@@ -8,6 +8,13 @@ conformal uncertainty quantification, TreeSHAP explainability, and live inferenc
 import json
 import os
 from pathlib import Path
+import sys
+
+# Ensure repository root is in sys.path before importing local project modules
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -57,9 +64,12 @@ tabs = st.tabs([
 
 # Helper to load JSON metrics
 def load_json_safe(path: str):
-    if os.path.exists(path):
+    target = Path(path)
+    if not target.is_absolute():
+        target = REPO_ROOT / target
+    if target.exists():
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(target, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
             return None
@@ -67,8 +77,11 @@ def load_json_safe(path: str):
 
 # Helper to display plot if exists
 def show_plot_safe(path: str, caption: str):
-    if os.path.exists(path):
-        st.image(path, caption=caption, use_container_width=True)
+    target = Path(path)
+    if not target.is_absolute():
+        target = REPO_ROOT / target
+    if target.exists():
+        st.image(str(target), caption=caption, use_container_width=True)
     else:
         st.info(f"Plot artifact not found at `{path}`. Run corresponding experiment script to generate.")
 
@@ -82,13 +95,16 @@ def load_historical_test_record_cached(cache_path: str, target_dt: str, target_s
     identifiers to integer indices (0-11), and caches the dictionary to eliminate
     repetitive 200MB+ DataFrame decompressions on Streamlit rerun.
     """
-    if not os.path.exists(cache_path):
+    target = Path(cache_path)
+    if not target.is_absolute():
+        target = REPO_ROOT / target
+    if not target.exists():
         return None
     try:
         from src.features.registry import get_feature_group
         cols_47 = get_feature_group("combined_all")
         required_cols = list(set(["datetime", "station"] + cols_47))
-        df_sub = pd.read_parquet(cache_path, columns=required_cols)
+        df_sub = pd.read_parquet(str(target), columns=required_cols)
         match = df_sub[(df_sub["datetime"] == target_dt) & (df_sub["station"] == target_station)]
         if match.empty:
             return None
@@ -489,7 +505,7 @@ with tabs[8]:
     if run_forecast and feature_dict is not None:
         try:
             from api.services import AirCastInferenceService
-            inference_service = AirCastInferenceService()
+            inference_service = AirCastInferenceService(models_dir=str(REPO_ROOT / "artifacts" / "models"))
 
             st.markdown("### 📊 Simultaneous Multi-Horizon Forecasts")
             horizons = [1, 6, 24]

@@ -30,6 +30,8 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: PYTHONPATH
+        value: .
 
   # ----------------------------------------------------------------------------
   # Service 2: Interactive Streamlit Research & Historical Replay Dashboard
@@ -45,3 +47,5 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: PYTHONPATH
+        value: .

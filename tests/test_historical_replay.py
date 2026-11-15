@@ -2,6 +2,8 @@
 
 import os
 from pathlib import Path
+import subprocess
+import sys
 import numpy as np
 import pandas as pd
 import pytest
@@ -99,3 +101,21 @@ def test_missing_record_returns_none_cleanly():
 
     res_st = load_historical_test_record_cached(CACHE_PATH, "2016-10-02 21:00:00", "NonExistentStation")
     assert res_st is None
+
+
+def test_dashboard_isolated_execution_finds_src_and_api():
+    """Regression test: verify dashboard/app.py resolves repo root and imports src/api even if repo root is omitted from sys.path."""
+    import subprocess
+    dash_dir = str(Path(__file__).resolve().parent.parent / "dashboard")
+    code = f"""
+import os, sys
+sys.path = [p for p in sys.path if 'beijing' not in p.lower() and p != '']
+sys.path.insert(0, {repr(dash_dir)})
+import app
+assert 'src' in sys.modules
+assert 'src.preprocessing.transformers' in sys.modules
+print('OK: isolated dashboard import successful')
+"""
+    res = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True)
+    assert "OK: isolated dashboard import successful" in res.stdout
+
